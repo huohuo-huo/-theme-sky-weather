@@ -1,0 +1,8 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<!-- 页面：装备列表页面（/equipments）-->
+<!-- 兼容基线：plugin-equipment v1.1.1；消费 groups/equipments/title/templateId，分组名使用 metadata.name。 -->
+<th:block th:replace="~{modules/equipments/layout :: html (~{modules/equipments/content :: equipment-content})}" />
+
+</html>

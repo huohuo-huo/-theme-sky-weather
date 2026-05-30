@@ -1,0 +1,94 @@
+<!-- 兼容基线：plugin-docsme 免费版 1.5.0 / 专业版 1.6.0；0 篇文档项目不生成详情链接。 -->
+<!-- 文档列表页 - Apple 简约风格 -->
+<div th:fragment="content" class="mx-auto max-w-7xl px-4 py-12">
+  <!-- 页面标题 - 居中简约 -->
+  <header class="mb-12 text-center">
+    <h1 class="text-base-content text-2xl font-bold tracking-tight md:text-3xl">文档中心</h1>
+    <p class="text-base-content/50 mt-2">查阅项目文档和使用指南</p>
+  </header>
+
+  <!-- 文档项目列表 -->
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <th:block th:each="project : ${projects}" th:with="docCount=${project.status.totalDocs ?: 0}">
+      <a
+        th:if="${docCount > 0}"
+        th:href="${project.status.permalink}"
+        class="glow-card group bg-base-100/80 border-base-content/[0.06] hover:border-base-content/10 block cursor-pointer rounded-2xl border p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:shadow-lg"
+      >
+        <!-- 图标 -->
+        <div
+          class="bg-primary/10 group-hover:bg-primary/20 mb-4 flex h-12 w-12 items-center justify-center rounded-xl transition-colors"
+        >
+          <img
+            th:unless="${#strings.isEmpty(project.spec.icon)}"
+            th:src="${project.spec.icon}"
+            th:alt="${project.spec.displayName}"
+            class="h-7 w-7 object-contain"
+          />
+          <span
+            th:if="${#strings.isEmpty(project.spec.icon)}"
+            class="icon-[heroicons--document-text] text-primary h-6 w-6"
+          ></span>
+        </div>
+
+        <!-- 标题 -->
+        <h2
+          class="text-base-content group-hover:text-primary mb-2 text-lg font-semibold transition-colors"
+          th:text="${project.spec.displayName}"
+        >
+          项目名称
+        </h2>
+
+        <!-- 统计信息 -->
+        <div class="text-base-content/50 flex items-center gap-2 text-sm">
+          <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
+          <span th:text="${docCount + ' 篇文档'}">0 篇文档</span>
+        </div>
+
+        <!-- 箭头指示 -->
+        <div class="text-base-content/30 group-hover:text-primary mt-4 flex items-center justify-end transition-colors">
+          <span class="icon-[heroicons--arrow-right] h-5 w-5"></span>
+        </div>
+      </a>
+      <div
+        th:unless="${docCount > 0}"
+        aria-disabled="true"
+        class="glow-card bg-base-100/60 border-base-content/[0.06] block cursor-not-allowed rounded-2xl border p-6 opacity-70 shadow-sm backdrop-blur-xl"
+      >
+        <div class="bg-base-content/5 mb-4 flex h-12 w-12 items-center justify-center rounded-xl">
+          <img
+            th:unless="${#strings.isEmpty(project.spec.icon)}"
+            th:src="${project.spec.icon}"
+            th:alt="${project.spec.displayName}"
+            class="h-7 w-7 object-contain opacity-60 grayscale"
+          />
+          <span
+            th:if="${#strings.isEmpty(project.spec.icon)}"
+            class="icon-[heroicons--document-text] text-base-content/30 h-6 w-6"
+          ></span>
+        </div>
+
+        <h2 class="text-base-content/70 mb-2 text-lg font-semibold" th:text="${project.spec.displayName}">项目名称</h2>
+
+        <div class="text-base-content/40 flex items-center gap-2 text-sm">
+          <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
+          <span>暂无文档</span>
+        </div>
+
+        <div class="text-base-content/20 mt-4 flex items-center justify-end">
+          <span class="icon-[heroicons--lock-closed] h-5 w-5"></span>
+        </div>
+      </div>
+    </th:block>
+  </div>
+
+  <!-- 空状态 -->
+  <div
+    th:if="${projects == null || projects.isEmpty()}"
+    class="glow-card bg-base-100/80 border-base-content/[0.06] rounded-2xl border p-12 text-center shadow-lg backdrop-blur-xl"
+  >
+    <span class="icon-[heroicons--document-text] text-base-content/20 mx-auto mb-4 h-16 w-16"></span>
+    <p class="text-base-content/50 text-lg">暂无文档项目</p>
+    <p class="text-base-content/30 mt-2 text-sm">请在后台创建文档项目</p>
+  </div>
+</div>

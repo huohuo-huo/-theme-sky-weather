@@ -1,0 +1,31 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org"
+    th:replace="~{gateway_fragments/layout :: layout(title = |登录 - ${site.title}|, head = null, body = ~{::body})}">
+<!-- 兼容基线：halo-plugin-auth-passkey v1.0.13；登录表单结构由 gateway_fragments/login.html 保持兼容。 -->
+<th:block th:fragment="body">
+    <h1 class="auth-title">欢迎回来</h1>
+    <p class="auth-subtitle">登录以继续访问您的账户</p>
+
+    <div class="space-y-6">
+        <div th:replace="~{gateway_fragments/login::form}"></div>
+
+        <div th:replace="~{gateway_fragments/login::formAuthProviders}"></div>
+
+        <div th:replace="~{gateway_fragments/common::socialAuthProviders}"></div>
+    </div>
+
+    <div class="mt-8 text-center text-base-content/50">
+        <span>还没有账户？</span>
+        <a th:href="@{/signup}" class="text-primary font-semibold hover:underline ml-1">立即注册</a>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a th:href="@{/}"
+            class="inline-flex items-center gap-2 text-sm text-base-content/40 hover:text-primary transition-colors">
+            <span class="icon-[heroicons--arrow-left] w-4 h-4"></span>
+            <span>返回首页</span>
+        </a>
+    </div>
+</th:block>
+
+</html>

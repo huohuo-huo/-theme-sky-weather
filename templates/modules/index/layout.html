@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN" th:fragment="html (content)">
+  <!-- 椤甸潰澶撮儴 -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 鍚敤 View Transitions API (Safari 18+/Chrome 111+) -->
+    <meta name="view-transition" content="same-origin" />
+
+    <!-- 闃叉涓婚闂儊 - 鍦ㄦ覆鏌撳墠绔嬪嵆搴旂敤涓婚 -->
+    <th:block th:replace="~{modules/theme-script :: inline-script}" />
+    <!-- 鍏抽敭 CSS 鍐呰仈 -->
+    <th:block th:replace="~{modules/critical-css :: critical}" />
+
+    <!-- 椤甸潰鏍囬 -->
+    <title
+      th:text="${site.subtitle != null and !#strings.isEmpty(site.subtitle) ? site.title + ' - ' + site.subtitle : site.title}"
+    >
+    </title>
+    <!-- 瀛椾綋 - 寮傛鍔犺浇锛屼笉闃诲娓叉煋 -->
+    <th:block th:replace="~{modules/font-loader :: fonts}" />
+    <!-- 涓婚鏍峰紡 -->
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.14')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/index.css?v={version}(version='1.0.14')}" />
+    <!-- 浠ヤ笅鏍峰紡浠呭湪鍚敤棣栭〉澶撮儴鏃跺姞锟?-->
+    <th:block th:if="${theme.config.index.background_settings?.enable_header != false}">
+      <!-- 鑳屾櫙鐗规晥鏍峰紡 - 鍙湪閫夋嫨 CSS 鐗规晥鏃跺姞锟?-->
+      <link
+        th:if="${theme.config.index.background_settings.background_type == 'effect'}"
+        rel="stylesheet"
+        th:href="@{/assets/css/index-effects.css?v={version}(version='1.0.14')}"
+      />
+      <!-- 澶╂皵鑱斿姩鐗规晥鏍峰紡 - 鍙湪閫夋嫨澶╂皵鑱斿姩鏃跺姞锟?-->
+      <link
+        th:if="${theme.config.index.background_settings.background_type == 'weather'}"
+        rel="stylesheet"
+        th:href="@{/assets/css/index-weather-effects.css?v={version}(version='1.0.14')}"
+      />
+      <!-- 鏍囬鐗规晥鏍峰紡 - 鍙湪鏄剧ず鏍囬鏃跺姞锟?-->
+      <link
+        th:if="${theme.config.index.title_settings.show_title}"
+        rel="stylesheet"
+        th:href="@{/assets/css/index-title-effects.css?v={version}(version='1.0.14')}"
+      />
+      <!-- 鍓爣棰樼壒鏁堟牱锟?- 鍙湪鏄剧ず鍓爣棰樻椂鍔犺浇 -->
+      <link
+        th:if="${theme.config.index.subtitle_settings.show_subtitle}"
+        rel="stylesheet"
+        th:href="@{/assets/css/index-subtitle-effects.css?v={version}(version='1.0.14')}"
+      />
+    </th:block>
+
+    <!-- 闊充箰鎾斁锟?CSS -->
+    <th:block th:replace="~{modules/music-player :: head}" />
+  </head>
+
+  <body
+    th:with="bgConfig = ${theme.config.general.global_background},
+                 enableCustomBg = ${bgConfig?.enable_custom == true},
+                 bgStyle = ${bgConfig?.background_style ?: 'base-200'},
+                 bgClass = ${enableCustomBg ? (bgStyle == 'grid' ? 'bg-base-100' : 'bg-' + bgStyle) : 'bg-base-200'}"
+    th:class="'min-h-screen text-base-content relative ' + ${bgClass}"
+  >
+    <!-- 缃戞牸鑳屾櫙锛堜粎褰撻€夋嫨 grid 鏍峰紡鏃舵樉绀猴級 -->
+    <div
+      th:if="${enableCustomBg and bgStyle == 'grid'}"
+      class="bg-grid-pattern pointer-events-none fixed inset-0 z-[1]"
+    ></div>
+    <!-- 鍔犺浇灞忓箷 -->
+    <th:block th:replace="~{modules/loading-screen :: loading-screen}" />
+
+    <div class="relative z-10">
+      <!-- 瀵艰埅锟?-->
+      <th:block th:replace="~{modules/nav :: navbar}" />
+
+      <!-- 涓昏鍐呭鍖哄煙 -->
+      <main
+        id="swup"
+        th:class="${theme.config.index.background_settings?.enable_header != false} ? 'flex-1 -mt-16' : 'flex-1'"
+      >
+        <!-- 棣栭〉澶撮儴鍖哄煙 - 鏀惧叆 swup 瀹瑰櫒锛屼繚璇佷笌棣栭〉姝ｆ枃鍏变韩鍚屼竴 PJAX 鐢熷懡鍛ㄦ湡 -->
+        <th:block th:if="${theme.config.index.background_settings?.enable_header != false}">
+          <th:block th:replace="~{modules/index/header}" />
+        </th:block>
+
+        <th:block th:replace="${content}" />
+      </main>
+
+      <!-- 椤佃剼 -->
+      <th:block th:replace="~{modules/footer :: footer}" />
+    </div>
+
+    <div id="swup-page-extras">
+      <!-- 鎮诞 Dock 鎺у埗锟?-->
+      <th:block th:replace="~{modules/floating-dock :: dockWithConfig(${theme.config.index}, 'basic')}" />
+    </div>
+
+    <!-- JavaScript 鏂囦欢 -->
+    <div id="swup-scripts" hidden>
+      <script
+        type="module"
+        th:src="@{/assets/js/index.js?v={version}(version='1.0.14')}"
+        data-swup-reload-script
+      ></script>
+    </div>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.14')}"></script>
+    <!-- 鎮诞闊充箰鎾斁锟?-->
+    <th:block th:replace="~{modules/music-player :: player}" />
+  </body>
+</html>

@@ -1,0 +1,672 @@
+/**
+ * 首页背景特效样式 - 独立按需加载
+ * 只在选择 CSS 特效背景时加载此文件
+ */
+
+/* ===================================================
+ * 基础样式 - 所有特效共用
+ * ==================================================*/
+
+/**
+ * 所有特效的基础暗色背景
+ * 固定深色渐变，确保在白色/黑色主题下都清晰可读
+ */
+.effect-bg-base {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    #0a0e1a 0%,     /* 深邃蓝黑 */
+    #0f1419 30%,    /* 炭黑 */
+    #1a1625 60%,    /* 深紫黑 */
+    #0a0e1a 100%    /* 回到蓝黑 */
+  );
+  z-index: 1;
+}
+
+/**
+ * 所有特效的柔和蒙版
+ * 添加渐变蒙版，增强纵深感
+ */
+.effect-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ===================================================
+ * 特效 1：流体渐变 (fluid-gradient) - 优化加强版
+ * 艺术抽象风 - 液体形状相互融合，真正动起来
+ * ==================================================*/
+
+.effect-fluid-gradient {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 流体 blob - 液体形状，使用主题色 */
+.fluid-blob {
+  position: absolute;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  filter: blur(50px);
+  z-index: 2;
+  opacity: 0.5;
+}
+
+/* Blob 1 - 大型主色 */
+.fluid-blob-1 {
+  top: 15%;
+  left: 10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    var(--color-primary) 0%,
+    color-mix(in srgb, var(--color-primary) 60%, transparent) 50%,
+    transparent 100%
+  );
+  animation: fluid-morph-1 20s ease-in-out infinite, fluid-float-1 25s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+/* Blob 2 - 大型次色 */
+.fluid-blob-2 {
+  top: 45%;
+  right: 12%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(
+    circle at 40% 60%,
+    var(--color-secondary) 0%,
+    color-mix(in srgb, var(--color-secondary) 60%, transparent) 50%,
+    transparent 100%
+  );
+  animation: fluid-morph-2 25s ease-in-out infinite, fluid-float-2 30s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+/* Blob 3 - 中型强调色 */
+.fluid-blob-3 {
+  bottom: 18%;
+  left: 38%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--color-accent) 0%,
+    color-mix(in srgb, var(--color-accent) 60%, transparent) 50%,
+    transparent 100%
+  );
+  animation: fluid-morph-3 22s ease-in-out infinite, fluid-float-3 28s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+/* Blob 4 - 中型混合色 */
+.fluid-blob-4 {
+  top: 55%;
+  left: 65%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(
+    circle at 60% 40%,
+    color-mix(in srgb, var(--color-primary) 70%, var(--color-accent) 30%) 0%,
+    color-mix(in srgb, var(--color-primary) 40%, transparent) 50%,
+    transparent 100%
+  );
+  animation: fluid-morph-4 18s ease-in-out infinite, fluid-float-4 24s ease-in-out infinite;
+  opacity: 0.45;
+}
+
+/* Blob 5 - 小型主色 */
+.fluid-blob-5 {
+  top: 28%;
+  left: 50%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(
+    circle at 70% 30%,
+    var(--color-primary) 0%,
+    color-mix(in srgb, var(--color-primary) 50%, transparent) 50%,
+    transparent 100%
+  );
+  animation: fluid-morph-1 16s ease-in-out infinite reverse, fluid-float-1 20s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+/* Blob 6 - 小型次色 */
+.fluid-blob-6 {
+  bottom: 35%;
+  right: 35%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle at 30% 70%,
+    var(--color-secondary) 0%,
+    color-mix(in srgb, var(--color-secondary) 50%, transparent) 50%,
+    transparent 100%
+  );
+  animation: fluid-morph-3 19s ease-in-out infinite reverse, fluid-float-2 23s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+/* 变形动画 - 复杂路径 */
+@keyframes fluid-morph-1 {
+  0%, 100% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  }
+  20% {
+    border-radius: 60% 40% 50% 50% / 50% 60% 40% 60%;
+  }
+  40% {
+    border-radius: 70% 30% 40% 60% / 30% 70% 50% 50%;
+  }
+  60% {
+    border-radius: 30% 70% 60% 40% / 60% 40% 60% 40%;
+  }
+  80% {
+    border-radius: 50% 50% 30% 70% / 70% 30% 50% 50%;
+  }
+}
+
+@keyframes fluid-morph-2 {
+  0%, 100% {
+    border-radius: 50% 50% 30% 70% / 60% 40% 70% 30%;
+  }
+  25% {
+    border-radius: 30% 70% 60% 40% / 50% 50% 40% 60%;
+  }
+  50% {
+    border-radius: 70% 30% 40% 60% / 30% 70% 50% 50%;
+  }
+  75% {
+    border-radius: 40% 60% 50% 50% / 70% 30% 60% 40%;
+  }
+}
+
+@keyframes fluid-morph-3 {
+  0%, 100% {
+    border-radius: 60% 40% 50% 50% / 70% 30% 50% 50%;
+  }
+  33% {
+    border-radius: 40% 60% 30% 70% / 40% 60% 70% 30%;
+  }
+  66% {
+    border-radius: 50% 50% 60% 40% / 50% 50% 40% 60%;
+  }
+}
+
+@keyframes fluid-morph-4 {
+  0%, 100% {
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  }
+  25% {
+    border-radius: 70% 30% 30% 70% / 40% 70% 30% 60%;
+  }
+  50% {
+    border-radius: 30% 70% 70% 30% / 70% 30% 70% 30%;
+  }
+  75% {
+    border-radius: 60% 40% 40% 60% / 50% 50% 50% 50%;
+  }
+}
+
+/* 漂浮动画 - 位置移动 */
+@keyframes fluid-float-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(40px, -40px) scale(1.15) rotate(90deg);
+  }
+  50% {
+    transform: translate(-20px, -60px) scale(0.95) rotate(180deg);
+  }
+  75% {
+    transform: translate(-50px, -25px) scale(1.1) rotate(270deg);
+  }
+}
+
+@keyframes fluid-float-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(-45px, 50px) scale(1.2) rotate(120deg);
+  }
+  66% {
+    transform: translate(30px, -35px) scale(0.9) rotate(240deg);
+  }
+}
+
+@keyframes fluid-float-3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(50px, 40px) scale(1.25) rotate(180deg);
+  }
+}
+
+@keyframes fluid-float-4 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  20% {
+    transform: translate(-30px, 30px) scale(1.1) rotate(72deg);
+  }
+  40% {
+    transform: translate(30px, -30px) scale(0.95) rotate(144deg);
+  }
+  60% {
+    transform: translate(-20px, -40px) scale(1.05) rotate(216deg);
+  }
+  80% {
+    transform: translate(25px, 20px) scale(1.08) rotate(288deg);
+  }
+}
+
+/* ===================================================
+ * 特效 2：霓虹线条 (neon-lines)
+ * 现代极简风 - 霓虹灯管，随机闪烁发光
+ * ==================================================*/
+
+.effect-neon-lines {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 霓虹线条 - 不同角度和位置，使用主题色 */
+.neon-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary),
+    transparent
+  );
+  box-shadow: 0 0 10px var(--color-primary), 0 0 20px var(--color-primary);
+  z-index: 2;
+  opacity: 0;
+}
+
+.neon-1 {
+  top: 15%;
+  left: 10%;
+  width: 200px;
+  transform: rotate(45deg);
+  animation: neon-flash-1 8s ease-in-out infinite;
+}
+
+.neon-2 {
+  top: 35%;
+  right: 15%;
+  width: 250px;
+  transform: rotate(-30deg);
+  animation: neon-flash-2 10s ease-in-out infinite 1s;
+  background: linear-gradient(90deg, transparent, var(--color-secondary), transparent);
+  box-shadow: 0 0 10px var(--color-secondary), 0 0 20px var(--color-secondary);
+}
+
+.neon-3 {
+  bottom: 30%;
+  left: 20%;
+  width: 180px;
+  transform: rotate(15deg);
+  animation: neon-flash-3 9s ease-in-out infinite 2s;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  box-shadow: 0 0 10px var(--color-accent), 0 0 20px var(--color-accent);
+}
+
+.neon-4 {
+  top: 50%;
+  left: 40%;
+  width: 220px;
+  transform: rotate(-45deg);
+  animation: neon-flash-1 11s ease-in-out infinite 3s;
+}
+
+.neon-5 {
+  top: 70%;
+  right: 25%;
+  width: 190px;
+  transform: rotate(60deg);
+  animation: neon-flash-2 12s ease-in-out infinite 4s;
+  background: linear-gradient(90deg, transparent, var(--color-secondary), transparent);
+  box-shadow: 0 0 10px var(--color-secondary), 0 0 20px var(--color-secondary);
+}
+
+.neon-6 {
+  top: 25%;
+  left: 60%;
+  width: 160px;
+  transform: rotate(-15deg);
+  animation: neon-flash-3 7s ease-in-out infinite 5s;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  box-shadow: 0 0 10px var(--color-accent), 0 0 20px var(--color-accent);
+}
+
+.neon-7 {
+  bottom: 45%;
+  left: 15%;
+  width: 210px;
+  transform: rotate(30deg);
+  animation: neon-flash-1 13s ease-in-out infinite 6s;
+}
+
+.neon-8 {
+  top: 60%;
+  right: 35%;
+  width: 175px;
+  transform: rotate(-60deg);
+  animation: neon-flash-2 14s ease-in-out infinite 7s;
+  background: linear-gradient(90deg, transparent, var(--color-secondary), transparent);
+  box-shadow: 0 0 10px var(--color-secondary), 0 0 20px var(--color-secondary);
+}
+
+/* 霓虹闪烁动画 */
+@keyframes neon-flash-1 {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 90% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--color-primary), 0 0 40px var(--color-primary), 0 0 60px var(--color-primary);
+  }
+}
+
+@keyframes neon-flash-2 {
+  0%, 100% {
+    opacity: 0;
+  }
+  15%, 85% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--color-secondary), 0 0 40px var(--color-secondary), 0 0 60px var(--color-secondary);
+  }
+}
+
+@keyframes neon-flash-3 {
+  0%, 100% {
+    opacity: 0;
+  }
+  20%, 80% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--color-accent), 0 0 40px var(--color-accent), 0 0 60px var(--color-accent);
+  }
+}
+
+
+
+/* ===================================================
+ * 特效 4：深邃星空 (starry-sky)
+ * 自然浪漫风 - 繁星闪烁，银河带，主题色点缀
+ * ==================================================*/
+
+.effect-starry-sky {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 星空层 - 使用多层背景生成大量星星 */
+.star-field {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* 远景星空 - 微小星星 */
+.star-layer-far {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(1px 1px at 10% 15%, white, transparent),
+    radial-gradient(1px 1px at 20% 25%, white, transparent),
+    radial-gradient(1px 1px at 30% 35%, white, transparent),
+    radial-gradient(1px 1px at 40% 45%, white, transparent),
+    radial-gradient(1px 1px at 50% 55%, white, transparent),
+    radial-gradient(1px 1px at 60% 65%, white, transparent),
+    radial-gradient(1px 1px at 70% 75%, white, transparent),
+    radial-gradient(1px 1px at 80% 85%, white, transparent),
+    radial-gradient(1px 1px at 90% 20%, white, transparent),
+    radial-gradient(1px 1px at 15% 40%, white, transparent),
+    radial-gradient(1px 1px at 25% 60%, white, transparent),
+    radial-gradient(1px 1px at 35% 80%, white, transparent),
+    radial-gradient(1px 1px at 45% 30%, white, transparent),
+    radial-gradient(1px 1px at 55% 50%, white, transparent),
+    radial-gradient(1px 1px at 65% 70%, white, transparent),
+    radial-gradient(1px 1px at 75% 90%, white, transparent),
+    radial-gradient(1px 1px at 85% 10%, white, transparent),
+    radial-gradient(1px 1px at 95% 35%, white, transparent),
+    radial-gradient(1px 1px at 12% 55%, white, transparent),
+    radial-gradient(1px 1px at 22% 75%, white, transparent);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  animation: star-twinkle-far 4s ease-in-out infinite;
+}
+
+/* 中景星空 - 小星星 */
+.star-layer-mid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(2px 2px at 18% 22%, white, transparent),
+    radial-gradient(2px 2px at 28% 42%, white, transparent),
+    radial-gradient(2px 2px at 38% 62%, white, transparent),
+    radial-gradient(2px 2px at 48% 18%, white, transparent),
+    radial-gradient(2px 2px at 58% 38%, white, transparent),
+    radial-gradient(2px 2px at 68% 58%, white, transparent),
+    radial-gradient(2px 2px at 78% 78%, white, transparent),
+    radial-gradient(2px 2px at 88% 28%, white, transparent),
+    radial-gradient(2px 2px at 14% 48%, white, transparent),
+    radial-gradient(2px 2px at 24% 68%, white, transparent),
+    radial-gradient(2px 2px at 34% 88%, white, transparent),
+    radial-gradient(2px 2px at 44% 12%, white, transparent),
+    radial-gradient(2px 2px at 54% 32%, white, transparent),
+    radial-gradient(2px 2px at 64% 52%, white, transparent),
+    radial-gradient(2px 2px at 74% 72%, white, transparent);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  animation: star-twinkle-mid 5s ease-in-out infinite 0.5s;
+}
+
+/* 近景星空 - 中等星星 */
+.star-layer-near {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(3px 3px at 16% 26%, white, transparent),
+    radial-gradient(3px 3px at 36% 46%, white, transparent),
+    radial-gradient(3px 3px at 56% 16%, white, transparent),
+    radial-gradient(3px 3px at 76% 36%, white, transparent),
+    radial-gradient(3px 3px at 26% 66%, white, transparent),
+    radial-gradient(3px 3px at 46% 86%, white, transparent),
+    radial-gradient(3px 3px at 66% 56%, white, transparent),
+    radial-gradient(3px 3px at 86% 76%, white, transparent);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+  animation: star-twinkle-near 6s ease-in-out infinite 1s;
+}
+
+/* 特别亮的星星 - 使用纯白色 */
+.star-accent-1 {
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+  z-index: 3;
+  animation: star-glow-white 3s ease-in-out infinite;
+}
+
+.star-accent-2 {
+  position: absolute;
+  top: 50%;
+  right: 25%;
+  width: 5px;
+  height: 5px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+  z-index: 3;
+  animation: star-glow-white 4s ease-in-out infinite 0.5s;
+}
+
+.star-accent-3 {
+  position: absolute;
+  bottom: 30%;
+  left: 60%;
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+  z-index: 3;
+  animation: star-glow-white 5s ease-in-out infinite 1s;
+}
+
+.star-accent-4 {
+  position: absolute;
+  top: 70%;
+  left: 15%;
+  width: 3px;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.5);
+  z-index: 3;
+  animation: star-glow-white 3.5s ease-in-out infinite 1.5s;
+}
+
+.star-accent-5 {
+  position: absolute;
+  top: 35%;
+  right: 40%;
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+  z-index: 3;
+  animation: star-glow-white 4.5s ease-in-out infinite 2s;
+}
+
+/* 银河带 - 斜向模糊渐变带 */
+.milky-way {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(139, 92, 246, 0.08) 40%,
+    rgba(168, 85, 247, 0.12) 50%,
+    rgba(139, 92, 246, 0.08) 60%,
+    transparent 65%,
+    transparent 100%
+  );
+  filter: blur(30px);
+  z-index: 2;
+  opacity: 0.6;
+  animation: milky-way-drift 60s linear infinite;
+}
+
+/* 星星闪烁动画 */
+@keyframes star-twinkle-far {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes star-twinkle-mid {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes star-twinkle-near {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* 白色星星发光动画 */
+@keyframes star-glow-white {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 1), 0 0 50px rgba(255, 255, 255, 0.8), 0 0 75px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* 银河带漂移 */
+@keyframes milky-way-drift {
+  0% {
+    transform: rotate(0deg) translateX(0);
+  }
+  100% {
+    transform: rotate(0deg) translateX(-50px);
+  }
+}
+
+/* ===================================================
+ * 性能优化 - 减弱动画模式
+ * ==================================================*/
+
+@media (prefers-reduced-motion: reduce) {
+  .fluid-blob,
+  .neon-line,
+  .star-layer-far,
+  .star-layer-mid,
+  .star-layer-near,
+  .star-accent-1,
+  .star-accent-2,
+  .star-accent-3,
+  .star-accent-4,
+  .star-accent-5,
+  .milky-way {
+    animation: none !important;
+  }
+}
+

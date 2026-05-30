@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<!-- ========================================== -->
+<!--   装备卡片组件 - 以太光环版 (Elegant)       -->
+<!--   Namespace: .ec-*  |  Strict 1:1 Mapping  -->
+<!-- ========================================== -->
+
+<th:block th:fragment="equipment-card(equipment, group, stat)">
+    <a th:href="${equipment.spec.url}" target="_blank" class="block h-full">
+        <!-- 核心容器: data-style 必须在 .ec-card 上 -->
+        <div class="ec-card" th:attr="data-style=${#annotations.getOrDefault(equipment, 'cardStyle', 'rainbow')}"
+            th:styleappend="${#annotations.get(equipment, 'cardStyle') == 'custom' ? '--glow-color:' + #annotations.getOrDefault(equipment, 'customColor', '#f43f5e') : ''}">
+
+            <div class="ec-card-inner">
+                <!-- 图片容器 -->
+                <div class="ec-img-container">
+                    <img th:if="${equipment.spec.cover}" th:src="${equipment.spec.cover}"
+                        th:alt="${equipment.spec.displayName}" loading="lazy">
+                    <div th:unless="${equipment.spec.cover}"
+                        class="flex items-center justify-center w-full h-full bg-base-content/5 text-base-content/20">
+                        <span class="icon-[heroicons--photo] w-12 h-12"></span>
+                    </div>
+
+
+                </div>
+
+                <!-- 信息容器 -->
+                <div class="ec-info-container">
+                    <div>
+                        <h2 class="ec-card-title" th:text="${equipment.spec.displayName}">装备名称</h2>
+                        <p class="ec-card-desc" th:text="${equipment.spec.description ?: '暂无描述'}">描述...</p>
+                    </div>
+
+                    <!-- 规格参数 -->
+                    <div class="ec-specs-tech" th:if="${#annotations.get(equipment, 'specs') != null}"
+                        th:with="specsText=${#annotations.get(equipment, 'specs')}">
+                        <th:block th:each="line : ${#strings.arraySplit(specsText, '
+')}">
+                            <th:block th:if="${!#strings.isEmpty(#strings.trim(line))}" th:with="parts=${#strings.arraySplit(line, '|')},
+                                               content=${parts[0]},
+                                               progressVal=${parts.length > 1 ? #strings.trim(parts[1]) : ''}">
+
+                                <th:block
+                                    th:with="kv=${#strings.contains(content, '：') ? #strings.arraySplit(content, '：') : (#strings.contains(content, ':') ? #strings.arraySplit(content, ':') : null)}">
+                                    <div class="ec-spec-unit" th:if="${kv != null and kv.length > 1}">
+                                        <span class="ec-spec-label" th:text="${#strings.trim(kv[0])}">KEY</span>
+                                        <div class="ec-spec-val-group">
+                                            <span class="ec-spec-val" th:text="${#strings.trim(kv[1])}">VALUE</span>
+
+                                            <!-- 进度条 -->
+                                            <th:block th:if="${!#strings.isEmpty(progressVal)}">
+                                                <div class="ec-data-bar">
+                                                    <div class="ec-data-fill" th:style="'--w:' + ${progressVal} + '%'">
+                                                    </div>
+                                                </div>
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </th:block>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</th:block>
+
+</html>

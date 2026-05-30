@@ -1,0 +1,21 @@
+<!-- Docsme 文档项目列表页面 - 完全自定义 -->
+<!-- 兼容基线：plugin-docsme 免费版 1.5.0 / 专业版 1.6.0；首页/模块 Finder 需 >=1.4.0。 -->
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{modules/doc-layout :: html(head = ~{::head}, content = ~{::content}, scripts = ~{::scripts}, dock = ~{::dock})}"
+>
+  <th:block th:fragment="head">
+    <!-- 无需引入插件样式 -->
+  </th:block>
+  <th:block th:fragment="content">
+    <th:block th:replace="~{modules/docs-content :: content}" />
+  </th:block>
+  <!-- 文档列表页 Dock -->
+  <th:block th:fragment="dock">
+    <th:block th:replace="~{modules/doc/floating-dock :: docs-dock}" />
+  </th:block>
+  <th:block th:fragment="scripts">
+    <!-- 组件已在 alpine-modules.js 中注册 -->
+  </th:block>
+</html>

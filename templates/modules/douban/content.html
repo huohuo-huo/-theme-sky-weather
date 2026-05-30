@@ -1,0 +1,90 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org">
+  <!-- ========================================== -->
+  <!--        豆瓣记录页面主体内容                 -->
+  <!-- 兼容基线：plugin-douban v1.2.5；不触发 douban LazyContextVariable，列表走公开 API。 -->
+  <!-- ========================================== -->
+
+  <main
+    class="douban-page relative"
+    th:fragment="douban-content"
+    th:data-page-title="${title ?: '豆瓣记录'}"
+    data-page-size="20"
+  >
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <header class="douban-header douban-animate-in">
+        <div class="min-w-0">
+          <h1 class="douban-title" th:text="${title ?: '豆瓣记录'}">豆瓣记录</h1>
+          <p class="douban-subtitle">电影、图书、音乐、游戏和舞台剧收藏</p>
+        </div>
+        <div class="douban-count-pill">
+          <strong data-douban-total>0</strong>
+          <span>Items</span>
+        </div>
+      </header>
+
+      <nav class="douban-filter-panel douban-animate-in douban-stagger-1" aria-label="豆瓣筛选">
+        <div class="douban-filter-row" data-douban-types>
+          <button class="douban-filter-item active" type="button" data-douban-filter="type" data-value="">
+            <span class="icon-[heroicons--squares-2x2] h-4 w-4"></span>
+            全部
+          </button>
+        </div>
+
+        <div class="douban-filter-row douban-status-row" data-douban-status>
+          <button class="douban-filter-item active" type="button" data-douban-filter="status" data-value="done">
+            已看/已读
+          </button>
+          <button class="douban-filter-item" type="button" data-douban-filter="status" data-value="doing">
+            在看/在读
+          </button>
+          <button class="douban-filter-item" type="button" data-douban-filter="status" data-value="mark">
+            想看/想读
+          </button>
+        </div>
+
+        <div class="douban-filter-row douban-genre-row" data-douban-genres hidden>
+          <button
+            class="douban-filter-item douban-genre-item active"
+            type="button"
+            data-douban-filter="genre"
+            data-value=""
+          >
+            全部题材
+          </button>
+        </div>
+      </nav>
+
+      <section class="douban-section douban-animate-in douban-stagger-2">
+        <div class="douban-loading" data-douban-loading>
+          <span class="loading loading-spinner loading-md"></span>
+          <span>正在加载豆瓣记录</span>
+        </div>
+
+        <div class="douban-grid" data-douban-grid hidden></div>
+
+        <div class="douban-empty" data-douban-empty hidden>
+          <span class="icon-[heroicons--inbox-stack] mb-4 h-14 w-14"></span>
+          <p class="text-base font-medium">暂无豆瓣记录</p>
+          <p class="mt-1 text-sm opacity-70">同步数据后，这里会展示你的收藏海报。</p>
+        </div>
+
+        <div class="douban-error" data-douban-error hidden>
+          <span class="icon-[heroicons--exclamation-triangle] text-warning mb-4 h-14 w-14"></span>
+          <p class="text-base font-medium">豆瓣数据加载失败</p>
+          <p class="mt-1 text-sm opacity-70">请检查 plugin-douban 配置和同步状态。</p>
+        </div>
+
+        <div class="douban-pagination" data-douban-pagination hidden>
+          <button class="douban-page-btn" type="button" data-douban-prev aria-label="上一页">
+            <span class="icon-[heroicons--chevron-left] h-5 w-5"></span>
+          </button>
+          <span class="douban-page-info" data-douban-page-info>1 / 1</span>
+          <button class="douban-page-btn" type="button" data-douban-next aria-label="下一页">
+            <span class="icon-[heroicons--chevron-right] h-5 w-5"></span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+</html>

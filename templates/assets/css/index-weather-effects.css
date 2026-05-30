@@ -1,0 +1,1634 @@
+/**
+ * 天气联动特效样式 - Pro Max (V3)
+ * 终极卡通真实感融合版
+ */
+
+:root {
+  --weather-transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --wind-force: 1;
+  --temp-glow-hue: 210;
+  --temp-glow-opacity: 0;
+  --humidity-blur: 0px;
+  --humidity-opacity: 0;
+}
+
+/* ========================================
+   基础容器
+======================================== */
+.weather-effect {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  transition: background var(--weather-transition);
+}
+
+.weather-effect-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* 开启 3D 视角，让层级关系更明确 */
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  z-index: 5;
+  /* 确保内容在背景之上 */
+}
+
+/* ========================================
+   1. 动态背景 (Atmosphere)
+======================================== */
+/* 晴天：清爽天蓝 */
+.weather-sunny {
+  background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.weather-sunny .atmosphere-glow {
+  background: radial-gradient(circle at 80% 20%, rgba(255, 255, 200, 0.3) 0%, transparent 60%);
+}
+
+/* 多云：明亮蓝天 */
+.weather-cloudy {
+  background: linear-gradient(180deg, #89f7fe 0%, #66a6ff 100%);
+}
+
+/* 夜晚：深邃蓝紫 */
+.weather-night-clear,
+.weather-night-cloudy {
+  background: linear-gradient(to bottom, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+/* 雾天：柔和灰蓝，渐进过渡 */
+.weather-foggy {
+  background: linear-gradient(180deg,
+      #9ca8b3 0%,
+      /* 顶部柔和灰 */
+      #6b7b8a 40%,
+      /* 中间过渡 */
+      #3d4f5f 100%
+      /* 底部深灰蓝 */
+    );
+}
+
+/* 雨天：灰蓝压抑 */
+.weather-rainy {
+  background: linear-gradient(180deg, #373B44 0%, #4286f4 100%);
+}
+
+/* 雷暴：深紫黑 */
+.weather-stormy {
+  background: linear-gradient(180deg, #141E30 0%, #243B55 100%);
+}
+
+/* 雪天：默认（深色主题）冷色调蓝灰渐变 */
+.weather-snowy {
+  background: linear-gradient(180deg,
+      #4a6a8a 0%,
+      /* 深冷蓝灰顶部 */
+      #6a8aaa 40%,
+      /* 中间过渡 */
+      #8aa4be 100%
+      /* 底部 */
+    );
+}
+
+/* 雪天：亮色主题 - 更深的背景增强雪花可见性 */
+[data-color-scheme="light"] .weather-snowy {
+  background: linear-gradient(180deg,
+      #5a7a9a 0%,
+      /* 冷蓝灰顶部 */
+      #7a9ab8 50%,
+      /* 中间 */
+      #9ab4cc 100%
+      /* 底部偏浅蓝灰 */
+    );
+}
+
+.atmosphere-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+  animation: breathe 8s ease-in-out infinite;
+}
+
+
+/* ========================================
+   2. 晴天 (Sunny) - 阳光草坪 (Stylized Lawn)
+======================================== */
+.sunny-scene-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* 草坪地基 */
+.sunny-lawn {
+  position: absolute;
+  bottom: 0;
+  width: 120%;
+  left: -10%;
+  height: 180px;
+  background: #88d44e;
+  /* 明亮草绿 */
+  border-radius: 50% 50% 0 0;
+  /* 极轻微弧度，接近平直 */
+  z-index: 2;
+  box-shadow: 0 -5px 30px rgba(100, 200, 50, 0.3);
+}
+
+[data-color-scheme="dark"] .sunny-lawn {
+  background: #2e4d38;
+  /* 深色草坪 */
+  box-shadow: 0 -5px 30px rgba(0, 50, 20, 0.5);
+}
+
+/* 前景装饰性草叶 (CSS绘制) */
+.sunny-grass-blade {
+  position: absolute;
+  bottom: 0;
+  width: 6px;
+  height: 25px;
+  background: #66bb2a;
+  border-radius: 5px 5px 0 0;
+  z-index: 5;
+  transform-origin: bottom center;
+  animation: grass-sway calc(4s / var(--life-scale, 1)) ease-in-out infinite alternate;
+}
+
+@keyframes grass-sway {
+  0% {
+    transform: rotate(calc(-8deg + 15deg * var(--wind-force-x, 0)));
+  }
+
+  100% {
+    transform: rotate(calc(8deg + 15deg * var(--wind-force-x, 0)));
+  }
+}
+
+[data-color-scheme="dark"] .sunny-grass-blade {
+  background: #223e2a;
+}
+
+
+/* 精致花朵 */
+.sunny-flower-detailed {
+  position: absolute;
+  bottom: 20px;
+  /* 插在草坪上 */
+  width: 30px;
+  height: 60px;
+  transform-origin: bottom center;
+  z-index: 4;
+  animation: flower-sway calc(5s / var(--life-scale, 1)) ease-in-out infinite alternate;
+}
+
+/* 花茎 */
+.sunny-flower-detailed::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  background: #4caf50;
+  border-radius: 2px;
+}
+
+/* 花冠容器 */
+.flower-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  transform: translateX(-50%);
+}
+
+/* 郁金香型 (Tulip) */
+.flower-type-tulip .flower-head {
+  background: #ff5252;
+  border-radius: 0 0 10px 10px;
+  clip-path: polygon(0% 0%, 20% 20%, 50% 0%, 80% 20%, 100% 0%, 100% 100%, 0% 100%);
+  transform: translateX(-50%) rotate(180deg);
+  /* 翻转使得花口朝上 */
+  box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 雏菊型 (Daisy) */
+.flower-type-daisy .flower-head {
+  background: #fff;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 4px #ffeb3b inset,
+    /* 花蕊 */
+    0 0 0 8px #fff;
+  /* 花瓣暗示 */
+  width: 20px;
+  height: 20px;
+}
+
+/* 太阳花型 (Sunflower) */
+.flower-type-sunflower .flower-head {
+  background: #ffa000;
+  border-radius: 50%;
+  box-shadow: 0 0 0 6px #ffeb3b;
+}
+
+
+@keyframes flower-sway {
+  0% {
+    transform: rotate(calc(-5deg + 20deg * var(--wind-force-x, 0))) scale(0.95);
+  }
+
+  100% {
+    transform: rotate(calc(5deg + 20deg * var(--wind-force-x, 0))) scale(1.05);
+  }
+}
+
+/* 太阳容器 */
+.sun-container {
+  position: absolute;
+  /* ========================================
+   2. 太阳 (Sun) - 分层动画 (Existing)
+======================================== */
+  top: 10%;
+
+  right: 10%;
+  width: 140px;
+  height: 140px;
+  z-index: 10;
+  filter: drop-shadow(0 0 20px rgba(255, 200, 50, 0.6));
+}
+
+.sun-rays {
+  position: absolute;
+  inset: 0;
+  animation: spin 60s linear infinite;
+  /* 只有光芒旋转 */
+}
+
+.sun-body {
+  position: absolute;
+  inset: 0;
+  animation: float 6s ease-in-out infinite;
+  /* 脸部轻微浮动 */
+}
+
+.sun-glow-outer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.bokeh-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+  filter: blur(2px);
+  animation: float-up linear infinite;
+}
+
+/* ========================================
+   3. 月亮 (Moon)
+======================================== */
+.moon-container {
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  width: 100px;
+  height: 100px;
+  z-index: 10;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
+}
+
+.cloudy-moon {
+  opacity: 0.8;
+  filter: blur(1px) drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+}
+
+.moon-icon {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-15deg);
+  animation: float 8s ease-in-out infinite;
+}
+
+.moon-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250%;
+  height: 250%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: breathe 5s infinite;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 4px white;
+  animation: twinkle ease-in-out infinite;
+  z-index: 5;
+}
+
+.star.dim {
+  opacity: 0.4 !important;
+}
+
+/* ========================================
+   4. 卡通云朵 (Cartoon Cloud)
+======================================== */
+.cloud-cartoon {
+  position: absolute;
+  /* 关键修复：启用绝对定位 */
+  width: 280px;
+  height: 160px;
+  z-index: 20;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+  animation: cloud-drift linear infinite;
+  will-change: transform;
+}
+
+.cloud-cartoon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  /* 防止 SVG 内部裁剪 */
+}
+
+.cloud-cartoon.day {
+  color: #ffffff;
+}
+
+.cloud-cartoon.night {
+  color: #636e72;
+  /* 深色夜云 */
+  opacity: 0.8;
+}
+
+/* ========================================
+   4. 星空森林 (Starry Forest)
+======================================== */
+.night-scene-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* 夜晚远山 */
+.night-mountain {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 150px solid transparent;
+  border-right: 150px solid transparent;
+  border-bottom: 300px solid #1a1a2e;
+  /* 深蓝黑 */
+  z-index: 1;
+  opacity: 0.8;
+}
+
+.nm-1 {
+  left: -100px;
+  transform: scale(1.8);
+  z-index: 1;
+  border-bottom-color: #16213e;
+}
+
+.nm-2 {
+  right: -50px;
+  bottom: -50px;
+  transform: scale(2.2);
+  z-index: 1;
+  border-bottom-color: #0f3460;
+  opacity: 0.6;
+}
+
+/* 森林剪影 */
+.night-forest {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 150px;
+  background-image:
+    linear-gradient(to top, #0f0f1a 0%, transparent 100%),
+    repeating-linear-gradient(90deg,
+      transparent 0, transparent 40px,
+      #050510 40px, #050510 50px);
+  /* 简易树干模拟 */
+  z-index: 3;
+}
+
+/* 树冠 SVG 形状 (使用 mask 或 伪元素模拟) -> 简化为三角形树林 */
+.night-tree {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 120px solid #000;
+  z-index: 3;
+}
+
+[data-color-scheme="light"] .night-tree {
+  border-bottom-color: #2c3e50;
+  /* 亮色模式下的夜景树稍微亮一点 */
+}
+
+/* 萤火虫 */
+.night-firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ccff00;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #ccff00;
+  opacity: 0;
+  animation: firefly-float 6s ease-in-out infinite;
+  z-index: 10;
+}
+
+@keyframes firefly-float {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: translate(20px, -30px) scale(1.2);
+    opacity: 0.5;
+  }
+
+  80% {
+    opacity: 0.8;
+  }
+}
+
+/* ========================================
+   4.2 狼堡诡秘森林 (Spooky Forest - Wolf Castle Style)
+======================================== */
+/* 恐怖远山 */
+.spooky-mountain {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 200px solid transparent;
+  border-right: 200px solid transparent;
+  border-bottom: 400px solid #1a0b2e;
+  /* 深紫黑 */
+  z-index: 1;
+  opacity: 0.8;
+}
+
+.sm-1 {
+  left: -150px;
+  transform: scale(1.5);
+  border-bottom-color: #240e3e;
+}
+
+.sm-2 {
+  right: -100px;
+  bottom: -80px;
+  transform: scale(1.8);
+  border-bottom-color: #0f0520;
+  opacity: 0.6;
+}
+
+/* 扭曲怪树 (Spooky Tree) */
+.spooky-tree {
+  position: absolute;
+  bottom: -20px;
+  width: 100px;
+  height: 250px;
+  background: #0d021c;
+  /* 极深紫黑 */
+  z-index: 3;
+  /* 使用 clip-path 模拟扭曲树干和分叉枯枝 */
+  clip-path: polygon(40% 100%, 60% 100%, 55% 80%,
+      /* 根部 */
+      70% 60%, 50% 50%,
+      /* 枝干1 */
+      80% 30%, 60% 35%,
+      /* 枝叶1 */
+      50% 10%, 40% 35%,
+      /* 顶端 */
+      20% 30%, 30% 50%,
+      /* 枝叶2 */
+      10% 60%, 45% 80%
+      /* 根部回连 */
+    );
+  transform-origin: bottom center;
+}
+
+/* 亮色模式下的怪树 */
+[data-color-scheme="light"] .spooky-tree {
+  background: #2c3e50;
+}
+
+/* 黑暗中的眼睛 */
+.spooky-eye-pair {
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  z-index: 4;
+}
+
+.spooky-eye-pair::before,
+.spooky-eye-pair::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff0055;
+  /* 红色凶光 */
+  box-shadow: 0 0 8px #ff0055;
+  animation: eye-blink 4s infinite;
+}
+
+.spooky-eye-pair::before {
+  left: 0;
+}
+
+.spooky-eye-pair::after {
+  right: 0;
+}
+
+/* 黄色眼睛 */
+.eyes-yellow::before,
+.eyes-yellow::after {
+  background: #ffcc00;
+  box-shadow: 0 0 8px #ffcc00;
+}
+
+@keyframes eye-blink {
+
+  0%,
+  70%,
+  100% {
+    opacity: 0;
+    transform: scaleY(0.1);
+  }
+
+  75%,
+  95% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  85% {
+    opacity: 1;
+    transform: scaleY(0.3);
+  }
+}
+
+/* 眨眼 */
+
+.cloud-cartoon {
+  position: absolute;
+  width: 250px;
+  height: 80px;
+  /* 
+    风力形变公式 (拉宽 & 压扁)
+    --wind-force 平时微风是 ~0.5，大风是 2.0+ 甚至狂风 4.0
+    scaleX 基础 1.0，根据力拉伸 (每 1点 force 变宽 15%，最大1.5倍)
+    scaleY 基础 1.0，根据力压扁 (每 1点 force 压缩 10%，最小0.6倍)
+  */
+  --stretch-x: calc(1 + (var(--wind-force, 1) - 1) * 0.15);
+  --stretch-y: calc(1 - (var(--wind-force, 1) - 1) * 0.1);
+
+  transform: scale(var(--cloud-scale)) scaleX(var(--stretch-x)) scaleY(var(--stretch-y));
+  transform-origin: center center;
+  transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform, opacity;
+  animation: cloud-drift-linear linear infinite;
+  /* 解决 SVG 在动画过程中可能会闪烁/像素化的问题 */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* 移除原有的固定飘动偏移动画 */
+@keyframes cloud-drift-linear {
+  0% {
+    transform: scale(var(--cloud-scale)) scaleX(var(--stretch-x)) scaleY(var(--stretch-y)) translateX(calc(100vw + 250px));
+  }
+
+  100% {
+    transform: scale(var(--cloud-scale)) scaleX(var(--stretch-x)) scaleY(var(--stretch-y)) translateX(-350px);
+  }
+}
+
+/* 幽灵鬼火 */
+.ghost-firefly {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #00ffcc;
+  /* 冷青色 */
+  border-radius: 50%;
+  box-shadow: 0 0 12px #00ffcc;
+  opacity: 0;
+  animation: ghost-float 8s ease-in-out infinite;
+  z-index: 10;
+}
+
+@keyframes ghost-float {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.9;
+  }
+
+  50% {
+    transform: translate(-40px, -60px) scale(1.5);
+    opacity: 0.4;
+  }
+
+  80% {
+    opacity: 0.7;
+  }
+}
+
+
+/* ========================================
+   5. 雨 & 雷暴 (Rain & Storm) - Canvas 系统
+======================================== */
+/* Canvas 层 */
+.rain-canvas,
+.lightning-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.rain-canvas {
+  z-index: 15;
+}
+
+.lightning-canvas {
+  z-index: 12;
+  /* 在雨后面 */
+}
+
+/* 闪光遮罩 (雷击时全屏闪白) */
+.flash-overlay {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  mix-blend-mode: overlay;
+  transition: opacity 0.05s;
+}
+
+/* 震动效果 (雷击时) */
+.weather-shake {
+  animation: weather-shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes weather-shake {
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-3px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(3px, 0, 0);
+  }
+}
+
+/* 雷暴云层变暗 */
+.weather-stormy .cloud-cartoon {
+  filter: brightness(0.6) saturate(0.8);
+}
+
+/* --- 雨天地面组件 --- */
+/* --- 雨天重构：扁平几何风 (Flat Geometric Rain) --- */
+
+/* 草原背景容器 */
+.rain-meadow-container {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* 扁平山丘 (Flat Hills) - 减少圆角，使用平缓曲线 */
+.rain-meadow-hill {
+  position: absolute;
+  bottom: 0;
+  border-radius: 100% 100% 0 0 / 20% 20% 0 0;
+  /* 更平缓 */
+}
+
+.rm-hill-1 {
+  background: #2f3640;
+  /* 深灰蓝 */
+  width: 120%;
+  height: 160px;
+  left: -10%;
+  bottom: 0;
+  z-index: 3;
+}
+
+.rm-hill-2 {
+  background: #192a56;
+  /* 深夜蓝 */
+  width: 140%;
+  height: 220px;
+  right: -20%;
+  bottom: 0;
+  z-index: 1;
+}
+
+.rm-hill-3 {
+  background: #353b48;
+  /* 前景灰 */
+  width: 60%;
+  height: 80px;
+  right: 0;
+  bottom: 0;
+  border-radius: 100% 0 0 0;
+  z-index: 4;
+}
+
+/* 积水潭 (扁平化) */
+.rain-puddle {
+  position: absolute;
+  background: rgba(100, 149, 237, 0.4);
+  border-radius: 50%;
+  transform: scaleY(0.2);
+  z-index: 8;
+  animation: puddle-ripple 4s infinite;
+}
+
+/* 🏠 扁平小屋 (Flat House) */
+.flat-rain-house {
+  position: absolute;
+  bottom: 40px;
+  right: 15%;
+  width: 140px;
+  height: 100px;
+  background: #718093;
+  /* 冷灰墙面 */
+  z-index: 5;
+  clip-path: polygon(0% 100%, 0% 40%, 50% 0%, 100% 40%, 100% 100%);
+  /* 五边形房子 */
+}
+
+/* 烟囱 */
+.house-chimney {
+  position: absolute;
+  top: -30px;
+  right: 20px;
+  width: 15px;
+  height: 30px;
+  background: #2f3640;
+  z-index: 1;
+}
+
+/* 方窗户 (几何感) */
+.house-window {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: #fbc531;
+  /* 亮黄光 */
+  box-shadow: 0 0 15px rgba(251, 197, 49, 0.5);
+  z-index: 3;
+}
+
+/* 窗格 (十字线) */
+.house-window::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.house-window::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* 💡 扁平路灯 (Flat Lamp) */
+.flat-rain-lamp {
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  width: 4px;
+  height: 180px;
+  background: #dcdde1;
+  /* 浅灰杆 */
+  z-index: 6;
+}
+
+.lamp-head {
+  position: absolute;
+  top: 0;
+  left: -10px;
+  width: 24px;
+  height: 24px;
+  background: #fbc531;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #fbc531;
+}
+
+.lamp-light {
+  position: absolute;
+  top: 12px;
+  left: -38px;
+  width: 80px;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(251, 197, 49, 0.3), transparent);
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* 🛣️ 色块小路 (Flat Path) */
+.flat-rain-path {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  width: 100px;
+  height: 120px;
+  background: #7f8fa6;
+  /* 路面灰 */
+  transform: skewX(-40deg);
+  z-index: 2;
+  opacity: 0.8;
+}
+
+/* ========================================
+   6. 雪 (Snow) - 主题感知
+======================================== */
+/* ========================================
+   6. 雪 (Snow) - 卡通冬日雪景 (Cartoon Winter Scene)
+======================================== */
+.snow-scene-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* --- 雪地地面 (Snow Ground) --- */
+.snow-ground {
+  position: absolute;
+  bottom: -100px;
+  left: -10%;
+  width: 120%;
+  height: 250px;
+  background: #f0f8ff;
+  /* 爱丽丝蓝 */
+  border-radius: 50% 50% 0 0;
+  z-index: 5;
+  box-shadow: 0 -10px 30px rgba(100, 149, 237, 0.2);
+}
+
+[data-color-scheme="dark"] .snow-ground {
+  background: #2c3e50;
+  /* 深夜雪地 */
+  box-shadow: 0 -10px 30px rgba(10, 20, 30, 0.4);
+}
+
+/* --- 远景雪山 (Snow Hills) --- */
+.snow-hill {
+  position: absolute;
+  bottom: 0;
+  background: #e6eef5;
+  border-radius: 50% 50% 0 0;
+  z-index: 2;
+}
+
+[data-color-scheme="dark"] .snow-hill {
+  background: #34495e;
+}
+
+.sh-1 {
+  left: -20%;
+  width: 80%;
+  height: 300px;
+  z-index: 2;
+}
+
+.sh-2 {
+  right: -10%;
+  width: 70%;
+  height: 350px;
+  z-index: 1;
+  bottom: 0;
+  opacity: 0.8;
+}
+
+/* --- 雪屋 (Igloo) - 修复门位置 --- */
+.snow-igloo {
+  position: absolute;
+  bottom: 40px;
+  /* 站在雪地上 */
+  left: 15%;
+  width: 140px;
+  height: 90px;
+  background: #fff;
+  border-radius: 70px 70px 10px 10px;
+  /* 半圆顶 */
+  box-shadow: inset -10px -5px 20px rgba(0, 0, 0, 0.1), 10px 10px 15px rgba(0, 0, 0, 0.1);
+  z-index: 6;
+  border: 1px solid #e1ecf4;
+}
+
+/* 雪屋纹理 - 冰砖 */
+.snow-igloo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 90px 90px 0 0;
+  background-image:
+    linear-gradient(rgba(200, 230, 255, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 230, 255, 0.4) 1px, transparent 1px);
+  background-size: 100% 20px, 40px 100%;
+  opacity: 0.5;
+}
+
+/* 雪屋入口 */
+.snow-igloo-entrance {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  /* 门居中 */
+  width: 50px;
+  height: 40px;
+  background: #2d3436;
+  /* 门洞颜色 */
+  border-radius: 25px 25px 0 0;
+  /* 拱门 */
+  border: 4px solid #fff;
+  border-bottom: none;
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.5);
+  z-index: 7;
+  /* 在雪屋前 */
+}
+
+/* 夜间模式 - 雪屋光效 */
+[data-color-scheme="dark"] .snow-igloo {
+  background: radial-gradient(circle at 30% 30%, #e0e0e0 0%, #90a0b0 100%);
+  box-shadow: 0 0 30px rgba(255, 200, 100, 0.1);
+}
+
+[data-color-scheme="dark"] .snow-igloo-entrance {
+  background: radial-gradient(circle at 50% 100%, #fdcb6e 0%, #34495e 80%);
+  /* 暖黄光透出 */
+  box-shadow: 0 0 20px rgba(253, 203, 110, 0.4);
+}
+
+/* --- 积雪松树 (Pine Trees) --- */
+.snow-pine {
+  position: absolute;
+  bottom: 80px;
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 80px solid #2d3436;
+  /* 树干深色 */
+  z-index: 4;
+}
+
+/* 积雪效果 */
+.snow-pine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -30px;
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 25px solid #fff;
+  /* 白色积雪 */
+  transform: translateY(6px);
+  /* 稍微下移 */
+}
+
+.sp-1 {
+  left: 10%;
+  transform: scale(1.2);
+  z-index: 6;
+}
+
+.sp-2 {
+  left: 25%;
+  transform: scale(0.8);
+  z-index: 3;
+  bottom: 100px;
+}
+
+.sp-3 {
+  right: 5%;
+  transform: scale(1.5);
+  z-index: 7;
+  bottom: 40px;
+}
+
+[data-color-scheme="dark"] .snow-pine {
+  border-bottom-color: #0f1519;
+}
+
+[data-color-scheme="dark"] .snow-pine::after {
+  border-bottom-color: #dcdde1;
+  opacity: 0.8;
+}
+
+/* 飘雪粒子容器 - 保留 */
+.snow-container {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.snow-flake-svg {
+  position: absolute;
+  /* 
+    风暴雪透视拉伸 (Motion Blur 模拟)
+    大风雪会赋予非常高的 --wind-force (> 2.0)，此时雪花不该是圆的。
+    应该被拉伸成线状：scaleX 变细，scaleY 变宽（拉高）
+  */
+  --snow-stretch-y: calc(1 + (var(--wind-force, 1) - 1) * 0.8);
+  --snow-stretch-x: calc(1 - (var(--wind-force, 1) - 1) * 0.1);
+  transform: scale(var(--snow-stretch-x), var(--snow-stretch-y));
+
+  animation: snow-fall linear infinite;
+  /* 默认：白色雪花 + 蓝色阴影增加可见性 */
+  filter: drop-shadow(0 0 4px rgba(100, 150, 200, 0.9)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+}
+
+.snow-flake-svg svg {
+  color: #ffffff;
+}
+
+/* 浅色主题：雪花加深色阴影 */
+[data-color-scheme="light"] .snow-flake-svg {
+  filter: drop-shadow(0 0 3px rgba(80, 120, 180, 0.8)) drop-shadow(0 2px 4px rgba(50, 80, 120, 0.5));
+}
+
+[data-color-scheme="light"] .snow-flake-svg svg {
+  color: #e8f4ff;
+  /* 淡蓝白，在灰蓝背景上更可见 */
+}
+
+/* ========================================
+   7. 雾 (Fog) - 清晨迷雾场景 (Misty Morning)
+======================================== */
+/* 场景容器 */
+.mist-scene-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* --- 太阳 (Mist Sun) --- */
+.mist-sun {
+  position: absolute;
+  top: 15%;
+  right: 20%;
+  width: 80px;
+  height: 80px;
+  background: #fffdf0;
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(255, 253, 240, 0.8), 0 0 100px rgba(255, 220, 100, 0.4);
+  z-index: 1;
+  opacity: 0.9;
+}
+
+/* 深色主题太阳 */
+[data-color-scheme="dark"] .mist-sun {
+  background: #e0e0e0;
+  box-shadow: 0 0 30px rgba(200, 200, 255, 0.3), 0 0 80px rgba(100, 100, 200, 0.2);
+  opacity: 0.6;
+}
+
+/* --- 远景山脉 (Mountains) --- */
+.mist-mountain {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 150px solid transparent;
+  border-right: 150px solid transparent;
+  border-bottom: 300px solid #8fa3b8;
+  /* 默认灰蓝 */
+  z-index: 2;
+}
+
+[data-color-scheme="dark"] .mist-mountain {
+  border-bottom-color: #2c3e50;
+  /* 深色主题：深蓝灰 */
+}
+
+.m-1 {
+  left: -50px;
+  border-bottom-color: #a3b6c9;
+  transform: scale(1.5);
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.m-2 {
+  left: 20%;
+  border-bottom-color: #7d94a8;
+  bottom: -50px;
+  z-index: 2;
+}
+
+.m-3 {
+  right: -100px;
+  border-bottom-color: #607d8b;
+  transform: scale(2);
+  z-index: 1;
+}
+
+[data-color-scheme="dark"] .m-1 {
+  border-bottom-color: #34495e;
+  opacity: 0.6;
+}
+
+[data-color-scheme="dark"] .m-2 {
+  border-bottom-color: #2c3e50;
+}
+
+[data-color-scheme="dark"] .m-3 {
+  border-bottom-color: #1a252f;
+}
+
+
+/* --- 树木 (Trees) --- */
+.mist-tree {
+  position: absolute;
+  bottom: 0;
+  background-color: #2f4f4f;
+  /* 深青色 */
+  z-index: 4;
+  border-radius: 50% 50% 0 0;
+}
+
+.mist-tree::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20%;
+  height: 140%;
+  background-color: inherit;
+  z-index: -1;
+}
+
+[data-color-scheme="dark"] .mist-tree {
+  background-color: #1a2626;
+}
+
+.t-1 {
+  left: 10%;
+  width: 60px;
+  height: 150px;
+  background-color: #3a5f60;
+}
+
+.t-2 {
+  left: 40%;
+  width: 80px;
+  height: 200px;
+  bottom: -20px;
+  background-color: #264040;
+}
+
+.t-3 {
+  right: 25%;
+  width: 50px;
+  height: 120px;
+  background-color: #436b6b;
+}
+
+.t-4 {
+  right: 5%;
+  width: 100px;
+  height: 250px;
+  bottom: -40px;
+  background-color: #1e3333;
+}
+
+[data-color-scheme="dark"] .t-1 {
+  background-color: #203535;
+}
+
+[data-color-scheme="dark"] .t-2 {
+  background-color: #152222;
+}
+
+[data-color-scheme="dark"] .t-3 {
+  background-color: #253a3a;
+}
+
+[data-color-scheme="dark"] .t-4 {
+  background-color: #0f1a1a;
+}
+
+
+/* --- 流动雾气层 (SVG Background) --- */
+.mist-fog-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 50%;
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg"><path d="M0,300 L0,150 Q150,200 300,120 T600,140 T1000,180 V300 Z" fill="rgba(255,255,255,0.5)"/></svg>');
+  background-size: 50% 100%;
+  animation: moveFog 20s linear infinite;
+  pointer-events: none;
+}
+
+/* 深色主题雾层 - 降低透明度 */
+[data-color-scheme="dark"] .mist-fog-layer {
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg"><path d="M0,300 L0,150 Q150,200 300,120 T600,140 T1000,180 V300 Z" fill="rgba(200,210,230,0.2)"/></svg>');
+}
+
+.mist-layer-1 {
+  bottom: -20px;
+  height: 40%;
+  opacity: 0.9;
+  animation-duration: 25s;
+  z-index: 6;
+}
+
+.mist-layer-2 {
+  bottom: 40px;
+  height: 60%;
+  opacity: 0.6;
+  animation-duration: 40s;
+  animation-direction: reverse;
+  transform: scaleX(-1);
+  z-index: 3;
+}
+
+.mist-layer-3 {
+  bottom: -30px;
+  height: 45%;
+  opacity: 0.4;
+  animation-duration: 15s;
+  z-index: 7;
+  filter: blur(8px);
+}
+
+@keyframes moveFog {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* --- 动态雾团 (JS Generated) --- */
+.mist-fog-puff {
+  position: absolute;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 8;
+  /* 动画由 JS Web Animations API 控制，但定义基本属性 */
+}
+
+[data-color-scheme="dark"] .mist-fog-puff {
+  background: radial-gradient(circle, rgba(200, 210, 230, 0.3) 0%, rgba(200, 210, 230, 0) 70%);
+}
+
+/* --- 响应式调整 --- */
+@media (max-width: 768px) {
+  .mist-mountain {
+    border-bottom-width: 200px;
+    border-left-width: 100px;
+    border-right-width: 100px;
+  }
+
+  .m-2 {
+    bottom: -30px;
+  }
+
+  .mist-tree {
+    transform: scale(0.7);
+    transform-origin: bottom center;
+  }
+
+  .mist-fog-layer {
+    height: 40%;
+  }
+}
+
+/* ========================================
+   8. 雷暴 (Storm)
+======================================== */
+.lightning-container {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+}
+
+.lightning-bolt {
+  position: absolute;
+  width: 100px;
+  height: 200px;
+  filter: drop-shadow(0 0 20px #ffeaa7);
+  animation: flash-appear 0.2s ease-out forwards;
+}
+
+.weather-stormy.flash-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 99;
+  animation: screen-flash 0.2s ease-out;
+}
+
+/* ========================================
+   关键帧动画
+======================================== */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes breathe {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(-100px) translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* 云朵飘移动画 - 从右向左飘过整个屏幕 */
+@keyframes cloud-drift {
+  0% {
+    transform: translateX(calc(100vw + var(--cloud-start-offset, 0px))) scale(var(--cloud-scale, 1));
+  }
+
+  100% {
+    transform: translateX(-100%) scale(var(--cloud-scale, 1));
+  }
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes rain-fall {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes snow-fall {
+  0% {
+    transform: translateY(-50px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      translateY(calc(100vh + 50px)) translateX(calc(var(--wind-offset, 0px) + 20px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fog-roll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(10%);
+  }
+}
+
+@keyframes flash-appear {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes screen-flash {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ========================================
+   底部渐变蒙版
+======================================== */
+.bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30vh;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.15), transparent);
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* ========================================
+   响应式适配
+======================================== */
+@media (max-width: 768px) {
+  .cloud-cartoon {
+    width: 140px;
+    height: 80px;
+  }
+
+  .sun-container {
+    width: 90px;
+    height: 90px;
+    top: 5%;
+    right: 5%;
+  }
+
+  .moon-container {
+    width: 60px;
+    height: 60px;
+    top: 5%;
+    right: 8%;
+  }
+}
+
+/* 性能优化模式 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

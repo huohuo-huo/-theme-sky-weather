@@ -1,0 +1,374 @@
+.weather-glass-root {
+  background: linear-gradient(180deg, #b8d4e8 0%, #a0c4dc 42%, #8ab4d0 100%);
+  transition: background 1.2s ease;
+}
+
+.weather-glass-global {
+  position: fixed;
+  inset: -96px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.weather-glass-root[data-weather-mode="dusk"] {
+  background: linear-gradient(180deg, #d4a574 0%, #c4846a 34%, #8a6a8a 70%, #5a4a6a 100%);
+}
+
+.weather-glass-root[data-weather-mode="night"] {
+  background: linear-gradient(180deg, #1a2332 0%, #121820 52%, #0a0f18 100%);
+}
+
+.weather-glass-atmosphere,
+.weather-glass-night-media,
+.weather-glass-cloud-canvas,
+.weather-glass-rain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.weather-glass-atmosphere {
+  z-index: 1;
+}
+
+.weather-glass-night-media {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.weather-glass-night-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(196, 213, 255, 0.12), transparent 30%),
+    linear-gradient(to bottom, rgba(3, 8, 16, 0.1), rgba(3, 8, 16, 0.54));
+}
+
+.weather-glass-night-media__asset {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: saturate(82%) brightness(72%) contrast(108%);
+  transform: scale(1.02);
+  transition: opacity 1.2s ease;
+}
+
+.weather-glass-night-media__asset.is-active {
+  opacity: 1;
+}
+
+.weather-glass-clouds {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.weather-glass-cloud-canvas {
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.weather-glass-root[data-weather-mode="day"] .weather-glass-cloud-canvas {
+  opacity: 0.92;
+}
+
+.weather-glass-root[data-weather-mode="dusk"] .weather-glass-cloud-canvas {
+  opacity: 0.86;
+}
+
+.weather-glass-rain {
+  z-index: 4;
+}
+
+.weather-glass-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent 34%),
+    linear-gradient(to top, rgba(16, 27, 38, 0.18), transparent 38%);
+}
+
+.weather-glass-root .scroll-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+  background: rgba(8, 18, 30, 0.08);
+}
+
+.weather-glass-root[data-weather-mode="dusk"] .weather-glass-vignette {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 207, 151, 0.24), transparent 34%),
+    linear-gradient(to top, rgba(36, 21, 42, 0.24), transparent 42%);
+}
+
+.weather-glass-root[data-weather-mode="night"] .weather-glass-vignette {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(187, 204, 255, 0.12), transparent 28%),
+    linear-gradient(to bottom, rgba(2, 7, 15, 0.06), rgba(2, 7, 15, 0.32));
+}
+
+.weather-glass-cloud {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--cloud-width);
+  height: var(--cloud-height);
+  opacity: 0;
+  will-change: transform, opacity;
+  contain: layout paint style;
+  filter: drop-shadow(0 14px 20px rgba(45, 70, 90, 0.08));
+}
+
+.weather-glass-cloud .cloud-lobe {
+  position: absolute;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at 35% 28%,
+    rgba(255, 255, 255, 0.98),
+    rgba(255, 255, 255, 0.74) 54%,
+    rgba(240, 249, 255, 0.36) 100%
+  );
+  box-shadow:
+    inset -14px -18px 28px rgba(120, 156, 180, 0.08),
+    inset 12px 12px 24px rgba(255, 255, 255, 0.3);
+}
+
+.weather-glass-cloud.is-dusk .cloud-lobe {
+  background: radial-gradient(
+    circle at 34% 28%,
+    rgba(255, 225, 171, 0.96),
+    rgba(255, 145, 103, 0.68) 52%,
+    rgba(173, 78, 117, 0.32) 100%
+  );
+  box-shadow:
+    inset -16px -16px 30px rgba(129, 47, 90, 0.1),
+    inset 12px 12px 26px rgba(255, 236, 190, 0.25);
+}
+
+.weather-glass-cloud .lobe-1 {
+  left: 2%;
+  bottom: 12%;
+  width: 45%;
+  height: 42%;
+}
+
+.weather-glass-cloud .lobe-2 {
+  left: 21%;
+  bottom: 24%;
+  width: 42%;
+  height: 58%;
+}
+
+.weather-glass-cloud .lobe-3 {
+  left: 49%;
+  bottom: 18%;
+  width: 39%;
+  height: 48%;
+}
+
+.weather-glass-cloud .lobe-4 {
+  left: 70%;
+  bottom: 10%;
+  width: 25%;
+  height: 36%;
+}
+
+.weather-glass-cloud .cloud-base {
+  position: absolute;
+  left: 8%;
+  right: 7%;
+  bottom: 8%;
+  height: 36%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(246, 252, 255, 0.58));
+}
+
+.weather-glass-cloud.is-dusk .cloud-base {
+  background: linear-gradient(180deg, rgba(255, 191, 126, 0.78), rgba(205, 91, 111, 0.4));
+}
+
+html.weather-glass-active {
+  --wg-card-bg: rgba(255, 255, 255, 0.2);
+  --wg-card-border: rgba(255, 255, 255, 0.35);
+  --wg-card-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+    0 0 80px rgba(255, 255, 255, 0.22) inset, 0 14px 42px rgba(25, 53, 72, 0.08);
+}
+
+html.weather-glass-active[data-weather-glass-mode="dusk"] {
+  --wg-card-bg: rgba(255, 255, 255, 0.14);
+  --wg-card-border: rgba(255, 236, 214, 0.28);
+  --wg-card-shadow:
+    0 1px 0 rgba(255, 240, 215, 0.32) inset, 0 0 0 1px rgba(255, 210, 174, 0.12) inset,
+    0 18px 50px rgba(48, 28, 43, 0.18);
+}
+
+html.weather-glass-active[data-weather-glass-mode="night"] {
+  --wg-card-bg: rgba(14, 24, 38, 0.58);
+  --wg-card-border: rgba(218, 230, 255, 0.26);
+  --wg-card-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 0 0 1px rgba(205, 222, 255, 0.11) inset,
+    0 18px 56px rgba(0, 0, 0, 0.34);
+}
+
+html.weather-glass-active body {
+  background: #9fbfd7;
+}
+
+html.weather-glass-active body::before,
+html.weather-glass-active body::after {
+  display: none !important;
+}
+
+html.weather-glass-active .bg-grid-pattern {
+  display: none !important;
+}
+
+html.weather-glass-active body > .relative.z-10 {
+  position: relative;
+  z-index: 10;
+}
+
+html.weather-glass-active[data-weather-glass-mode="dusk"] body {
+  background: #8a6a8a;
+}
+
+html.weather-glass-active[data-weather-glass-mode="night"] body {
+  background: #0a0f18;
+}
+
+html.weather-glass-active .navbar::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.12) 62%, transparent);
+}
+
+html.weather-glass-active[data-weather-glass-mode="night"] .navbar::after {
+  background: linear-gradient(to bottom, rgba(6, 11, 20, 0.72), rgba(6, 11, 20, 0.28) 62%, transparent);
+}
+
+html.weather-glass-active .card,
+html.weather-glass-active .glow-card,
+html.weather-glass-active .heatmap-card,
+html.weather-glass-active .sidebar-card,
+html.weather-glass-active .moment-card,
+html.weather-glass-active .moment-floating-card,
+html.weather-glass-active aside > div,
+html.weather-glass-active [class*="bg-base-100"],
+html.weather-glass-active [class*="bg-base-200"],
+html.weather-glass-active [class*="bg-base-300"],
+html.weather-glass-active [class*="shadow"] {
+  background: var(--wg-card-bg) !important;
+  border-color: var(--wg-card-border) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--wg-card-shadow) !important;
+  backdrop-filter: blur(30px) saturate(138%);
+  -webkit-backdrop-filter: blur(30px) saturate(138%);
+}
+
+html.weather-glass-active .card:hover,
+html.weather-glass-active .glow-card:hover,
+html.weather-glass-active .moment-card:hover,
+html.weather-glass-active .moment-floating-card:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--wg-card-bg), rgba(255, 255, 255, 0.12)) !important;
+}
+
+html.weather-glass-active .btn,
+html.weather-glass-active .badge,
+html.weather-glass-active .avatar,
+html.weather-glass-active img,
+html.weather-glass-active video,
+html.weather-glass-active pre,
+html.weather-glass-active code,
+html.weather-glass-active canvas:not(.weather-glass-atmosphere):not(.weather-glass-rain),
+html.weather-glass-active svg {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html.weather-glass-active .moment-glow,
+html.weather-glass-active .doc-glow-spot,
+html.weather-glass-active .friend-halo,
+html.weather-glass-active .friend-ripple {
+  display: none !important;
+}
+
+html.weather-glass-active .doc-tilt-inner,
+html.weather-glass-active .gallery-card-inner,
+html.weather-glass-active .friend-avatar {
+  transform: none !important;
+}
+
+html.weather-glass-active #main-title {
+  letter-spacing: 0;
+  text-shadow: 0 2px 18px rgba(20, 34, 48, 0.2);
+}
+
+html.weather-glass-active #subtitle {
+  text-shadow: 0 1px 10px rgba(20, 34, 48, 0.18);
+}
+
+html.weather-glass-active .effect-base,
+html.weather-glass-active #main-title[class*="effect-"],
+html.weather-glass-active #subtitle[class*="gradient"],
+html.weather-glass-active #subtitle[class*="glow"] {
+  filter: none !important;
+  animation-duration: 0.7s;
+}
+
+html.weather-glass-active .wave-container {
+  display: none;
+}
+
+html.weather-glass-active .bg-gradient-to-r,
+html.weather-glass-active .bg-gradient-to-br {
+  box-shadow: none;
+}
+
+html.weather-glass-active .dock-container,
+html.weather-glass-active .dropdown-content,
+html.weather-glass-active .modal-box {
+  background: color-mix(in srgb, var(--wg-card-bg), rgba(255, 255, 255, 0.1)) !important;
+  border-color: var(--wg-card-border) !important;
+  backdrop-filter: blur(28px) saturate(138%);
+  -webkit-backdrop-filter: blur(28px) saturate(138%);
+}
+
+@media (max-width: 768px) {
+  .weather-glass-cloud {
+    transform-origin: center;
+  }
+
+  html.weather-glass-active .card,
+  html.weather-glass-active .glow-card,
+  html.weather-glass-active .heatmap-card,
+  html.weather-glass-active .sidebar-card,
+  html.weather-glass-active aside > div {
+    border-radius: 20px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weather-glass-night-media video {
+    display: none;
+  }
+
+  .weather-glass-cloud {
+    transition: none !important;
+  }
+}

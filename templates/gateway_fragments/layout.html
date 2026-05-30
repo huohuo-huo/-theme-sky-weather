@@ -1,0 +1,298 @@
+<!doctype html>
+<html th:lang="${#locale.toLanguageTag}" th:fragment="layout (title,head,body)" th:with="authLayout = ${theme.config.auth?.auth_settings?.auth_layout ?: 'default'},
+               brandStyle = ${theme.config.auth?.auth_settings?.brand_style ?: 'simple'},
+               cardEffect = ${(theme.config.auth?.auth_settings?.card_effect == 'none' || theme.config.auth?.auth_settings?.card_effect == null) ? '3d' : theme.config.auth?.auth_settings?.card_effect},
+               brandSlogan = ${theme.config.auth?.auth_settings?.brand_slogan ?: '探索、记录、分享'},
+
+               featuresWelcome = ${theme.config.auth?.auth_settings?.features_welcome ?: '欢迎来到'},
+               feature1Title = ${theme.config.auth?.auth_settings?.feature_1_title ?: '安全可靠'},
+               feature1Desc = ${theme.config.auth?.auth_settings?.feature_1_desc ?: '基于 Halo 安全体系的账户保护'},
+               feature1Icon = ${theme.config.auth?.auth_settings?.feature_1_icon ?: 'icon-[heroicons--shield-check]'},
+               feature2Title = ${theme.config.auth?.auth_settings?.feature_2_title ?: '沉浸体验'},
+               feature2Desc = ${theme.config.auth?.auth_settings?.feature_2_desc ?: '为内容提供安静清晰的阅读体验'},
+               feature2Icon = ${theme.config.auth?.auth_settings?.feature_2_icon ?: 'icon-[heroicons--sparkles]'},
+               feature3Title = ${theme.config.auth?.auth_settings?.feature_3_title ?: '多端适配'},
+               feature3Desc = ${theme.config.auth?.auth_settings?.feature_3_desc ?: '随时随地访问你的创作'},
+               feature3Icon = ${theme.config.auth?.auth_settings?.feature_3_icon ?: 'icon-[heroicons--device-phone-mobile]'},
+               authSideImage = ${theme.config.auth?.auth_settings?.auth_side_image},
+               authLogo = ${theme.config.auth?.auth_settings?.auth_logo},
+               authSiteTitle = ${theme.config.auth?.auth_settings?.auth_site_title},
+               authSiteTitleSimple = ${theme.config.auth?.auth_settings?.auth_site_title_simple}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2" />
+    <title th:text="${title}">Auth</title>
+
+    <th:block th:replace="~{modules/theme-script :: inline-script}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.14')}" />
+
+    <!-- Auth 甯冨眬 CSS -->
+    <link rel="stylesheet" th:href="@{'/assets/css/auth-' + ${authLayout} + '.css?v=1.0.14'}" />
+
+    <th:block th:replace="~{gateway_fragments/common::basicStaticResources}"></th:block>
+
+    <th:block th:if="${head != null}">
+        <th:block th:replace="${head}" />
+    </th:block>
+</head>
+
+<body class="font-sans text-base-content antialiased selection:bg-primary selection:text-primary-content">
+
+    <!-- ======================== -->
+    <!-- 甯冨眬 1: 绠€娲侀粯锟?         -->
+    <!-- ======================== -->
+    <th:block th:if="${authLayout == 'default'}">
+        <div class="auth-page-default">
+            <div class="auth-card-default">
+                <!-- Logo -->
+                <div class="auth-logo-default">
+                    <a href="/" class="flex items-center justify-center gap-3 group">
+                        <img th:if="${site.logo != null and !site.logo.isEmpty()}" th:src="${site.logo}"
+                            th:alt="${site.title}" class="w-10 h-10 rounded-xl shadow-md" />
+                        <span class="text-2xl font-bold text-primary" th:text="${site.title}">Site</span>
+                    </a>
+                </div>
+                <!-- 琛ㄥ崟鍐呭 -->
+                <div class="auth-form-container">
+                    <th:block th:replace="${body}" />
+                </div>
+            </div>
+            <!-- 鐗堟潈 -->
+            <div class="auth-copyright-default">
+                <span>&copy;</span>
+                <a href="/" class="ml-1" th:text="${site.title}">Site</a>
+            </div>
+        </div>
+    </th:block>
+
+    <!-- ======================== -->
+    <!-- 甯冨眬 2: 鍒嗗睆甯冨眬          -->
+    <!-- ======================== -->
+    <th:block th:if="${authLayout == 'split'}">
+        <div class="auth-page-split">
+            <!-- 鍝佺墝锟?- 绠€绾﹂锟?-->
+            <div th:if="${brandStyle == 'simple'}" class="auth-brand">
+                <div class="grid-overlay"></div>
+                <div class="floating-shape floating-shape-1"></div>
+                <div class="floating-shape floating-shape-2"></div>
+                <div class="floating-shape floating-shape-3"></div>
+                <div class="brand-text">
+                    <h1 th:text="${not #strings.isEmpty(authSiteTitleSimple) ? authSiteTitleSimple : site.title}">Sky
+                        Blog</h1>
+                    <p th:text="${brandSlogan}">探索、记录、分享</p>
+                </div>
+            </div>
+
+            <!-- 鍝佺墝锟?- 鍔熻兘鐗规€ч锟?-->
+            <div th:if="${brandStyle == 'features'}" class="auth-brand auth-brand-features"
+                th:style="${authSideImage != null ? 'background-image: url(' + authSideImage + ');' : ''}"
+                th:data-has-image="${authSideImage != null}">
+                <!-- 鍥剧墖閬僵 -->
+                <div th:if="${authSideImage}" class="auth-brand-overlay"></div>
+                <div class="features-content">
+                    <div class="features-logo">
+                        <img th:if="${not #strings.isEmpty(authLogo)} or ${site.logo}"
+                            th:src="${not #strings.isEmpty(authLogo) ? authLogo : site.logo}" />
+                        <h2 th:text="${not #strings.isEmpty(authSiteTitle) ? authSiteTitle : site.title}">Site</h2>
+                    </div>
+                    <h1 class="features-title" th:text="${featuresWelcome}">欢迎来到</h1>
+                    <p class="features-slogan" th:text="${brandSlogan}">探索、记录、分享</p>
+                    <ul class="features-list">
+                        <li>
+                            <span class="feature-icon"><span
+                                    class="icon-[heroicons--shield-check] w-5 h-5"></span></span>
+                            <div class="feature-text">
+                                <h3 th:text="${feature1Title}">安全可靠</h3>
+                                <p th:text="${feature1Desc}">基于 Halo 安全体系的账户保护</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon"><span class="icon-[heroicons--sparkles] w-5 h-5"></span></span>
+                            <div class="feature-text">
+                                <h3 th:text="${feature2Title}">沉浸体验</h3>
+                                <p th:text="${feature2Desc}">为内容提供安静清晰的阅读体验</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon"><span
+                                    class="icon-[heroicons--device-phone-mobile] w-5 h-5"></span></span>
+                            <div class="feature-text">
+                                <h3 th:text="${feature3Title}">多端适配</h3>
+                                <p th:text="${feature3Desc}">随时随地访问你的创作</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 鍝佺墝锟?- 鍔ㄦ€佹彃鐢婚锟?-->
+            <div th:if="${brandStyle == 'illustration'}" class="auth-brand auth-brand-illustration">
+                <div id="art-scene" class="art-scene state-idle">
+
+                    <!-- 1. 绱壊瑙掕壊 -->
+                    <div class="char char-purple" style="--delay: 0.1;">
+                        <div class="breathe-wrap">
+                            <div class="face">
+                                <div class="eye-white left">
+                                    <div class="sad-lid"></div>
+                                    <div class="pupil-wrap tracker">
+                                        <div class="pupil"></div>
+                                    </div>
+                                </div>
+                                <div class="eye-white right">
+                                    <div class="sad-lid"></div>
+                                    <div class="pupil-wrap tracker">
+                                        <div class="pupil"></div>
+                                    </div>
+                                </div>
+                                <div class="mouth-surprise"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. 榛戣壊瑙掕壊 -->
+                    <div class="char char-black" style="--delay: 0.8;">
+                        <div class="breathe-wrap">
+                            <div class="face">
+                                <div class="eye-white left">
+                                    <div class="sad-lid"></div>
+                                    <div class="pupil-wrap tracker">
+                                        <div class="pupil"></div>
+                                    </div>
+                                </div>
+                                <div class="eye-white right">
+                                    <div class="sad-lid"></div>
+                                    <div class="pupil-wrap tracker">
+                                        <div class="pupil"></div>
+                                    </div>
+                                </div>
+                                <div class="mouth-surprise"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. 榛勮壊瑙掕壊 -->
+                    <div class="char char-yellow" style="--delay: 0.4;">
+                        <div class="breathe-wrap">
+                            <div class="face">
+                                <div class="blush"></div>
+                                <div class="eye-dot-wrap tracker">
+                                    <div class="eye-dot"></div>
+                                </div>
+                                <div class="beak"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. 姗欒壊瑙掕壊 -->
+                    <div class="char char-orange" style="--delay: 0.6;">
+                        <div class="breathe-wrap">
+                            <div class="face">
+                                <div class="blush left"></div>
+                                <div class="blush right"></div>
+                                <div class="eye-dot-wrap left tracker">
+                                    <div class="eye-dot"></div>
+                                </div>
+                                <div class="eye-dot-wrap right tracker">
+                                    <div class="eye-dot"></div>
+                                </div>
+                                <div class="mouth-surprise"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="auth-form-section-split">
+                <div class="auth-form-container">
+                    <th:block th:replace="${body}" />
+                </div>
+                <div class="absolute bottom-6 left-0 right-0 auth-copyright">
+                    <span>&copy;</span><a href="/" class="ml-1" th:text="${site.title}">Site</a>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <!-- ======================== -->
+    <!-- 甯冨眬 3: 灞呬腑鍗＄墖          -->
+    <!-- ======================== -->
+    <th:block th:if="${authLayout == 'centered'}">
+        <div class="auth-page-centered">
+            <!-- 鑱氬厜鐏〉闈㈠厜锟?-->
+            <div th:if="${cardEffect == 'spotlight'}" class="spotlight-page-glow"></div>
+
+            <!-- 鍗＄墖 -->
+            <div
+                th:class="${cardEffect == '3d' ? 'auth-card auth-card-3d' : (cardEffect == 'spotlight' ? 'auth-card auth-card-spotlight' : 'auth-card')}">
+
+                <!-- 鑱氬厜鐏崱鐗囧厜锟?-->
+                <th:block th:if="${cardEffect == 'spotlight'}">
+                    <div class="spotlight-glow-container">
+                        <div class="spotlight-card-glow"></div>
+                    </div>
+                </th:block>
+                <div class="relative z-10">
+                    <th:block th:replace="${body}" />
+                </div>
+            </div>
+            <div class="mt-6 auth-copyright">
+                <span>&copy;</span><a href="/" class="ml-1" th:text="${site.title}">Site</a>
+            </div>
+        </div>
+
+        <!-- 3D 鏁堟灉鑴氭湰 - 鏀惧湪 DOM 涔嬪悗纭繚鍏冪礌瀛樺湪 -->
+        <script th:if="${cardEffect == '3d'}" th:inline="none">
+            (function () {
+                var card = document.querySelector('.auth-card-3d');
+                if (card) {
+                    card.addEventListener('mousemove', function (e) {
+                        var rect = card.getBoundingClientRect();
+                        var x = e.clientX - rect.left;
+                        var y = e.clientY - rect.top;
+                        var rotateX = (y - rect.height / 2) / 25;
+                        var rotateY = (rect.width / 2 - x) / 25;
+                        card.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateZ(10px)';
+                    });
+                    card.addEventListener('mouseleave', function () {
+                        card.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+                    });
+                }
+            })();
+        </script>
+
+        <!-- 鑱氬厜鐏晥鏋滆剼锟?- 鏀惧湪 DOM 涔嬪悗纭繚鍏冪礌瀛樺湪 -->
+        <script th:if="${cardEffect == 'spotlight'}" th:inline="none">
+            (function () {
+                var pageGlow = document.querySelector('.spotlight-page-glow');
+                var cardGlow = document.querySelector('.spotlight-card-glow');
+                var card = document.querySelector('.auth-card-spotlight');
+
+                if (pageGlow) {
+                    document.addEventListener('mousemove', function (e) {
+                        pageGlow.style.left = e.clientX + 'px';
+                        pageGlow.style.top = e.clientY + 'px';
+                    });
+                }
+
+                if (card && cardGlow) {
+                    card.addEventListener('mouseenter', function () { cardGlow.style.opacity = '1'; });
+                    card.addEventListener('mouseleave', function () { cardGlow.style.opacity = '0'; });
+                    card.addEventListener('mousemove', function (e) {
+                        var rect = card.getBoundingClientRect();
+                        cardGlow.style.left = (e.clientX - rect.left) + 'px';
+                        cardGlow.style.top = (e.clientY - rect.top) + 'px';
+                    });
+                }
+            })();
+        </script>
+    </th:block>
+
+    <!-- Auth 甯冨眬 JS -->
+    <script type="module" th:src="@{'/assets/js/auth-' + ${authLayout} + '.js?v=1.0.14'}"></script>
+</body>
+
+</html>

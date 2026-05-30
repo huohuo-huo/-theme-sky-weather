@@ -1,0 +1,27 @@
+<!-- Docsme 文档目录页面 - 完全自定义 -->
+<!-- 兼容基线：plugin-docsme 免费版 1.5.0 / 专业版 1.6.0；目录页额外消费 sonNodes。 -->
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{modules/doc-layout :: html(head = ~{::head}, content = ~{::content}, scripts = ~{::scripts}, dock = ~{::dock})}"
+>
+  <th:block th:fragment="head">
+    <!-- 无需引入插件样式 -->
+  </th:block>
+  <th:block th:fragment="content">
+    <th:block th:replace="~{modules/doc-catalog-content :: content}" />
+  </th:block>
+  <!-- 文档目录页 Dock -->
+  <th:block th:fragment="dock">
+    <th:block th:replace="~{modules/doc/floating-dock :: catalog-dock}" />
+  </th:block>
+  <th:block th:fragment="scripts">
+    <!-- 禁用插件的主题切换功能，使用主题自带的 -->
+    <script>
+      var docsme = { disableThemeFunction: true };
+    </script>
+    <!-- 其他插件脚本（搜索、绘图、KaTeX） -->
+    <th:block th:replace="~{plugin:plugin-docsme:modules/plugin-scripts}" />
+    <!-- 组件已在 alpine-modules.js 中注册 -->
+  </th:block>
+</html>

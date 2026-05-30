@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN" th:fragment="html (content)">
+  <!-- ========================================== -->
+  <!--        鏈嬪弸鍦堥〉闈㈠竷灞€                       -->
+  <!-- 璺敱锟?friends                             -->
+  <!-- 鎻掍欢锛歱lugin-friends                       -->
+  <!-- ========================================== -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 鍚敤 View Transitions API (Safari 18+/Chrome 111+) -->
+    <meta name="view-transition" content="same-origin" />
+
+    <!-- 闃叉涓婚闂儊 -->
+    <th:block th:replace="~{modules/theme-script :: inline-script}" />
+
+    <!-- 页面标题 -->
+    <title
+      th:text="${(theme.config.friends_page_settings?.basic_info?.page_title ?: '朋友圈')} + ' - ' + ${site.title} + (${site.subtitle != null and !#strings.isEmpty(site.subtitle)} ? ' - ' + ${site.subtitle} : '')"
+    >
+    </title>
+    <!-- 瀛椾綋 -->
+    <th:block th:replace="~{modules/font-loader :: fonts}" />
+    <!-- 涓婚鏍峰紡 -->
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.14')}" />
+    <!-- 闊充箰鎾斁锟?CSS -->
+    <th:block th:replace="~{modules/music-player :: head}" />
+  </head>
+
+  <body
+    th:with="bgConfig = ${theme.config.general.global_background},
+                 enableCustomBg = ${bgConfig?.enable_custom == true},
+                 bgStyle = ${bgConfig?.background_style ?: 'base-200'},
+                 bgClass = ${enableCustomBg ? (bgStyle == 'grid' ? 'bg-base-100' : 'bg-' + bgStyle) : 'bg-base-200'},
+                 cfg=${theme.config.friends_page_settings},"
+    th:class="'min-h-screen text-base-content relative ' + ${bgClass}"
+  >
+    <!-- 缃戞牸鑳屾櫙锛堜粎褰撻€夋嫨 grid 鏍峰紡鏃舵樉绀猴級 -->
+    <div
+      th:if="${enableCustomBg and bgStyle == 'grid'}"
+      class="bg-grid-pattern pointer-events-none fixed inset-0 z-[1]"
+    ></div>
+
+    <div class="relative z-10">
+      <th:block
+        th:with="cfg=${theme.config.friends_page_settings}, 
+               sidebarCfg=${cfg.sidebar_settings},
+               showSidebar=${sidebarCfg?.show_sidebar == true},
+               globalSidebarCfg = ${theme.config.general.sidebar_settings},
+               useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
+               sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}"
+      >
+        <!-- 鍔犺浇灞忓箷 -->
+        <th:block th:replace="~{modules/loading-screen :: loading-screen}" />
+
+        <!-- 瀵艰埅锟?-->
+        <th:block th:replace="~{modules/nav :: navbar}" />
+
+        <!-- 涓昏鍐呭鍖哄煙 -->
+        <main
+          id="swup"
+          class="flex-1"
+          th:with="listStyle=${cfg?.basic_info?.list_style ?: 'single_column'},
+                                       maxWidth=${listStyle == 'single_column' ? (showSidebar ? 'max-w-5xl' : 'max-w-3xl') : (showSidebar ? 'max-w-6xl' : 'max-w-5xl')}"
+        >
+          <div class="mx-auto px-4 py-6 md:py-10" th:classappend="${maxWidth}">
+            <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
+              <!-- 涓诲唴锟?-->
+              <div class="min-w-0 flex-1">
+                <th:block th:replace="${content}" />
+              </div>
+              <!-- 渚ц竟锟?-->
+              <aside th:if="${showSidebar}" class="sticky top-20 hidden w-80 shrink-0 space-y-6 self-start lg:block">
+                <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
+              </aside>
+            </div>
+          </div>
+        </main>
+
+        <!-- 椤佃剼 -->
+        <th:block th:replace="~{modules/footer :: footer}" />
+      </th:block>
+    </div>
+
+    <div id="swup-page-extras">
+      <!-- 鎮诞鎺у埗锟?-->
+      <th:block
+        th:replace="~{modules/floating-dock :: dockWithConfig(${theme.config.friends_page_settings}, 'basic')}"
+      />
+    </div>
+
+    <!-- JavaScript -->
+    <div id="swup-scripts" hidden>
+      <!-- friends 椤垫棤鐙珛椤甸潰 JS锛岀敤鏅€氳剼鏈紙鍚屾鎵ц锛夊彂閫佸氨缁俊锟?-->
+      <script data-swup-reload-script>
+        window.__completeSwupPageInit?.();
+      </script>
+    </div>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.14')}"></script>
+    <!-- 鎮诞闊充箰鎾斁锟?-->
+    <th:block th:replace="~{modules/music-player :: player}" />
+  </body>
+</html>

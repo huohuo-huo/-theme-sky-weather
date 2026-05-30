@@ -1,0 +1,41 @@
+apiVersion: theme.halo.run/v1alpha1
+kind: Theme
+metadata:
+  name: theme-sky-weather
+  annotations:
+    "store.halo.run/app-id": ""
+spec:
+  displayName: Huohuo Weather Glass
+  author:
+    name: Huohuo Space
+    website: https://github.com/huohuo-huo
+  description: 基于 Sky Blog Theme 二开的动态天气玻璃风 Halo 主题，支持白天动态云层、黄昏火烧云、夜间雨景视频背景与全站玻璃卡片。
+  logo: /themes/theme-sky-weather/assets/images/huohuo-weather-logo.jpeg
+  homepage: https://github.com/huohuo-huo/-theme-sky-weather
+  repo: https://github.com/huohuo-huo/-theme-sky-weather.git
+  issues: https://github.com/huohuo-huo/-theme-sky-weather/issues
+  settingName: "theme-sky-weather-setting"
+  configMapName: "theme-sky-weather-configMap"
+  version: "1.0.14"
+  requires: ">=2.23.0"
+  license:
+    - name: "GPL-3.0"
+      url: "https://www.gnu.org/licenses/gpl-3.0.html"
+  customTemplates:
+    page:
+      - name: 关于
+        description: 展示个人与站点信息，集成 GitHub、技术栈、评论等内容模块
+        file: page_about.html
+    category:
+      - name: 强制卡片风格
+        description: 忽略全局设置，此分类强制使用卡片风格
+        file: category-card.html
+      - name: 强制列表风格
+        description: 忽略全局设置，此分类强制使用列表风格
+        file: category-list.html
+      - name: 强制杂志风格
+        description: 忽略全局设置，此分类强制使用杂志风格
+        file: category-magazine.html
+      - name: 强制极简风格
+        description: 忽略全局设置，此分类强制使用极简风格
+        file: category-minimal.html

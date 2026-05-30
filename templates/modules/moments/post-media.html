@@ -1,0 +1,32 @@
+<th:block th:fragment="post-card(medium, fullWidth)" th:with="
+  hasUrl = ${medium != null and medium.url != null and !#strings.isEmpty(medium.url)},
+  origin = ${medium != null and medium.originType != null and !#strings.isEmpty(medium.originType) ? medium.originType : 'POST'}
+">
+  <a
+    th:if="${hasUrl}"
+    th:href="${medium.url}"
+    class="group flex items-center gap-3 rounded-xl border border-base-content/10 bg-base-100/80 p-3 text-base-content transition-all hover:border-primary/30 hover:bg-primary/5"
+    th:classappend="${fullWidth} ? ' col-span-full' : ''"
+  >
+    <span
+      class="icon-[material-symbols--article-outline] h-8 w-8 shrink-0 rounded-lg bg-primary/10 p-1.5 text-primary transition-transform group-hover:scale-105"
+    ></span>
+    <span class="min-w-0 flex-1">
+      <span class="block text-sm font-semibold leading-5">关联内容</span>
+      <span class="block truncate text-xs text-base-content/50" th:text="${origin}">POST</span>
+    </span>
+    <span class="icon-[material-symbols--arrow-forward-ios-rounded] h-4 w-4 shrink-0 text-base-content/35"></span>
+  </a>
+  <div
+    th:unless="${hasUrl}"
+    class="flex items-center gap-3 rounded-xl border border-dashed border-base-content/10 bg-base-200/60 p-3 text-base-content/60"
+    th:classappend="${fullWidth} ? ' col-span-full' : ''"
+    aria-disabled="true"
+  >
+    <span class="icon-[material-symbols--article-outline] h-8 w-8 shrink-0 rounded-lg bg-base-100 p-1.5"></span>
+    <span class="min-w-0 flex-1">
+      <span class="block text-sm font-semibold leading-5">关联内容</span>
+      <span class="block truncate text-xs" th:text="${origin}">POST</span>
+    </span>
+  </div>
+</th:block>

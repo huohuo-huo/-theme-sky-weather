@@ -1,0 +1,194 @@
+<!-- ========================================== -->
+<!--        图库页面内容                         -->
+<!-- 兼容基线：PluginPhotos v2.1.0；使用插件提供的 photos/groups/photoUrl 变量。 -->
+<!-- 分页数量在 Console → 插件 → 图库 → 设置     -->
+<!-- ========================================== -->
+<th:block th:fragment="content">
+  <th:block
+    th:with="
+    cfg=${theme.config.photos_settings},
+    pageTitle=${cfg?.page_title ?: '图库'},
+    pageDesc=${cfg?.page_description ?: '记录生活中的美好瞬间'},
+    showPhotoInfo=${cfg?.show_photo_info != false},
+    showDownloadBtn=${cfg?.show_download_btn != false},
+    enableComment=${cfg?.enable_comment == true},
+    layout=${cfg?.layout},
+    fullWidth=${cfg?.layout?.full_width == true},
+    maxCols=${cfg?.layout?.max_cols ?: 4},
+    borderRadius=${cfg?.layout?.border_radius ?: 12},
+    photoGap=${cfg?.layout?.gap ?: 16}
+  "
+  >
+    <div
+      class="mx-auto px-3 py-8 sm:px-4 md:px-6 md:py-12 lg:px-8"
+      th:classappend="${fullWidth} ? ' w-full' : ' max-w-7xl'"
+    >
+      <!-- 页面标题区域 -->
+      <header class="animate-fade-in-up mb-10 text-center">
+        <h1 class="text-base-content text-2xl font-bold tracking-tight md:text-3xl" th:text="${pageTitle}">图库</h1>
+        <p class="text-base-content/50 mt-2" th:text="${pageDesc}">记录生活中的美好瞬间</p>
+        <p class="text-base-content/40 mt-1 text-sm" th:if="${photos != null && photos.total > 0}">
+          共 <span class="font-medium" th:text="${photos.total}">0</span> 张照片
+        </p>
+      </header>
+
+      <!-- 分组切换 -->
+      <div
+        th:if="${groups != null && #lists.size(groups) > 1}"
+        class="animate-fade-in-up mb-10 flex justify-center"
+        style="animation-delay: 80ms"
+      >
+        <div class="inline-flex flex-wrap justify-center gap-2">
+          <a
+            th:href="${photoUrl != null ? photoUrl.list() : '/photos'}"
+            class="rounded-full px-4 py-2 text-sm font-medium transition-all duration-300"
+            th:classappend="${param.group == null || #lists.isEmpty(param.group)} ? 'bg-base-content text-base-100 shadow-sm' : 'bg-base-100 text-base-content/60 border border-base-200 hover:border-base-300 hover:text-base-content'"
+          >
+            全部
+          </a>
+          <th:block th:each="group : ${groups}">
+            <a
+              th:href="${photoUrl != null ? photoUrl.list(group.metadata.name) : '/photos'}"
+              class="rounded-full px-4 py-2 text-sm font-medium transition-all duration-300"
+              th:classappend="${param.group != null && !#lists.isEmpty(param.group) && param.group[0] == group.metadata.name} ? 'bg-base-content text-base-100 shadow-sm' : 'bg-base-100 text-base-content/60 border border-base-200 hover:border-base-300 hover:text-base-content'"
+              th:text="${group.spec.displayName}"
+            >
+              分组
+            </a>
+          </th:block>
+        </div>
+      </div>
+
+      <!-- 图片网格 -->
+      <div
+        th:if="${photos != null && photos.total > 0}"
+        id="photo-grid"
+        class="columns-1 gap-4 space-y-4 sm:columns-2 md:columns-3 lg:columns-4"
+        th:attr="data-gap=${photoGap},data-max-cols=${maxCols},data-border-radius=${borderRadius}"
+      >
+        <th:block th:each="photo, stat : ${photos.items}">
+          <div
+            th:style="'animation-delay: ' + (${stat.index} * 35) + 'ms;'"
+            class="photo-item animate-fade-in-up group break-inside-avoid"
+            tabindex="0"
+          >
+            <img
+              th:src="${photo.spec.url}"
+              th:alt="${photo.spec.displayName}"
+              class="h-auto w-full object-cover"
+              loading="lazy"
+            />
+
+            <!-- 悬浮信息层 -->
+            <div
+              th:if="${showPhotoInfo or showDownloadBtn or photoUrl != null or photo.permalink != null}"
+              class="photo-overlay"
+            >
+              <!-- 下载按钮 -->
+              <a
+                th:if="${showDownloadBtn}"
+                th:href="${photo.spec.url}"
+                download
+                class="photo-download-btn rounded-full bg-white/12 p-1.5 text-white backdrop-blur-sm active:scale-90"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+              </a>
+
+              <!-- 详情按钮：独立入口，避免整张图链接影响 lightgallery 点击放大 -->
+              <a
+                th:if="${photoUrl != null or photo.permalink != null}"
+                th:href="${photoUrl != null ? photoUrl.detail(photo) : photo.permalink}"
+                class="photo-detail-btn rounded-full bg-white/12 px-2.5 py-1.5 text-xs font-medium text-white backdrop-blur-sm active:scale-90"
+                title="查看详情"
+                aria-label="查看照片详情"
+              >
+                <span class="icon-[heroicons--eye] h-[15px] w-[15px]"></span>
+                <span class="hidden sm:inline">详情</span>
+              </a>
+
+              <!-- 标题 + 描述 -->
+              <div th:if="${showPhotoInfo}" class="photo-overlay-content">
+                <p
+                  class="text-[13px] leading-snug font-medium tracking-wide text-white"
+                  style="text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)"
+                  th:text="${photo.spec.displayName ?: '未命名'}"
+                >
+                  照片标题
+                </p>
+                <p
+                  th:if="${photo.spec.description}"
+                  class="mt-0.5 line-clamp-1 text-xs text-white/65"
+                  style="text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2)"
+                  th:text="${photo.spec.description}"
+                >
+                  照片描述
+                </p>
+              </div>
+            </div>
+          </div>
+        </th:block>
+      </div>
+
+      <!-- 懒加载哨兵 -->
+      <div th:if="${photos != null}" class="mt-12 flex flex-col items-center justify-center py-6">
+        <a th:if="${photos.hasNext()}" id="next-page-url" th:href="@{${photos.nextUrl}}" class="hidden"></a>
+
+        <div id="loading-spinner" class="text-base-content/50 flex hidden items-center gap-2">
+          <span class="loading loading-spinner loading-sm"></span>
+          <span class="text-sm font-medium">加载更多...</span>
+        </div>
+
+        <div
+          id="no-more-data"
+          class="text-base-content/30 items-center text-sm"
+          th:classappend="${photos.hasNext() ? ' hidden' : ' flex'}"
+        >
+          <span th:if="${photos.total > 0}" class="flex items-center gap-2">
+            <span class="icon-[heroicons--sparkles] h-4 w-4"></span>
+            已经到底啦
+          </span>
+        </div>
+      </div>
+
+      <!-- 空状态 -->
+      <div th:if="${photos == null || photos.total == 0}" class="py-20 text-center">
+        <span class="icon-[mdi--image-off-outline] text-base-content/30 mx-auto mb-4 h-16 w-16"></span>
+        <p class="text-base-content/50 text-lg">暂无照片</p>
+        <p class="text-base-content/30 mt-2 text-sm">请在后台添加照片</p>
+      </div>
+
+      <!-- 评论区 -->
+      <section th:if="${enableComment}" class="mx-auto mt-16 max-w-4xl">
+        <h2 class="text-base-content mb-6 flex items-center gap-2 text-xl font-bold">
+          <span class="icon-[mdi--comment-text-outline] text-primary h-5 w-5"></span>
+          评论留言
+        </h2>
+        <div class="glow-card bg-base-100/80 border-base-content/[0.06] rounded-2xl border backdrop-blur-xl">
+          <div class="p-6 sm:p-8">
+            <halo:comment
+              group="content.halo.run"
+              kind="SinglePage"
+              th:attr="name=${singlePage != null ? singlePage.metadata.name : 'photos'}"
+              colorScheme="system"
+            >
+            </halo:comment>
+          </div>
+        </div>
+      </section>
+    </div>
+  </th:block>
+</th:block>

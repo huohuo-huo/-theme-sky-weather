@@ -1,0 +1,119 @@
+/**
+ * 首页副标题特效样式 - 独立按需加载
+ * 只在显示首页副标题时加载此文件
+ */
+
+/* ===================================================
+ * 副标题样式效果（6个）
+ * 固定颜色：打字机、渐变流动
+ * 🎨可自定义颜色：其他4个效果使用 --subtitle-color 变量
+ * ==================================================*/
+
+/**
+ * 1. 打字机 (typewriter)
+ * 推荐字体：Titan One
+ * 颜色：固定（白色文字 + 主题色光标）
+ */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--subtitle-color, var(--color-primary));
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.05em;
+  /* 打字机文字颜色适配副标题主色；未设置则回退到主题主色 */
+  color: var(--subtitle-color, var(--color-primary));
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--subtitle-color, var(--color-primary)); }
+}
+
+/**
+ * 2. 渐变流动 (gradient-flow)
+ * 推荐字体：Monoton
+ * 颜色：固定（使用主题三色）
+ */
+.gradient-flow {
+  background: linear-gradient(
+    45deg, 
+    var(--color-primary),
+    var(--color-secondary),
+    var(--color-accent),
+    var(--color-primary),
+    var(--color-secondary),
+    var(--color-accent)
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow-flow 4s ease-in-out infinite;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes rainbow-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/**
+ * 3. 🎨 微光 (subtle-glow)
+ * 推荐字体：中文字体
+ * 颜色：可自定义（使用 --subtitle-color 变量控制光晕颜色）
+ * 文字白色，柔和光晕，静态效果
+ */
+.subtle-glow {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow:
+    0 0 20px var(--subtitle-color, var(--color-primary)),
+    0 0 35px color-mix(in srgb, var(--subtitle-color, var(--color-primary)) 60%, transparent),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/**
+ * 4. 🎨 淡入淡出 (fade-pulse)
+ * 推荐字体：通用
+ * 颜色：可自定义（使用 --subtitle-color 变量控制文字颜色）
+ * 文字透明度呼吸动画
+ */
+.fade-pulse {
+  color: var(--subtitle-color, var(--color-primary));
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: fade-breath 4s ease-in-out infinite;
+}
+
+@keyframes fade-breath {
+  0%, 100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+
+/* ===================================================
+ * 性能优化
+ * ==================================================*/
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter,
+  .gradient-flow,
+  .fade-pulse {
+    animation: none !important;
+  }
+  
+  .typewriter {
+    border-right: none;
+    white-space: normal;
+  }
+}
+
