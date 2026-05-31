@@ -53,6 +53,18 @@
       <ul class="doc-nav-tree">
         <th:block th:replace="~{modules/doc-content :: tree-item(docTrees=${docTrees})}" />
       </ul>
+
+      <div id="toc-card" class="doc-toc-card doc-sidebar-toc">
+        <h3 class="text-xs font-bold text-base-content/40 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <span class="icon-[heroicons--list-bullet] w-4 h-4"></span>
+          <span>本页目录</span>
+        </h3>
+        <div class="toc-container overflow-y-auto pr-2 scrollbar-thin">
+          <nav id="toc-nav" class="space-y-1" role="navigation" aria-label="文档目录">
+            <!-- 目录将由 JavaScript 自动生成 -->
+          </nav>
+        </div>
+      </div>
     </div>
   </aside>
 
@@ -202,21 +214,6 @@
       </div>
     </div>
   </main>
-
-  <!-- 右侧目录 - 固定定位，与文章页目录样式一致 -->
-  <aside class="doc-toc hidden xl:block">
-    <div id="toc-card" class="doc-toc-card">
-      <h3 class="text-xs font-bold text-base-content/40 uppercase tracking-wider mb-4 flex items-center gap-2">
-        <span class="icon-[heroicons--list-bullet] w-4 h-4"></span>
-        <span>本页目录</span>
-      </h3>
-      <div class="toc-container overflow-y-auto pr-2 scrollbar-thin">
-        <nav id="toc-nav" class="space-y-1" role="navigation" aria-label="文档目录">
-          <!-- 目录将由 JavaScript 自动生成 -->
-        </nav>
-      </div>
-    </div>
-  </aside>
 
 </div>
 
