@@ -1,1 +1,1 @@
-import{r as n,t}from"./chunks/page-runtime-1.0.16.js";import"./chunks/article-content-1.0.16.js";n(()=>{i()});function i(){console.log("Page content initialized")}t();
+import{r as n,t}from"./chunks/page-runtime-1.0.18.js";import"./chunks/article-content-1.0.18.js";n(()=>{i()});function i(){console.log("Page content initialized")}t();
