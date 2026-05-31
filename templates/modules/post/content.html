@@ -1,4 +1,4 @@
-<!-- 主要内容区域 -->
+﻿<!-- 涓昏鍐呭鍖哄煙 -->
 <main class="relative" th:fragment="post-content"
   th:with="cfg = ${theme.config.article.sidebar_settings},
                contentCfg = ${theme.config.article.content_settings},
@@ -6,18 +6,18 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${cfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (cfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 顶部 Banner -->
+  <!-- 椤堕儴 Banner -->
   <th:block th:replace="~{modules/post/header :: banner}" />
 
-  <!-- 主体内容区域 -->
+  <!-- 涓讳綋鍐呭鍖哄煙 -->
   <div class="post-reading-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="post-reading-layout flex flex-col gap-8 lazy-anim md:flex-row"
       th:classappend="${sidebarPosition == 'left'} ? 'md:flex-row-reverse' : ''">
-      <!-- 左侧文章内容区 -->
+      <!-- 宸︿晶鏂囩珷鍐呭鍖?-->
       <article class="article-container post-reading-card flex-1 min-w-0"
         th:classappend="${cfg.show_sidebar == false ? 'post-reading-wide mx-auto' : ''}">
         <div class="prose prose-lg max-w-none">
-          <!-- 文章摘要 - 打字机效果 -->
+          <!-- 鏂囩珷鎽樿 - 鎵撳瓧鏈烘晥鏋?-->
           <th:block th:if="${showExcerpt}" th:with="excerptText = ${post.status.excerpt ?: ''}">
             <div th:if="${!#strings.isEmpty(excerptText)}" 
                  class="article-excerpt" 
@@ -29,24 +29,25 @@
             </div>
           </th:block>
 
-          <!-- 文章正文内容 -->
+          <!-- 鏂囩珷姝ｆ枃鍐呭 -->
           <div id="article-content" th:utext="${post.content.content}"
             class="prose prose-lg max-w-none">
 
           </div>
         </div>
 
-        <!-- 文章底部交互栏 (点赞/分享/评论) -->
+        <!-- 鏂囩珷搴曢儴浜や簰鏍?(鐐硅禐/鍒嗕韩/璇勮) -->
         <th:block th:replace="~{modules/post/article-footer :: footer}" />
 
       </article>
 
-      <!-- 右侧功能区块 - 整体跟随滚动 -->
+      <!-- 鍙充晶鍔熻兘鍖哄潡 - 鏁翠綋璺熼殢婊氬姩 -->
       <aside th:if="${cfg.show_sidebar != false}"
         class="right-sidebar w-80 shrink-0 space-y-6 hidden md:block sticky top-20 self-start">
-        <!-- 动态小工具 (包括文章目录 toc) -->
+        <!-- 鍔ㄦ€佸皬宸ュ叿 (鍖呮嫭鏂囩珷鐩綍 toc) -->
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${cfg})}" />
       </aside>
     </div>
   </div>
 </main>
+

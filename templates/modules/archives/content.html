@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--        归档页主体内容                       -->
-<!-- 支持多种展示风格：时间线、卡片、紧凑        -->
+<!--        褰掓。椤典富浣撳唴瀹?                      -->
+<!-- 鏀寔澶氱灞曠ず椋庢牸锛氭椂闂寸嚎銆佸崱鐗囥€佺揣鍑?       -->
 <!-- ========================================== -->
 
-<!-- 归档内容片段 -->
+<!-- 褰掓。鍐呭鐗囨 -->
 <main class="relative" th:fragment="archive-content"
   th:with="rootCfg = ${theme.config.archive_settings},
                cfg = ${rootCfg.basic_info},
@@ -16,19 +16,19 @@
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：归档内容 -->
+      <!-- 宸︿晶锛氬綊妗ｅ唴瀹?-->
       <section class="flex-1" th:classappend="${sidebarCfg?.show_sidebar != true ? 'max-w-4xl mx-auto' : ''}">
 
-        <!-- 页面标题区 - Apple风格简洁 -> 衬线体优雅风格 -->
+        <!-- 椤甸潰鏍囬鍖?- Apple椋庢牸绠€娲?-> 琛嚎浣撲紭闆呴鏍?-->
         <header class="mb-14 border-b border-base-content/5 pb-8"
           th:with="globalArchives = ${postFinder.archives(1, 100)}">
           <div class="flex items-end justify-between">
             <div>
-              <h1 class="text-4xl md:text-5xl font-serif text-base-content tracking-wider font-semibold">文章归档</h1>
+              <h1 class="text-4xl md:text-5xl font-serif text-base-content tracking-wider font-semibold">鏂囩珷褰掓。</h1>
               <p class="text-[14px] text-base-content/40 mt-3 font-serif tracking-[0.05em]"
                 th:if="${globalArchives != null and globalArchives.items != null}">
-                共 <span class="font-sans font-medium text-base-content/80 px-[3px]"
-                  th:text="${#lists.size(globalArchives.items)}">0</span> 个年份的文章记录
+                鍏?<span class="font-sans font-medium text-base-content/80 px-[3px]"
+                  th:text="${#lists.size(globalArchives.items)}">0</span> 涓勾浠界殑鏂囩珷璁板綍
               </p>
             </div>
           </div>
@@ -36,13 +36,13 @@
 
 
 
-        <!-- 归档时间线 -->
+        <!-- 褰掓。鏃堕棿绾?-->
         <div class="archive-timeline space-y-12" th:if="${archives != null and archives.items != null}"
           x-data="archiveScroll()" @scroll.window="updateCurrentMonth()">
           <th:block th:each="archive : ${archives.items}">
-            <!-- 年份标题 -->
+            <!-- 骞翠唤鏍囬 -->
             <div th:id="${'year-' + archive.year}" class="relative" th:attr="data-year=${archive.year}">
-              <!-- 年份标记（粘性，显示当前月份） -->
+              <!-- 骞翠唤鏍囪锛堢矘鎬э紝鏄剧ず褰撳墠鏈堜唤锛?-->
               <div class="sticky top-20 z-10 mb-6">
                 <div
                   class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-content shadow-xl shadow-primary/30 backdrop-blur-sm">
@@ -50,43 +50,43 @@
                   <span class="text-xl font-bold" th:text="${archive.year}"></span>
                   <span class="text-sm opacity-90 font-medium"
                     th:attr="data-year=${archive.year}, data-default-month=${archive.months[0].month}"
-                    x-text="currentMonth[$el.dataset.year] ? currentMonth[$el.dataset.year] + '月' : $el.dataset.defaultMonth + '月'">
+                    x-text="currentMonth[$el.dataset.year] ? currentMonth[$el.dataset.year] + '鏈? : $el.dataset.defaultMonth + '鏈?">
                   </span>
                 </div>
               </div>
 
-              <!-- 月份列表 -->
+              <!-- 鏈堜唤鍒楄〃 -->
               <div class="space-y-8 pl-4 border-l-2 border-primary/20 ml-4">
                 <th:block th:each="monthData : ${archive.months}">
-                  <!-- 月份标题 -->
+                  <!-- 鏈堜唤鏍囬 -->
                   <div class="relative month-section" th:id="${'month-' + archive.year + '-' + monthData.month}"
                     th:attr="data-year=${archive.year}, data-month=${monthData.month}">
-                    <!-- 时间线节点 -->
+                    <!-- 鏃堕棿绾胯妭鐐?-->
                     <div
                       class="absolute -left-[1.35rem] top-1 w-4 h-4 rounded-full bg-primary shadow-md shadow-primary/50 border-2 border-base-100">
                     </div>
 
-                    <!-- 月份标签 -->
+                    <!-- 鏈堜唤鏍囩 -->
                     <div class="mb-4 pl-6">
                       <span
                         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-base-200/80 text-base-content shadow-sm">
-                        <span th:text="${monthData.month + ' 月'}"></span>
+                        <span th:text="${monthData.month + ' 鏈?}"></span>
                         <span class="text-xs opacity-60 font-medium"
-                          th:text="'(' + ${#lists.size(monthData.posts)} + ' 篇)'"></span>
+                          th:text="'(' + ${#lists.size(monthData.posts)} + ' 绡?'"></span>
                       </span>
                     </div>
 
-                    <!-- 文章列表 -->
+                    <!-- 鏂囩珷鍒楄〃 -->
                     <div class="pl-6 space-y-3">
                       <article th:each="post : ${monthData.posts}"
                         th:with="isPinned = ${post.spec.pinned == true},
                                         isPrivate = ${post.spec.visible != null and post.spec.visible.name() == 'PRIVATE' and currentUser != null and currentUser.metadata.name == post.spec.owner},
                                         isLocked = ${post.metadata.annotations != null and post.metadata.annotations['content.halo.run/content-restriction'] != null and post.metadata.annotations['content.halo.run/content-restriction'] != ''}"
                         class="glow-card group relative flex items-start gap-4 p-4 rounded-2xl bg-base-100/90 backdrop-blur-xl border border-base-content/[0.06] hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 cursor-pointer">
-                        <!-- 整卡片可点击链接 -->
-                        <a th:href="${post.status.permalink}" class="absolute inset-0 z-10" aria-label="阅读文章"></a>
+                        <!-- 鏁村崱鐗囧彲鐐瑰嚮閾炬帴 -->
+                        <a th:href="${post.status.permalink}" class="absolute inset-0 z-10" aria-label="闃呰鏂囩珷"></a>
 
-                        <!-- 日期标记 -->
+                        <!-- 鏃ユ湡鏍囪 -->
                         <div
                           class="shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 flex flex-col items-center justify-center text-center group-hover:border-primary/40 group-hover:shadow-md group-hover:shadow-primary/20 transition-all">
                           <span class="text-xl font-bold text-primary leading-none"
@@ -95,37 +95,36 @@
                             th:text="${#dates.format(post.spec.publishTime, 'EEE')}"></span>
                         </div>
 
-                        <!-- 文章信息 -->
+                        <!-- 鏂囩珷淇℃伅 -->
                         <div class="flex-1 min-w-0">
-                          <!-- 标题 + 角标 -->
+                          <!-- 鏍囬 + 瑙掓爣 -->
                           <div class="flex items-center gap-2 mb-1">
                             <h3
                               class="text-base font-medium text-base-content group-hover:text-primary transition-colors line-clamp-1"
-                              th:text="${post.spec.title}">文章标题</h3>
+                              th:text="${post.spec.title}">鏂囩珷鏍囬</h3>
                             <span th:if="${isPrivate}"
                               class="shrink-0 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium bg-warning text-warning-content">
-                              <span class="icon-[heroicons--eye-slash] w-2.5 h-2.5"></span>仅自己
-                            </span>
+                              <span class="icon-[heroicons--eye-slash] w-2.5 h-2.5"></span>浠呰嚜宸?                            </span>
                             <span th:if="${isLocked}"
                               class="shrink-0 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium bg-error/90 text-error-content">
                               <span class="icon-[heroicons--lock-closed] w-2.5 h-2.5"></span>
                             </span>
                           </div>
                           <div class="flex flex-wrap items-center gap-3 text-xs text-base-content/60">
-                            <!-- 分类 -->
+                            <!-- 鍒嗙被 -->
                             <span th:if="${!#lists.isEmpty(post.categories)}" class="inline-flex items-center gap-1">
                               <span class="icon-[heroicons--folder] w-3.5 h-3.5"></span>
                               <a th:href="${post.categories[0].status.permalink}"
                                 th:text="${post.categories[0].spec.displayName}"
                                 class="relative z-20 hover:text-primary"></a>
                             </span>
-                            <!-- 标签 -->
+                            <!-- 鏍囩 -->
                             <span th:if="${!#lists.isEmpty(post.tags)}" class="inline-flex items-center gap-1">
                               <span class="icon-[heroicons--tag] w-3.5 h-3.5"></span>
                               <a th:href="${post.tags[0].status.permalink}" th:text="${post.tags[0].spec.displayName}"
                                 class="relative z-20 hover:text-primary"></a>
                             </span>
-                            <!-- 阅读量 -->
+                            <!-- 闃呰閲?-->
                             <span class="inline-flex items-center gap-1">
                               <span class="icon-[heroicons--eye] w-3.5 h-3.5"></span>
                               <span th:text="${post.stats.visit ?: 0}"></span>
@@ -133,7 +132,7 @@
                           </div>
                         </div>
 
-                        <!-- 箭头指示 -->
+                        <!-- 绠ご鎸囩ず -->
                         <div class="shrink-0 self-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <span class="icon-[heroicons--arrow-right] w-5 h-5 text-primary"></span>
                         </div>
@@ -146,14 +145,14 @@
           </th:block>
         </div>
 
-        <!-- 无归档提示 -->
+        <!-- 鏃犲綊妗ｆ彁绀?-->
         <div th:if="${archives == null or archives.items == null or #lists.isEmpty(archives.items)}"
           class="flex flex-col items-center justify-center py-20 text-center">
           <span class="icon-[heroicons--archive-box-x-mark] w-16 h-16 text-base-content/30 mb-4"></span>
-          <p class="text-base-content/60">暂无归档文章</p>
+          <p class="text-base-content/60">鏆傛棤褰掓。鏂囩珷</p>
         </div>
 
-        <!-- 分页 -->
+        <!-- 鍒嗛〉 -->
         <th:block th:if="${archives != null and archives.totalPages > 1}">
           <th:block th:replace="~{modules/categories/pagination :: pagination(
               context=@{/archives/},
@@ -166,11 +165,11 @@
           )}" />
         </th:block>
 
-        <!-- 评论区 -->
+        <!-- 璇勮鍖?-->
         <section class="mt-12" th:if="${theme.config.archive_settings.basic_info.enable_comment == true}">
           <h2 class="text-xl font-bold text-base-content mb-6 flex items-center gap-2">
             <span class="icon-[mdi--comment-text-outline] w-5 h-5 text-primary"></span>
-            评论留言
+            璇勮鐣欒█
           </h2>
           <div class="glow-card bg-base-100/80 backdrop-blur-xl border border-base-content/[0.06] rounded-2xl">
             <div class="card-body p-6 sm:p-8">
@@ -182,7 +181,7 @@
         </section>
       </section>
 
-      <!-- 右侧：侧边栏 -->
+      <!-- 鍙充晶锛氫晶杈规爮 -->
       <aside th:if="${sidebarCfg?.show_sidebar == true}"
         class="right-sidebar w-80 space-y-6 hidden lg:block shrink-0 sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -192,3 +191,4 @@
 </main>
 
 </html>
+

@@ -1,4 +1,4 @@
-<!-- 瞬间卡片发光效果脚本 -->
+﻿<!-- 鐬棿鍗＄墖鍙戝厜鏁堟灉鑴氭湰 -->
 <script th:inline="none" data-swup-reload-script>
   window.handleMomentCardGlow =
     window.handleMomentCardGlow ||
@@ -26,14 +26,14 @@
     };
 </script>
 
-<!-- 瞬间模块 - 统一布局方案 -->
+<!-- 鐬棿妯″潡 - 缁熶竴甯冨眬鏂规 -->
 <div
   class="absolute inset-x-0 bottom-0 z-30 flex items-end justify-center px-4 pb-20"
   th:if="${theme.config.index.moment_settings.show_moment}"
 >
-  <!-- 瞬间卡片容器 -->
+  <!-- 鐬棿鍗＄墖瀹瑰櫒 -->
   <div class="w-full max-w-6xl">
-    <!-- 未安装插件时的简单提醒 -->
+    <!-- 鏈畨瑁呮彃浠舵椂鐨勭畝鍗曟彁閱?-->
     <th:block th:unless="${pluginFinder.available('PluginMoments')}">
       <div
         class="moment-card border-primary/20 rounded-2xl border shadow-xl backdrop-blur-sm"
@@ -41,25 +41,25 @@
         onmouseenter="showMomentCardGlow(this)"
         onmouseleave="hideMomentCardGlow(this)"
       >
-        <!-- 发光效果容器 -->
+        <!-- 鍙戝厜鏁堟灉瀹瑰櫒 -->
         <div class="moment-glow-container">
           <div class="moment-glow"></div>
         </div>
         <div class="p-5 text-center">
-          <p class="mb-4 text-white/80">需要安装瞬间插件来展示动态内容</p>
+          <p class="mb-4 text-white/80">闇€瑕佸畨瑁呯灛闂存彃浠舵潵灞曠ず鍔ㄦ€佸唴瀹?/p>
           <a
             href="https://github.com/halo-sigs/plugin-moments"
             target="_blank"
             class="bg-primary/20 border-primary/30 hover:text-primary hover:bg-primary/30 inline-flex items-center space-x-2 rounded-lg border px-4 py-2 text-white transition-all duration-300"
           >
             <span class="icon-[material-symbols--download] h-4 w-4"></span>
-            <span>下载瞬间插件</span>
+            <span>涓嬭浇鐬棿鎻掍欢</span>
           </a>
         </div>
       </div>
     </th:block>
 
-    <!-- 已安装插件时显示完整功能 -->
+    <!-- 宸插畨瑁呮彃浠舵椂鏄剧ず瀹屾暣鍔熻兘 -->
     <th:block th:if="${pluginFinder.available('PluginMoments')}">
       <div
         class="moment-card border-primary/20 rounded-2xl border shadow-xl backdrop-blur-sm"
@@ -67,37 +67,37 @@
         onmouseenter="showMomentCardGlow(this)"
         onmouseleave="hideMomentCardGlow(this)"
       >
-        <!-- 发光效果容器 -->
+        <!-- 鍙戝厜鏁堟灉瀹瑰櫒 -->
         <div class="moment-glow-container">
           <div class="moment-glow"></div>
         </div>
         <div class="moment-card-content p-5">
-          <!-- 标题栏 -->
+          <!-- 鏍囬鏍?-->
           <div class="mb-4 flex items-center justify-between md:mb-6">
             <div class="flex items-center space-x-2 md:space-x-3">
-              <!-- 对齐优化：标题图标与文字行高匹配，消除视觉偏差 -->
+              <!-- 瀵归綈浼樺寲锛氭爣棰樺浘鏍囦笌鏂囧瓧琛岄珮鍖归厤锛屾秷闄よ瑙夊亸宸?-->
               <span
                 class="icon-[material-symbols--chat-rounded] text-primary h-5 w-5 transition-all duration-300 md:h-6 md:w-6"
               ></span>
               <h3
                 class="moment-title text-base leading-5 font-medium text-white transition-all duration-200 md:text-lg md:leading-6"
-                th:text="${theme.config.index.moment_settings.moment_title ?: '瞬间'}"
+                th:text="${theme.config.index.moment_settings.moment_title ?: '鐬棿'}"
               >
-                瞬间
+                鐬棿
               </h3>
             </div>
-            <!-- 查看全部/发布按钮 -->
+            <!-- 鏌ョ湅鍏ㄩ儴/鍙戝竷鎸夐挳 -->
             <a
               href="/moments"
               class="bg-primary/20 hover:bg-primary/30 border-primary/30 hover:text-primary-200 inline-flex items-center rounded-full border px-3 py-1.5 text-xs leading-4 text-white transition-all duration-300 ease-out hover:scale-105 md:px-4 md:py-2 md:text-sm"
-              th:title="${#authorization.expression('isAuthenticated()') ? '发布瞬间' : '查看全部瞬间'}"
-              aria-label="查看全部瞬间"
+              th:title="${#authorization.expression('isAuthenticated()') ? '鍙戝竷鐬棿' : '鏌ョ湅鍏ㄩ儴鐬棿'}"
+              aria-label="鏌ョ湅鍏ㄩ儴鐬棿"
             >
               <span
                 th:if="${#authorization.expression('isAuthenticated()')}"
                 class="icon-[material-symbols--add] mr-1 h-3.5 w-3.5 md:h-4 md:w-4"
               ></span>
-              <span th:if="${#authorization.expression('isAuthenticated()')}">发布</span>
+              <span th:if="${#authorization.expression('isAuthenticated()')}">鍙戝竷</span>
               <span
                 th:unless="${#authorization.expression('isAuthenticated()')}"
                 class="icon-[material-symbols--arrow-forward] h-4 w-4"
@@ -105,7 +105,7 @@
             </a>
           </div>
 
-          <!-- 响应式网格布局：优化间距和视觉效果 -->
+          <!-- 鍝嶅簲寮忕綉鏍煎竷灞€锛氫紭鍖栭棿璺濆拰瑙嗚鏁堟灉 -->
           <div
             class="grid grid-cols-1 gap-3 transition-all duration-500 ease-out md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-5"
           >
@@ -113,24 +113,24 @@
               th:each="moment, momentStat : ${momentFinder.listAll()}"
               th:with="content=${moment.spec.content}, hasText=${not #strings.isEmpty(content.raw)}, hasMedia=${content.medium != null and not content.medium.isEmpty()}"
             >
-              <!-- 根据索引动态设置响应式显示类 -->
+              <!-- 鏍规嵁绱㈠紩鍔ㄦ€佽缃搷搴斿紡鏄剧ず绫?-->
               <div
                 th:if="${(hasText or hasMedia) and momentStat.index < 3}"
                 th:class="${'moment-item rounded-xl p-3 md:p-4 backdrop-blur-sm transition-all duration-300 ease-out hover:scale-105 hover:backdrop-blur-md hover-lift tablet-optimized text-white h-24 md:h-28 flex-col justify-between' + (momentStat.index == 1 ? ' hidden md:flex' : '') + (momentStat.index == 2 ? ' hidden lg:flex' : ' flex')}"
                 th:classappend="${momentStat.index % 2 == 0 ? ' rotate-slight-left' : ' rotate-slight-right'}"
               >
-                <!-- 瞬间内容 -->
+                <!-- 鐬棿鍐呭 -->
                 <div class="max-h-12 flex-1 overflow-hidden text-sm leading-snug *:m-0 *:p-0 md:max-h-16 md:text-base">
-                  <!-- 有文本内容时显示文本 -->
+                  <!-- 鏈夋枃鏈唴瀹规椂鏄剧ず鏂囨湰 -->
                   <span th:if="${hasText}" th:utext="${content.raw}"></span>
-                  <!-- 只有媒体时显示媒体提示 -->
+                  <!-- 鍙湁濯掍綋鏃舵樉绀哄獟浣撴彁绀?-->
                   <span th:unless="${hasText}" class="flex items-center gap-2 text-white/70">
                     <span class="icon-[material-symbols--image] h-5 w-5"></span>
-                    <span th:text="${#lists.size(content.medium) + ' 个媒体内容'}"></span>
+                    <span th:text="${#lists.size(content.medium) + ' 涓獟浣撳唴瀹?}"></span>
                   </span>
                 </div>
 
-                <!-- 标签 -->
+                <!-- 鏍囩 -->
                 <div
                   th:if="${moment.spec.tags != null and !moment.spec.tags.isEmpty()}"
                   class="mt-1 flex max-h-5 flex-wrap gap-1 overflow-hidden"
@@ -140,14 +140,14 @@
                     th:href="@{/moments(tag=${tag})}"
                     class="badge badge-sm hover:text-primary border-white/20 bg-white/10 text-white/70 transition-colors"
                     th:text="'#' + ${tag}"
-                    >#标签</a
+                    >#鏍囩</a
                   >
                 </div>
 
-                <!-- 底部信息栏 -->
+                <!-- 搴曢儴淇℃伅鏍?-->
                 <div class="mt-2 flex items-center justify-between">
                   <div class="flex items-center space-x-1.5 md:space-x-2">
-                    <!-- 对齐优化：时间图标与文本使用紧凑行高与居中 -->
+                    <!-- 瀵归綈浼樺寲锛氭椂闂村浘鏍囦笌鏂囨湰浣跨敤绱у噾琛岄珮涓庡眳涓?-->
                     <span
                       class="icon-[material-symbols--schedule] h-3 w-3 text-white/60 transition-colors duration-200 md:h-3.5 md:w-3.5"
                     ></span>
@@ -157,12 +157,12 @@
                     ></span>
                   </div>
                   <div class="flex items-center space-x-1.5">
-                    <!-- 链接按钮 -->
+                    <!-- 閾炬帴鎸夐挳 -->
                     <a
                       th:href="@{/moments/{name}(name=${moment.metadata.name})}"
                       class="hover:border-primary/30 group moment-link-btn flex items-center rounded-full border border-white/10 bg-white/5 p-1 transition-all duration-300 ease-out hover:scale-110 hover:bg-white/10 md:p-1.5"
-                      title="查看详情"
-                      aria-label="查看瞬间详情"
+                      title="鏌ョ湅璇︽儏"
+                      aria-label="鏌ョ湅鐬棿璇︽儏"
                     >
                       <span
                         class="icon-[material-symbols--link] group-hover:text-primary h-3 w-3 text-white/60 transition-all duration-200 md:h-3.5 md:w-3.5"
@@ -178,3 +178,4 @@
     </th:block>
   </div>
 </div>
+

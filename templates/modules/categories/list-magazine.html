@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ============================================= -->
-<!--   Magazine 杂志风格：纯图片展示 + 悬浮信息     -->
-<!--   特点：默认纯图片，悬浮显示标题与元信息       -->
+<!--   Magazine 鏉傚織椋庢牸锛氱函鍥剧墖灞曠ず + 鎮诞淇℃伅     -->
+<!--   鐗圭偣锛氶粯璁ょ函鍥剧墖锛屾偓娴樉绀烘爣棰樹笌鍏冧俊鎭?      -->
 <!-- ============================================= -->
 
 <section th:fragment="magazine(posts, settings)" class="article-magazine-grid grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -13,7 +13,7 @@
                     isLocked = ${post.metadata.annotations != null and post.metadata.annotations['content.halo.run/content-restriction'] != null and post.metadata.annotations['content.halo.run/content-restriction'] != ''}"
     class="group relative overflow-hidden rounded-[2rem] shadow-lg border border-base-content/5 hover:shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]">
 
-    <!-- 封面计算 (Context-Aware Fix) -->
+    <!-- 灏侀潰璁＄畻 (Context-Aware Fix) -->
     <th:block th:with="
         nested = ${settings?.cover_fallback},
         flatEnable = ${settings?.cover_fallback_enable},
@@ -26,68 +26,68 @@
         actualOk=${actual != null and not #strings.isEmpty(actual) ? actual : null},
         coverUrl=${(enable == true) ? ((mode == 'always' and defaultImg != null) ? defaultImg : (actualOk != null ? actualOk : defaultImg)) : actualOk}
     ">
-      <!-- 背景大图：16:10 比例 -->
+      <!-- 鑳屾櫙澶у浘锛?6:10 姣斾緥 -->
       <div class="relative aspect-video overflow-hidden">
         <a th:href="@{${post.status.permalink}}" class="absolute inset-0 block">
-          <img th:if="${coverUrl != null}" th:src="${coverUrl}" th:alt="|${post.spec.title} 的封面|" loading="lazy"
+          <img th:if="${coverUrl != null}" th:src="${coverUrl}" th:alt="|${post.spec.title} 鐨勫皝闈" loading="lazy"
             class="absolute inset-0 w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-1000 ease-[cubic-bezier(0.25,0.1,0.25,1)]" />
-          <!-- 无封面占位 -->
+          <!-- 鏃犲皝闈㈠崰浣?-->
           <div th:if="${coverUrl == null}"
             class="absolute inset-0 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/15 grid place-items-center">
             <span class="icon-[heroicons--photo] w-16 h-16 text-primary/30"></span>
           </div>
         </a>
 
-        <!-- 全局安全遮罩：确保浅色图片上的白字也能看清 -->
+        <!-- 鍏ㄥ眬瀹夊叏閬僵锛氱‘淇濇祬鑹插浘鐗囦笂鐨勭櫧瀛椾篃鑳界湅娓?-->
         <div class="absolute inset-0 bg-black/10 pointer-events-none"></div>
 
-        <!-- 置顶角标 -->
+        <!-- 缃《瑙掓爣 -->
         <span th:if="${isPinned}"
-          class="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">置顶</span>
+          class="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">缃《</span>
 
-        <!-- 渐变遮罩：双层设计 (对比度增强版) -->
-        <!-- 1. 默认状态：底部渐变加深 (from-black/80 via-black/40)，保护常驻信息 -->
+        <!-- 娓愬彉閬僵锛氬弻灞傝璁?(瀵规瘮搴﹀寮虹増) -->
+        <!-- 1. 榛樿鐘舵€侊細搴曢儴娓愬彉鍔犳繁 (from-black/80 via-black/40)锛屼繚鎶ゅ父椹讳俊鎭?-->
         <div
           class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-500 group-hover:opacity-0 pointer-events-none">
         </div>
 
-        <!-- 2. 悬浮状态：全屏沉浸渐变 (加深至 from-black/90 via-black/60)，确保标题绝对清晰 -->
+        <!-- 2. 鎮诞鐘舵€侊細鍏ㄥ睆娌夋蹈娓愬彉 (鍔犳繁鑷?from-black/90 via-black/60)锛岀‘淇濇爣棰樼粷瀵规竻鏅?-->
         <div
           class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out pointer-events-none">
         </div>
 
-        <!-- 内容层：Hover-Reveal 交互 -->
+        <!-- 鍐呭灞傦細Hover-Reveal 浜や簰 -->
         <div class="absolute bottom-0 left-0 right-0 px-6 pb-5 flex flex-col justify-end pointer-events-none">
 
-          <!-- 揭示区域：手机默认显示，桌面端悬浮显示 -->
+          <!-- 鎻ず鍖哄煙锛氭墜鏈洪粯璁ゆ樉绀猴紝妗岄潰绔偓娴樉绀?-->
           <div
             class="grid grid-rows-[1fr] md:grid-rows-[0fr] md:group-hover:grid-rows-[1fr] transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]">
             <div class="overflow-hidden">
               <div class="pb-4 flex flex-col items-start gap-3">
-                <!-- 分类胶囊（上方）：手机默认显示，桌面悬浮动画 -->
+                <!-- 鍒嗙被鑳跺泭锛堜笂鏂癸級锛氭墜鏈洪粯璁ゆ樉绀猴紝妗岄潰鎮诞鍔ㄧ敾 -->
                 <div th:if="${!#lists.isEmpty(post.categories)}" th:with="firstCat=${post.categories[0]}" class="transform translate-y-0 opacity-100 
                          md:translate-y-3 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 
                          transition-all duration-500 delay-0 ease-out pointer-events-auto">
                   <a th:href="@{${firstCat.status.permalink}}"
                     class="inline-block px-2.5 py-1 rounded-md bg-white/15 hover:bg-white/25 backdrop-blur-sm text-[11px] font-medium text-white/90 tracking-wide transition-colors"
-                    th:text="${firstCat.spec.displayName}">分类</a>
+                    th:text="${firstCat.spec.displayName}">鍒嗙被</a>
                 </div>
 
-                <!-- 标题：手机默认显示，桌面悬浮动画 -->
+                <!-- 鏍囬锛氭墜鏈洪粯璁ゆ樉绀猴紝妗岄潰鎮诞鍔ㄧ敾 -->
                 <h3
                   class="transform translate-y-0 opacity-100 
                          md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 
                          transition-all duration-600 delay-75 ease-out
                          text-lg md:text-xl font-bold leading-snug drop-shadow-lg tracking-tight text-white pointer-events-auto line-clamp-2">
-                  <a th:href="@{${post.status.permalink}}" th:text="${post.spec.title}">文章标题</a>
+                  <a th:href="@{${post.status.permalink}}" th:text="${post.spec.title}">鏂囩珷鏍囬</a>
                 </h3>
               </div>
             </div>
           </div>
 
-          <!-- 元信息栏：常驻可见 -->
+          <!-- 鍏冧俊鎭爮锛氬父椹诲彲瑙?-->
           <div class="flex flex-wrap items-center gap-3 text-xs text-white/70 font-medium">
-            <!-- 日期 -->
+            <!-- 鏃ユ湡 -->
             <span class="inline-flex items-center gap-1">
               <span class="icon-[heroicons--calendar-days] w-3.5 h-3.5 opacity-70"></span>
               <time th:text="${#dates.format(post.spec.publishTime,'yyyy-MM-dd')}">2025-01-01</time>
@@ -95,13 +95,13 @@
 
             <span class="w-0.5 h-0.5 rounded-full bg-white/30"></span>
 
-            <!-- 浏览量 -->
+            <!-- 娴忚閲?-->
             <span class="inline-flex items-center gap-1">
               <span class="icon-[heroicons--eye] w-3.5 h-3.5 opacity-70"></span>
               <span th:text="${post.stats.visit ?: 0}">0</span>
             </span>
 
-            <!-- 点赞 -->
+            <!-- 鐐硅禐 -->
             <span class="inline-flex items-center gap-1">
               <span class="icon-[heroicons--heart] w-3.5 h-3.5 opacity-70"></span>
               <span th:text="${post.stats.upvote ?: 0}">0</span>
@@ -114,3 +114,4 @@
 </section>
 
 </html>
+

@@ -1,24 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
-<!-- 关键 CSS 内联 - 首屏渲染必需的最小样式 -->
+<!-- 鍏抽敭 CSS 鍐呰仈 - 棣栧睆娓叉煋蹇呴渶鐨勬渶灏忔牱寮?-->
 <th:block th:fragment="critical">
 <style>
-/* 防止布局抖动 */
+/* 闃叉甯冨眬鎶栧姩 */
 html { scroll-behavior: smooth; }
 body { margin: 0; min-height: 100vh; }
 
-/* 导航栏骨架 */
+/* 瀵艰埅鏍忛鏋?*/
 .navbar { position: sticky; top: 0; z-index: 50; height: 4rem; }
 
-/* 图片懒加载占位 */
+/* 鍥剧墖鎳掑姞杞藉崰浣?*/
 img[loading="lazy"] { opacity: 0; transition: opacity 0.4s ease; }
 img[loading="lazy"].loaded { opacity: 1; }
 
-/* Alpine 隐藏未初始化内容 */
+/* Alpine 闅愯棌鏈垵濮嬪寲鍐呭 */
 [x-cloak] { display: none !important; }
 
-/* 骨架屏动画 */
+/* 楠ㄦ灦灞忓姩鐢?*/
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
@@ -32,3 +32,4 @@ img[loading="lazy"].loaded { opacity: 1; }
 </th:block>
 
 </html>
+

@@ -1,25 +1,24 @@
-<!doctype html>
+﻿<!doctype html>
 <!--
-  Huohuo Weather Glass - 微信二维码分享页面
+  Huohuo Weather Glass - 寰俊浜岀淮鐮佸垎浜〉闈?  
+  鍔熻兘锛氱嫭绔嬬殑闈欐€侀〉闈紝鐢ㄤ簬鐢熸垚鏂囩珷鍒嗕韩浜岀淮鐮?
+  鐗圭偣锛?
+    - 瀹屽叏闈欐€侊紝涓嶄緷璧朒alo鍚庣
+    - 绾粦鑳屾櫙锛岀畝娲佸ぇ姘?
+    - 浣跨敤QRCode.js鐢熸垚浜岀淮鐮?
+    - 鏀寔閿欒澶勭悊鍜屽姞杞藉姩鐢?
   
-  功能：独立的静态页面，用于生成文章分享二维码
-  特点：
-    - 完全静态，不依赖Halo后端
-    - 纯黑背景，简洁大气
-    - 使用QRCode.js生成二维码
-    - 支持错误处理和加载动画
-  
-  访问方式：
-  /assets/qrcode/qrcode-share.html?url=[文章URL]
+  璁块棶鏂瑰紡锛?
+  /assets/qrcode/qrcode-share.html?url=[鏂囩珷URL]
   
   @author Huohuo Space
-  @version 1.0.21
+  @version 1.0.24
 -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>微信扫码分享</title>
+  <title>寰俊鎵爜鍒嗕韩</title>
   <style>
     * {
       margin: 0;
@@ -175,9 +174,9 @@
       <svg class="wechat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M8.5 11.5c.8 0 1.5-.7 1.5-1.5s-.7-1.5-1.5-1.5S7 9.2 7 10s.7 1.5 1.5 1.5zm7 0c.8 0 1.5-.7 1.5-1.5s-.7-1.5-1.5-1.5-1.5.7-1.5 1.5.7 1.5 1.5 1.5zm3.5 2.5c-2.2 0-4.2.9-5.6 2.3-.2-.1-.5-.3-.9-.3-3 0-5.5 2-6.4 4.7C2.8 19.5 0 16.1 0 12 0 7 4 3 9 3s9 4 9 9c-.1 0-.2 0-.2 0h-.8zM24 16c0-3.9-3.6-7-8-7s-8 3.1-8 7 3.6 7 8 7c.7 0 1.4-.1 2-.2 1.6 1.1 3.5 1.7 5.5 1.7.3 0 .5-.2.5-.5v-.1c0-.2-.1-.3-.2-.4-.8-.5-1.3-1.5-1.3-2.5.1-1.3.8-2.5 1.5-3.5zm-11.5-.5c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm5 0c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/>
       </svg>
-      微信扫码分享
+      寰俊鎵爜鍒嗕韩
     </h1>
-    <p class="subtitle">使用微信扫一扫，分享给好友或朋友圈</p>
+    <p class="subtitle">浣跨敤寰俊鎵竴鎵紝鍒嗕韩缁欏ソ鍙嬫垨鏈嬪弸鍦?/p>
     
     <div id="qrcode-wrapper">
       <div id="loading" class="loading"></div>
@@ -185,8 +184,8 @@
     </div>
     
     <div class="tips">
-      <p>💡 打开微信，点击「扫一扫」</p>
-      <p>扫描二维码即可在手机上打开文章</p>
+      <p>馃挕 鎵撳紑寰俊锛岀偣鍑汇€屾壂涓€鎵€?/p>
+      <p>鎵弿浜岀淮鐮佸嵆鍙湪鎵嬫満涓婃墦寮€鏂囩珷</p>
     </div>
   </div>
 
@@ -194,60 +193,60 @@
   
   <script>
     (function () {
-      // 等待脚本加载完成
+      // 绛夊緟鑴氭湰鍔犺浇瀹屾垚
       window.addEventListener('DOMContentLoaded', function() {
         try {
-          // console.log('📦 QRCode 库检测:', typeof QRCode !== 'undefined' ? '✅ 已加载' : '❌ 未加载');
+          // console.log('馃摝 QRCode 搴撴娴?', typeof QRCode !== 'undefined' ? '鉁?宸插姞杞? : '鉂?鏈姞杞?);
           
-          // 从 URL 参数提取要分享的链接（使用 URLSearchParams 安全解析）
+          // 浠?URL 鍙傛暟鎻愬彇瑕佸垎浜殑閾炬帴锛堜娇鐢?URLSearchParams 瀹夊叏瑙ｆ瀽锛?
           const urlParams = new URLSearchParams(window.location.search);
           const encodedUrl = urlParams.get('url');
           
-          // 验证 URL 参数
+          // 楠岃瘉 URL 鍙傛暟
           if (!encodedUrl || encodedUrl === 'undefined' || encodedUrl === 'null' || encodedUrl.trim() === '') {
-            throw new Error('无效的分享链接');
+            throw new Error('鏃犳晥鐨勫垎浜摼鎺?);
           }
           
-          // URL 已经是编码后的，直接使用
+          // URL 宸茬粡鏄紪鐮佸悗鐨勶紝鐩存帴浣跨敤
           const shareUrl = encodedUrl;
           
-          // console.log('🔗 生成二维码:', shareUrl);
+          // console.log('馃敆 鐢熸垚浜岀淮鐮?', shareUrl);
           
-          // 检查 QRCode 库是否加载
+          // 妫€鏌?QRCode 搴撴槸鍚﹀姞杞?
           if (typeof QRCode === 'undefined') {
-            throw new Error('QRCode 库未加载，请检查网络连接');
+            throw new Error('QRCode 搴撴湭鍔犺浇锛岃妫€鏌ョ綉缁滆繛鎺?);
           }
         
-        // 先隐藏加载动画
+        // 鍏堥殣钘忓姞杞藉姩鐢?
         const loadingEl = document.getElementById('loading');
         const qrcodeEl = document.getElementById('qrcode');
         
         if (loadingEl) loadingEl.style.display = 'none';
         if (qrcodeEl) qrcodeEl.style.display = 'block';
         
-        // 生成二维码 - 使用 QRCode
+        // 鐢熸垚浜岀淮鐮?- 浣跨敤 QRCode
         const qrcode = new QRCode(qrcodeEl, {
           text: shareUrl,
           width: 200,
           height: 200,
           colorDark: '#000000',
           colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.H  // 高容错率（30%）
+          correctLevel: QRCode.CorrectLevel.H  // 楂樺閿欑巼锛?0%锛?
         });
         
-        // console.log('✅ 二维码生成成功');
+        // console.log('鉁?浜岀淮鐮佺敓鎴愭垚鍔?);
         
         } catch (error) {
-          // console.error('❌ 二维码生成失败:', error);
+          // console.error('鉂?浜岀淮鐮佺敓鎴愬け璐?', error);
           
-          // 显示友好的错误信息
+          // 鏄剧ず鍙嬪ソ鐨勯敊璇俊鎭?
           const wrapper = document.getElementById('qrcode-wrapper');
           if (wrapper) {
             wrapper.innerHTML = `
               <div class="error">
-                <h2>⚠️ 生成失败</h2>
+                <h2>鈿狅笍 鐢熸垚澶辫触</h2>
                 <p>${error.message}</p>
-                <button onclick="window.close()">关闭窗口</button>
+                <button onclick="window.close()">鍏抽棴绐楀彛</button>
               </div>
             `;
           }
@@ -257,3 +256,5 @@
   </script>
 </body>
 </html>
+
+

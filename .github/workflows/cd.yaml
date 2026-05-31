@@ -12,7 +12,7 @@ on:
       tag:
         description: Release tag to upload the theme package to
         required: true
-        default: v1.0.23
+        default: v1.0.24
 
 permissions:
   contents: write
@@ -35,7 +35,7 @@ jobs:
           elif [ "${{ github.event_name }}" = "push" ]; then
             echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
           else
-            echo "tag=v1.0.23" >> "$GITHUB_OUTPUT"
+            echo "tag=v1.0.24" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Package theme
@@ -44,6 +44,7 @@ jobs:
           mkdir -p dist
           export TAG=${{ steps.release.outputs.tag }}
           python3 scripts/package-theme.py
+
       - name: Create or update release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -56,12 +57,12 @@ jobs:
 
           基于 Sky Blog Theme 二次开发的动态天气玻璃风 Halo 主题。
 
-          ### 主要特性
+          ### 本次更新
 
-          - 白天动态云层、黄昏火烧云、夜间雨景视频背景
-          - 全站玻璃卡片视觉
-          - 瞬间、图库、友链、文档、分类、标签等页面适配
-          - 适配 Halo 2.23.0+
+          - 修复 Docsme 文档页代码块被全局 code 样式压成单行的问题。
+          - 修复长文档渐进加载后 Shiki 未重新高亮新代码块的问题。
+          - 优化文档页资源缓存版本号。
+          - README 补充 Docsme 中文路径 404 的插件侧已知问题说明。
 
           ### 安装
 

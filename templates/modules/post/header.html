@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--           文章页头部 Banner - 苹果风        -->
+<!--           鏂囩珷椤靛ご閮?Banner - 鑻规灉椋?       -->
 <!-- ========================================== -->
 
 <header th:fragment="banner" class="post-banner relative w-full" th:with="headerBgSettings=${theme.config.article.header_background},
@@ -11,30 +11,30 @@
            hasPrimaryImage=${primaryImage != null and !primaryImage.isEmpty()},
            finalImage=${hasPrimaryImage ? primaryImage : fallbackImage}">
 
-  <!-- 背景图片区域 -->
+  <!-- 鑳屾櫙鍥剧墖鍖哄煙 -->
   <div class="relative h-[50vh] min-h-[320px] max-h-[450px] overflow-hidden">
-    <!-- 背景图片 -->
+    <!-- 鑳屾櫙鍥剧墖 -->
     <div class="absolute inset-0">
       <img th:if="${finalImage != null and !finalImage.isEmpty()}" class="w-full h-full object-cover object-center"
-        th:src="${finalImage}" alt="文章背景图">
+        th:src="${finalImage}" alt="鏂囩珷鑳屾櫙鍥?>
 
-      <!-- 无图片时的渐变背景 -->
+      <!-- 鏃犲浘鐗囨椂鐨勬笎鍙樿儗鏅?-->
       <div th:unless="${finalImage != null and !finalImage.isEmpty()}"
         class="w-full h-full bg-gradient-to-br from-primary/90 via-primary/70 to-secondary/90">
       </div>
     </div>
 
-    <!-- 渐变蒙版 - 底部融合 -->
+    <!-- 娓愬彉钂欑増 - 搴曢儴铻嶅悎 -->
     <div class="absolute inset-0 bg-gradient-to-t from-base-100 via-base-100/50 to-transparent"></div>
 
-    <!-- 内容定位在底部 -->
+    <!-- 鍐呭瀹氫綅鍦ㄥ簳閮?-->
     <div class="absolute inset-x-0 bottom-0">
       <div class="max-w-7xl mx-auto px-4">
         <div class="max-w-4xl lg:max-w-none lg:w-3/4 lg:pr-8">
 
-          <!-- 分类 + 标签 - 使用 DaisyUI badge -->
+          <!-- 鍒嗙被 + 鏍囩 - 浣跨敤 DaisyUI badge -->
           <div class="flex flex-wrap items-center gap-2 mb-4">
-            <!-- 分类 -->
+            <!-- 鍒嗙被 -->
             <th:block th:if="${post.categories != null and !#lists.isEmpty(post.categories)}">
               <a th:each="category : ${post.categories}" th:href="@{${category.status.permalink}}"
                 th:with="categoryIcon = ${category.metadata.annotations?.get('icon')}"
@@ -46,7 +46,7 @@
               </a>
             </th:block>
 
-            <!-- 标签 -->
+            <!-- 鏍囩 -->
             <th:block th:if="${post.tags != null and !#lists.isEmpty(post.tags)}">
               <a th:each="tag : ${post.tags}" th:href="@{${tag.status.permalink}}"
                 th:with="tagIcon = ${tag.metadata.annotations?.get('icon')}"
@@ -62,15 +62,15 @@
             </th:block>
           </div>
 
-          <!-- 文章标题 -->
+          <!-- 鏂囩珷鏍囬 -->
           <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight text-base-content mb-4"
             th:text="${post.spec.title}">
-            文章标题
+            鏂囩珷鏍囬
           </h1>
 
-          <!-- 元信息 - 使用 flex + gap -->
+          <!-- 鍏冧俊鎭?- 浣跨敤 flex + gap -->
           <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-base-content/60 pb-6">
-            <!-- 作者 - 使用 avatar -->
+            <!-- 浣滆€?- 浣跨敤 avatar -->
             <div class="flex items-center gap-2" th:if="${post.owner != null}">
               <a th:href="@{/authors/{name}(name=${post.owner.name})}"
                 class="flex items-center gap-2 group cursor-pointer" th:title="${post.owner.displayName}">
@@ -84,28 +84,28 @@
               </a>
             </div>
 
-            <!-- 发布时间 -->
+            <!-- 鍙戝竷鏃堕棿 -->
             <div class="flex items-center gap-1.5">
               <span class="icon-[heroicons--calendar-days] w-4 h-4"></span>
               <span th:text="${#dates.format(post.spec.publishTime,'yyyy-MM-dd')}"></span>
             </div>
 
-            <!-- 阅读量 -->
+            <!-- 闃呰閲?-->
             <div class="flex items-center gap-1.5">
               <span class="icon-[heroicons--eye] w-4 h-4"></span>
               <span th:text="${post.stats.visit ?: 0}"></span>
             </div>
 
-            <!-- 字数 -->
+            <!-- 瀛楁暟 -->
             <div class="flex items-center gap-1.5">
               <span class="icon-[heroicons--document-text] w-4 h-4"></span>
-              <span><span id="word-count">-</span> 字</span>
+              <span><span id="word-count">-</span> 瀛?/span>
             </div>
 
-            <!-- 阅读时间 -->
+            <!-- 闃呰鏃堕棿 -->
             <div class="flex items-center gap-1.5">
               <span class="icon-[heroicons--clock] w-4 h-4"></span>
-              <span><span id="reading-time">-</span> 分钟</span>
+              <span><span id="reading-time">-</span> 鍒嗛挓</span>
             </div>
           </div>
         </div>

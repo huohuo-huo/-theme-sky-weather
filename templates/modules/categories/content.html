@@ -1,36 +1,28 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--        分类页主体内容（索引与归档）          -->
-<!-- 说明：结构参考 modules/post/content.html      -->
+<!--        鍒嗙被椤典富浣撳唴瀹癸紙绱㈠紩涓庡綊妗ｏ級          -->
+<!-- 璇存槑锛氱粨鏋勫弬鑰?modules/post/content.html      -->
 <!-- ========================================== -->
 
 <!-- 
-  模板系统说明：
+  妯℃澘绯荤粺璇存槑锛?  
+  1. 妯℃澘鏂囦欢锛?     - category.html锛堥粯璁わ級鈫?浣跨敤鍚庡彴璁剧疆鍔ㄦ€侀€夋嫨鏍峰紡
+     - category-card.html 鈫?寮哄埗浣跨敤鍗＄墖椋庢牸
+     - category-list.html 鈫?寮哄埗浣跨敤鍒楄〃椋庢牸
   
-  1. 模板文件：
-     - category.html（默认）→ 使用后台设置动态选择样式
-     - category-card.html → 强制使用卡片风格
-     - category-list.html → 强制使用列表风格
+  2. 鍚庡彴榛樿璁剧疆锛堝叏灞€榛樿锛?     - 浣嶇疆锛氫富棰樿缃?鈫?鍒楄〃璁剧疆 鈫?榛樿鍒嗙被鍒楄〃椋庢牸
+     - 鍙€夛細鍗＄墖銆佸垪琛?     - 搴旂敤浜庯細category.html 鍜?/categories锛堝叏閮級椤甸潰
   
-  2. 后台默认设置（全局默认）
-     - 位置：主题设置 → 列表设置 → 默认分类列表风格
-     - 可选：卡片、列表
-     - 应用于：category.html 和 /categories（全部）页面
-  
-  3. 自定义模板（针对特定分类）
-     - 位置：分类管理 → 编辑分类 → 自定义模板
-     - 可选：卡片风格、列表风格
-     - 效果：直接关联到对应的模板文件（category-card.html 或 category-list.html）
-  
-  4. 功能配置（所有模板共享）
-     - 侧边栏显示/隐藏：show_sidebar
-     - 封面图回退策略：cover_fallback
-     - 每页文章数量：page_size
+  3. 鑷畾涔夋ā鏉匡紙閽堝鐗瑰畾鍒嗙被锛?     - 浣嶇疆锛氬垎绫荤鐞?鈫?缂栬緫鍒嗙被 鈫?鑷畾涔夋ā鏉?     - 鍙€夛細鍗＄墖椋庢牸銆佸垪琛ㄩ鏍?     - 鏁堟灉锛氱洿鎺ュ叧鑱斿埌瀵瑰簲鐨勬ā鏉挎枃浠讹紙category-card.html 鎴?category-list.html锛?  
+  4. 鍔熻兘閰嶇疆锛堟墍鏈夋ā鏉垮叡浜級
+     - 渚ц竟鏍忔樉绀?闅愯棌锛歴how_sidebar
+     - 灏侀潰鍥惧洖閫€绛栫暐锛歝over_fallback
+     - 姣忛〉鏂囩珷鏁伴噺锛歱age_size
 -->
 
-<!-- 分类集合内容片段：/categories -->
+<!-- 鍒嗙被闆嗗悎鍐呭鐗囨锛?categories -->
 <main class="relative" th:fragment="category-collection" x-data="categoriesPage()"
   th:with="rootCfg = ${theme.config.category_settings},
                cfg = ${rootCfg.basic_info},
@@ -38,15 +30,15 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 简约样式：不使用页头 Banner，直接展示分类按钮与列表 -->
+  <!-- 绠€绾︽牱寮忥細涓嶄娇鐢ㄩ〉澶?Banner锛岀洿鎺ュ睍绀哄垎绫绘寜閽笌鍒楄〃 -->
 
-  <!-- 主体内容区域（两列布局，与 post 一致） -->
+  <!-- 涓讳綋鍐呭鍖哄煙锛堜袱鍒楀竷灞€锛屼笌 post 涓€鑷达級 -->
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8 lazy-anim" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：分类按钮与全部文章前 N（后台配置），并提供更多链接 -->
+      <!-- 宸︿晶锛氬垎绫绘寜閽笌鍏ㄩ儴鏂囩珷鍓?N锛堝悗鍙伴厤缃級锛屽苟鎻愪緵鏇村閾炬帴 -->
       <section class="flex-1" th:classappend="${cfg.show_sidebar == false ? 'max-w-6xl mx-auto' : ''}">
         <th:block th:with="categories = ${categoryFinder.listAsTree()}">
-          <!-- 分类切换块 - 根据后台设置渲染不同风格 -->
+          <!-- 鍒嗙被鍒囨崲鍧?- 鏍规嵁鍚庡彴璁剧疆娓叉煋涓嶅悓椋庢牸 -->
           <th:block th:switch="${theme.config.category_settings.basic_info.category_display_style}">
             <th:block th:case="'pills'">
               <th:block th:replace="~{modules/categories/category-switch :: pills(${categories}, null)}" />
@@ -65,19 +57,19 @@
             </th:block>
           </th:block>
 
-          <!-- 无分类提示 -->
+          <!-- 鏃犲垎绫绘彁绀?-->
           <th:block th:if="${#lists.isEmpty(categories)}">
             <div class="mt-6 flex items-center justify-center">
-              <span class="text-sm font-light text-gray-600" th:text="#{page.categories.empty}">暂无分类</span>
+              <span class="text-sm font-light text-gray-600" th:text="#{page.categories.empty}">鏆傛棤鍒嗙被</span>
             </div>
           </th:block>
 
-          <!-- 有分类：在 /categories（全部）分页显示所有文章，风格由后台设置 -->
+          <!-- 鏈夊垎绫伙細鍦?/categories锛堝叏閮級鍒嗛〉鏄剧ず鎵€鏈夋枃绔狅紝椋庢牸鐢卞悗鍙拌缃?-->
           <th:block th:unless="${#lists.isEmpty(categories)}" th:with="pageSize=${site.post.categoryPageSize}, 
                              pageParam=${param.page != null and !#lists.isEmpty(param.page) ? param.page[0] : '1'}, 
                              currentPage=${#numbers.formatInteger(pageParam, 0)}, 
                              posts=${postFinder.list({page: currentPage, size: pageSize})}">
-            <!-- 动态渲染不同风格的列表 - 使用后台默认设置 -->
+            <!-- 鍔ㄦ€佹覆鏌撲笉鍚岄鏍肩殑鍒楄〃 - 浣跨敤鍚庡彴榛樿璁剧疆 -->
             <div id="category-posts">
               <th:block th:switch="${theme.config.category_settings.basic_info.list_style}">
                 <th:block th:case="'modern'">
@@ -97,7 +89,7 @@
                     th:replace="~{modules/categories/list-minimal :: minimal(${posts}, ${theme.config.category_settings})}" />
                 </th:block>
                 <th:block th:case="*">
-                  <!-- 默认使用列表风格 -->
+                  <!-- 榛樿浣跨敤鍒楄〃椋庢牸 -->
                   <th:block
                     th:replace="~{modules/categories/list-media :: media_text(${posts}, ${theme.config.category_settings})}" />
                 </th:block>
@@ -107,12 +99,12 @@
             <input id="initial-next-url" type="hidden" th:value="${posts.hasNext ? '/categories?page=' + (posts.page + 1) : ''}" />
             <div id="infinite-sentinel" class="h-px w-full"></div>
 
-            <!-- 无文章提示 -->
+            <!-- 鏃犳枃绔犳彁绀?-->
             <div th:if="${posts.total == 0}" class="mt-6 flex items-center justify-center">
-              <span class="text-sm font-light text-gray-600" th:text="#{common.noPosts}">暂无文章</span>
+              <span class="text-sm font-light text-gray-600" th:text="#{common.noPosts}">鏆傛棤鏂囩珷</span>
             </div>
 
-            <!-- 分页：上一页/下一页 + 下拉选择（索引页） -->
+            <!-- 鍒嗛〉锛氫笂涓€椤?涓嬩竴椤?+ 涓嬫媺閫夋嫨锛堢储寮曢〉锛?-->
             <th:block th:replace="~{modules/categories/pagination :: pagination(
                 context=@{/categories/},
                 prevUrl=@{/categories(page=${posts.page - 1})},
@@ -126,7 +118,7 @@
         </th:block>
       </section>
 
-      <!-- 右侧：通用功能区块（不含文章目录） -->
+      <!-- 鍙充晶锛氶€氱敤鍔熻兘鍖哄潡锛堜笉鍚枃绔犵洰褰曪級 -->
       <aside th:if="${sidebarCfg.show_sidebar != false}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -135,7 +127,7 @@
   </div>
 </main>
 
-<!-- 分类归档内容片段：/categories/:slug -->
+<!-- 鍒嗙被褰掓。鍐呭鐗囨锛?categories/:slug -->
 <main class="relative" th:fragment="category-archive" x-data="categoryArchive()"
   th:with="rootCfg = ${theme.config.category_settings},
                cfg = ${rootCfg.basic_info},
@@ -143,15 +135,15 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 简约样式：不使用页头 Banner，直接展示分类按钮与当前分类列表 -->
+  <!-- 绠€绾︽牱寮忥細涓嶄娇鐢ㄩ〉澶?Banner锛岀洿鎺ュ睍绀哄垎绫绘寜閽笌褰撳墠鍒嗙被鍒楄〃 -->
 
-  <!-- 主体内容区域（与 post 一致的两列布局） -->
+  <!-- 涓讳綋鍐呭鍖哄煙锛堜笌 post 涓€鑷寸殑涓ゅ垪甯冨眬锛?-->
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：分类按钮与当前分类文章列表（分页） -->
+      <!-- 宸︿晶锛氬垎绫绘寜閽笌褰撳墠鍒嗙被鏂囩珷鍒楄〃锛堝垎椤碉級 -->
       <section class="flex-1"
         th:classappend="${theme.config.category_settings.sidebar_settings.show_sidebar == false ? 'max-w-6xl mx-auto' : ''}">
-        <!-- 分类切换块 - 根据后台设置渲染不同风格 -->
+        <!-- 鍒嗙被鍒囨崲鍧?- 鏍规嵁鍚庡彴璁剧疆娓叉煋涓嶅悓椋庢牸 -->
         <th:block th:with="categories=${categoryFinder.listAsTree()}">
           <th:block th:switch="${theme.config.category_settings.basic_info.category_display_style}">
             <th:block th:case="'pills'">
@@ -173,7 +165,7 @@
         </th:block>
 
         <div id="category-posts">
-          <!-- 文章列表（当前分类）：使用后台默认设置 -->
+          <!-- 鏂囩珷鍒楄〃锛堝綋鍓嶅垎绫伙級锛氫娇鐢ㄥ悗鍙伴粯璁よ缃?-->
           <th:block th:switch="${theme.config.category_settings.basic_info.list_style}">
             <th:block th:case="'modern'">
               <th:block
@@ -192,7 +184,7 @@
                 th:replace="~{modules/categories/list-minimal :: minimal(${posts}, ${theme.config.category_settings})}" />
             </th:block>
             <th:block th:case="*">
-              <!-- 默认使用卡片风格 -->
+              <!-- 榛樿浣跨敤鍗＄墖椋庢牸 -->
               <th:block
                 th:replace="~{modules/categories/list-modern :: modern(${posts}, ${theme.config.category_settings})}" />
             </th:block>
@@ -202,7 +194,7 @@
         <input id="initial-next-url" type="hidden" th:value="${posts.hasNext ? posts.nextUrl : ''}" />
         <div id="infinite-sentinel" class="h-px w-full"></div>
 
-        <!-- 分页（案例片段复用） -->
+        <!-- 鍒嗛〉锛堟渚嬬墖娈靛鐢級 -->
         <th:block th:replace="~{modules/categories/pagination :: pagination(
             context=@{/categories/{slug}/(slug=${category.metadata.name})},
             prevUrl=${posts.prevUrl},
@@ -214,7 +206,7 @@
         )}" />
       </section>
 
-      <!-- 右侧：通用功能区块（不含文章目录） -->
+      <!-- 鍙充晶锛氶€氱敤鍔熻兘鍖哄潡锛堜笉鍚枃绔犵洰褰曪級 -->
       <aside th:if="${sidebarCfg.show_sidebar != false}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -223,7 +215,7 @@
   </div>
 </main>
 
-<!-- 分类归档内容片段：/categories/:slug - 强制卡片风格 -->
+<!-- 鍒嗙被褰掓。鍐呭鐗囨锛?categories/:slug - 寮哄埗鍗＄墖椋庢牸 -->
 <main class="relative" th:fragment="category-archive-card" x-data="categoryArchive()"
   th:with="rootCfg = ${theme.config.category_settings},
                cfg = ${rootCfg.basic_info},
@@ -231,15 +223,15 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 简约样式：不使用页头 Banner，直接展示分类按钮与当前分类列表 -->
+  <!-- 绠€绾︽牱寮忥細涓嶄娇鐢ㄩ〉澶?Banner锛岀洿鎺ュ睍绀哄垎绫绘寜閽笌褰撳墠鍒嗙被鍒楄〃 -->
 
-  <!-- 主体内容区域（与 post 一致的两列布局） -->
+  <!-- 涓讳綋鍐呭鍖哄煙锛堜笌 post 涓€鑷寸殑涓ゅ垪甯冨眬锛?-->
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：分类按钮与当前分类文章列表（分页） -->
+      <!-- 宸︿晶锛氬垎绫绘寜閽笌褰撳墠鍒嗙被鏂囩珷鍒楄〃锛堝垎椤碉級 -->
       <section class="flex-1"
         th:classappend="${theme.config.category_settings.sidebar_settings.show_sidebar == false ? 'max-w-6xl mx-auto' : ''}">
-        <!-- 分类切换块 -->
+        <!-- 鍒嗙被鍒囨崲鍧?-->
         <th:block th:with="categories=${categoryFinder.listAsTree()}">
           <th:block th:switch="${theme.config.category_settings.basic_info.category_display_style}">
             <th:block th:case="'pills'">
@@ -261,7 +253,7 @@
         </th:block>
 
         <div id="category-posts">
-          <!-- 文章列表（当前分类）：强制使用卡片风格 -->
+          <!-- 鏂囩珷鍒楄〃锛堝綋鍓嶅垎绫伙級锛氬己鍒朵娇鐢ㄥ崱鐗囬鏍?-->
           <th:block
             th:replace="~{modules/categories/list-modern :: modern(${posts}, ${theme.config.category_settings})}" />
         </div>
@@ -269,7 +261,7 @@
         <input id="initial-next-url" type="hidden" th:value="${posts.hasNext ? posts.nextUrl : ''}" />
         <div id="infinite-sentinel" class="h-px w-full"></div>
 
-        <!-- 分页（案例片段复用） -->
+        <!-- 鍒嗛〉锛堟渚嬬墖娈靛鐢級 -->
         <th:block th:replace="~{modules/categories/pagination :: pagination(
             context=@{/categories/{slug}/(slug=${category.metadata.name})},
             prevUrl=${posts.prevUrl},
@@ -281,7 +273,7 @@
         )}" />
       </section>
 
-      <!-- 右侧：通用功能区块（不含文章目录） -->
+      <!-- 鍙充晶锛氶€氱敤鍔熻兘鍖哄潡锛堜笉鍚枃绔犵洰褰曪級 -->
       <aside th:if="${sidebarCfg.show_sidebar != false}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -290,7 +282,7 @@
   </div>
 </main>
 
-<!-- 分类归档内容片段：/categories/:slug - 强制列表风格 -->
+<!-- 鍒嗙被褰掓。鍐呭鐗囨锛?categories/:slug - 寮哄埗鍒楄〃椋庢牸 -->
 <main class="relative" th:fragment="category-archive-list" x-data="categoryArchive()"
   th:with="rootCfg = ${theme.config.category_settings},
                cfg = ${rootCfg.basic_info},
@@ -298,15 +290,15 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 简约样式：不使用页头 Banner，直接展示分类按钮与当前分类列表 -->
+  <!-- 绠€绾︽牱寮忥細涓嶄娇鐢ㄩ〉澶?Banner锛岀洿鎺ュ睍绀哄垎绫绘寜閽笌褰撳墠鍒嗙被鍒楄〃 -->
 
-  <!-- 主体内容区域（与 post 一致的两列布局） -->
+  <!-- 涓讳綋鍐呭鍖哄煙锛堜笌 post 涓€鑷寸殑涓ゅ垪甯冨眬锛?-->
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：分类按钮与当前分类文章列表（分页） -->
+      <!-- 宸︿晶锛氬垎绫绘寜閽笌褰撳墠鍒嗙被鏂囩珷鍒楄〃锛堝垎椤碉級 -->
       <section class="flex-1"
         th:classappend="${theme.config.category_settings.sidebar_settings.show_sidebar == false ? 'max-w-6xl mx-auto' : ''}">
-        <!-- 分类切换块 -->
+        <!-- 鍒嗙被鍒囨崲鍧?-->
         <th:block th:with="categories=${categoryFinder.listAsTree()}">
           <th:block th:switch="${theme.config.category_settings.basic_info.category_display_style}">
             <th:block th:case="'pills'">
@@ -328,7 +320,7 @@
         </th:block>
 
         <div id="category-posts">
-          <!-- 文章列表（当前分类）：强制使用列表风格 -->
+          <!-- 鏂囩珷鍒楄〃锛堝綋鍓嶅垎绫伙級锛氬己鍒朵娇鐢ㄥ垪琛ㄩ鏍?-->
           <th:block
             th:replace="~{modules/categories/list-media :: media_text(${posts}, ${theme.config.category_settings})}" />
         </div>
@@ -336,7 +328,7 @@
         <input id="initial-next-url" type="hidden" th:value="${posts.hasNext ? posts.nextUrl : ''}" />
         <div id="infinite-sentinel" class="h-px w-full"></div>
 
-        <!-- 分页（案例片段复用） -->
+        <!-- 鍒嗛〉锛堟渚嬬墖娈靛鐢級 -->
         <th:block th:replace="~{modules/categories/pagination :: pagination(
             context=@{/categories/{slug}/(slug=${category.metadata.name})},
             prevUrl=${posts.prevUrl},
@@ -348,7 +340,7 @@
         )}" />
       </section>
 
-      <!-- 右侧：通用功能区块（不含文章目录） -->
+      <!-- 鍙充晶锛氶€氱敤鍔熻兘鍖哄潡锛堜笉鍚枃绔犵洰褰曪級 -->
       <aside th:if="${sidebarCfg.show_sidebar != false}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -357,7 +349,7 @@
   </div>
 </main>
 
-<!-- 分类归档内容片段：/categories/:slug - 强制杂志风格 -->
+<!-- 鍒嗙被褰掓。鍐呭鐗囨锛?categories/:slug - 寮哄埗鏉傚織椋庢牸 -->
 <main class="relative" th:fragment="category-archive-magazine" x-data="categoryArchive()"
   th:with="rootCfg = ${theme.config.category_settings},
                cfg = ${rootCfg.basic_info},
@@ -365,15 +357,15 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 简约样式：不使用页头 Banner，直接展示分类按钮与当前分类列表 -->
+  <!-- 绠€绾︽牱寮忥細涓嶄娇鐢ㄩ〉澶?Banner锛岀洿鎺ュ睍绀哄垎绫绘寜閽笌褰撳墠鍒嗙被鍒楄〃 -->
 
-  <!-- 主体内容区域（与 post 一致的两列布局） -->
+  <!-- 涓讳綋鍐呭鍖哄煙锛堜笌 post 涓€鑷寸殑涓ゅ垪甯冨眬锛?-->
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：分类按钮与当前分类文章列表（分页） -->
+      <!-- 宸︿晶锛氬垎绫绘寜閽笌褰撳墠鍒嗙被鏂囩珷鍒楄〃锛堝垎椤碉級 -->
       <section class="flex-1"
         th:classappend="${theme.config.category_settings.sidebar_settings.show_sidebar == false ? 'max-w-6xl mx-auto' : ''}">
-        <!-- 分类切换块 -->
+        <!-- 鍒嗙被鍒囨崲鍧?-->
         <th:block th:with="categories=${categoryFinder.listAsTree()}">
           <th:block th:switch="${theme.config.category_settings.basic_info.category_display_style}">
             <th:block th:case="'pills'">
@@ -395,7 +387,7 @@
         </th:block>
 
         <div id="category-posts">
-          <!-- 文章列表（当前分类）：强制使用杂志风格 -->
+          <!-- 鏂囩珷鍒楄〃锛堝綋鍓嶅垎绫伙級锛氬己鍒朵娇鐢ㄦ潅蹇楅鏍?-->
           <th:block
             th:replace="~{modules/categories/list-magazine :: magazine(${posts}, ${theme.config.category_settings})}" />
         </div>
@@ -403,7 +395,7 @@
         <input id="initial-next-url" type="hidden" th:value="${posts.hasNext ? posts.nextUrl : ''}" />
         <div id="infinite-sentinel" class="h-px w-full"></div>
 
-        <!-- 分页（案例片段复用） -->
+        <!-- 鍒嗛〉锛堟渚嬬墖娈靛鐢級 -->
         <th:block th:replace="~{modules/categories/pagination :: pagination(
             context=@{/categories/{slug}/(slug=${category.metadata.name})},
             prevUrl=${posts.prevUrl},
@@ -415,7 +407,7 @@
         )}" />
       </section>
 
-      <!-- 右侧：通用功能区块（不含文章目录） -->
+      <!-- 鍙充晶锛氶€氱敤鍔熻兘鍖哄潡锛堜笉鍚枃绔犵洰褰曪級 -->
       <aside th:if="${sidebarCfg.show_sidebar != false}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -424,7 +416,7 @@
   </div>
 </main>
 
-<!-- 分类归档内容片段：/categories/:slug - 强制极简风格 -->
+<!-- 鍒嗙被褰掓。鍐呭鐗囨锛?categories/:slug - 寮哄埗鏋佺畝椋庢牸 -->
 <main class="relative" th:fragment="category-archive-minimal" x-data="categoryArchive()"
   th:with="rootCfg = ${theme.config.category_settings},
                cfg = ${rootCfg.basic_info},
@@ -432,15 +424,15 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 简约样式：不使用页头 Banner，直接展示分类按钮与当前分类列表 -->
+  <!-- 绠€绾︽牱寮忥細涓嶄娇鐢ㄩ〉澶?Banner锛岀洿鎺ュ睍绀哄垎绫绘寜閽笌褰撳墠鍒嗙被鍒楄〃 -->
 
-  <!-- 主体内容区域（与 post 一致的两列布局） -->
+  <!-- 涓讳綋鍐呭鍖哄煙锛堜笌 post 涓€鑷寸殑涓ゅ垪甯冨眬锛?-->
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：分类按钮与当前分类文章列表（分页） -->
+      <!-- 宸︿晶锛氬垎绫绘寜閽笌褰撳墠鍒嗙被鏂囩珷鍒楄〃锛堝垎椤碉級 -->
       <section class="flex-1"
         th:classappend="${theme.config.category_settings.sidebar_settings.show_sidebar == false ? 'max-w-6xl mx-auto' : ''}">
-        <!-- 分类切换块 -->
+        <!-- 鍒嗙被鍒囨崲鍧?-->
         <th:block th:with="categories=${categoryFinder.listAsTree()}">
           <th:block th:switch="${theme.config.category_settings.basic_info.category_display_style}">
             <th:block th:case="'pills'">
@@ -462,7 +454,7 @@
         </th:block>
 
         <div id="category-posts">
-          <!-- 文章列表（当前分类）：强制使用极简风格 -->
+          <!-- 鏂囩珷鍒楄〃锛堝綋鍓嶅垎绫伙級锛氬己鍒朵娇鐢ㄦ瀬绠€椋庢牸 -->
           <th:block
             th:replace="~{modules/categories/list-minimal :: minimal(${posts}, ${theme.config.category_settings})}" />
         </div>
@@ -470,7 +462,7 @@
         <input id="initial-next-url" type="hidden" th:value="${posts.hasNext ? posts.nextUrl : ''}" />
         <div id="infinite-sentinel" class="h-px w-full"></div>
 
-        <!-- 分页（案例片段复用） -->
+        <!-- 鍒嗛〉锛堟渚嬬墖娈靛鐢級 -->
         <th:block th:replace="~{modules/categories/pagination :: pagination(
             context=@{/categories/{slug}/(slug=${category.metadata.name})},
             prevUrl=${posts.prevUrl},
@@ -482,7 +474,7 @@
         )}" />
       </section>
 
-      <!-- 右侧：通用功能区块（不含文章目录） -->
+      <!-- 鍙充晶锛氶€氱敤鍔熻兘鍖哄潡锛堜笉鍚枃绔犵洰褰曪級 -->
       <aside th:if="${sidebarCfg.show_sidebar != false}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -492,3 +484,4 @@
 </main>
 
 </html>
+

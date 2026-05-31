@@ -1,14 +1,14 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN" th:fragment="html (content)">
   <!-- ========================================== -->
-  <!--        璞嗙摚璁板綍椤甸潰甯冨眬                     -->
-  <!-- 璺敱锟?douban                              -->
-  <!-- 鎻掍欢锛歱lugin-douban                         -->
+  <!--        鐠炲棛鎽氱拋鏉跨秿妞ょ敻娼扮敮鍐ㄧ湰                     -->
+  <!-- 鐠侯垳鏁遍敓?douban                              -->
+  <!-- 閹绘帊娆㈤敍姝眑ugin-douban                         -->
   <!-- ========================================== -->
 
   <head
-    th:with="pageTitle=${title ?: '豆瓣记录'},
-             pageDesc='电影、图书、音乐和游戏收藏记录'"
+    th:with="pageTitle=${title ?: '璞嗙摚璁板綍'},
+             pageDesc='鐢靛奖銆佸浘涔︺€侀煶涔愬拰娓告垙鏀惰棌璁板綍'"
   >
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -20,11 +20,11 @@
     <title
       th:text="${pageTitle} + ' - ' + ${site.title} + (${site.subtitle != null and !#strings.isEmpty(site.subtitle)} ? ' - ' + ${site.subtitle} : '')"
     >
-      豆瓣记录
+      璞嗙摚璁板綍
     </title>
 
     <meta name="description" th:content="${pageDesc}" />
-    <meta name="keywords" th:content="'豆瓣, 电影, 图书, 音乐, 游戏, ' + ${site.title}" />
+    <meta name="keywords" th:content="'璞嗙摚, 鐢靛奖, 鍥句功, 闊充箰, 娓告垙, ' + ${site.title}" />
     <meta property="og:title" th:content="${pageTitle}" />
     <meta property="og:description" th:content="${pageDesc}" />
     <meta property="og:type" content="website" />
@@ -35,8 +35,8 @@
     <link rel="canonical" th:href="@{/douban}" />
 
     <th:block th:replace="~{modules/font-loader :: fonts}" />
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.21')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/douban.css?v={version}(version='1.0.21')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.24')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/douban.css?v={version}(version='1.0.24')}" />
     <th:block th:replace="~{modules/music-player :: head}" />
   </head>
 
@@ -75,11 +75,12 @@
     <div id="swup-scripts" hidden>
       <script
         type="module"
-        th:src="@{/assets/js/douban.js?v={version}(version='1.0.21')}"
+        th:src="@{/assets/js/douban.js?v={version}(version='1.0.24')}"
         data-swup-reload-script
       ></script>
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.21')}"></script>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.24')}"></script>
     <th:block th:replace="~{modules/music-player :: player}" />
   </body>
 </html>
+

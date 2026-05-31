@@ -1,42 +1,39 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!--
-  展示模块：左图右文（非卡片式）
-  布局要求：
-  - 左侧固定宽度（建议 40%），右侧自适应宽度
-  - 使用 flex 布局，保持 20-30px 间距（gap-6 ≈ 24px）
-  - 移动端自动切换为上下布局（图片在上、文字在下）
-  交互：图片 hover 放大（不影响可读性）
-  风格：与主题保持一致，不使用 DaisyUI card 组件
+  灞曠ず妯″潡锛氬乏鍥惧彸鏂囷紙闈炲崱鐗囧紡锛?  甯冨眬瑕佹眰锛?  - 宸︿晶鍥哄畾瀹藉害锛堝缓璁?40%锛夛紝鍙充晶鑷€傚簲瀹藉害
+  - 浣跨敤 flex 甯冨眬锛屼繚鎸?20-30px 闂磋窛锛坓ap-6 鈮?24px锛?  - 绉诲姩绔嚜鍔ㄥ垏鎹负涓婁笅甯冨眬锛堝浘鐗囧湪涓娿€佹枃瀛楀湪涓嬶級
+  浜や簰锛氬浘鐗?hover 鏀惧ぇ锛堜笉褰卞搷鍙鎬э級
+  椋庢牸锛氫笌涓婚淇濇寔涓€鑷达紝涓嶄娇鐢?DaisyUI card 缁勪欢
 -->
 
 <section th:fragment="media-text(imageUrl, title, paragraphs)"
          class="group flex flex-col md:flex-row items-start gap-6 md:gap-6">
-  <!-- 左侧图片区域：桌面占比 40%，移动端全宽；溢出隐藏以裁切放大效果 -->
+  <!-- 宸︿晶鍥剧墖鍖哄煙锛氭闈㈠崰姣?40%锛岀Щ鍔ㄧ鍏ㄥ锛涙孩鍑洪殣钘忎互瑁佸垏鏀惧ぇ鏁堟灉 -->
   <figure class="w-full md:basis-[40%] md:max-w-[40%] shrink-0 overflow-hidden rounded-lg">
     <th:block th:if="${imageUrl != null and not #strings.isEmpty(imageUrl)}">
       <img th:src="${imageUrl}"
-           th:alt="|${title} 的配图|"
+           th:alt="|${title} 鐨勯厤鍥緗"
            loading="lazy"
            class="w-full h-auto md:h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105" />
     </th:block>
     <th:block th:unless="${imageUrl != null and not #strings.isEmpty(imageUrl)}">
-      <!-- 无图占位：保持比例与统一风格（非卡片） -->
+      <!-- 鏃犲浘鍗犱綅锛氫繚鎸佹瘮渚嬩笌缁熶竴椋庢牸锛堥潪鍗＄墖锛?-->
       <div class="w-full aspect-[4/3] bg-base-200 grid place-items-center">
         <span class="icon-[heroicons--photo] w-10 h-10 text-base-content/50"></span>
       </div>
     </th:block>
   </figure>
 
-  <!-- 右侧文本区域：自适应宽度，支持多段落；高度由内容自动撑开 -->
+  <!-- 鍙充晶鏂囨湰鍖哄煙锛氳嚜閫傚簲瀹藉害锛屾敮鎸佸娈佃惤锛涢珮搴︾敱鍐呭鑷姩鎾戝紑 -->
   <div class="flex-1 text-base-content">
     <h3 class="text-lg font-semibold mb-2" th:text="${title}"></h3>
-    <!-- 多段落排版：传入 List<String> paragraphs 时逐段渲染；保留良好可读性 -->
+    <!-- 澶氭钀芥帓鐗堬細浼犲叆 List<String> paragraphs 鏃堕€愭娓叉煋锛涗繚鐣欒壇濂藉彲璇绘€?-->
     <th:block th:if="${paragraphs != null}">
       <p class="leading-relaxed mb-3" th:each="p : ${paragraphs}" th:text="${p}"></p>
     </th:block>
-    <!-- 兼容：若传入的是单段字符串（非列表），同样展示 -->
+    <!-- 鍏煎锛氳嫢浼犲叆鐨勬槸鍗曟瀛楃涓诧紙闈炲垪琛級锛屽悓鏍峰睍绀?-->
     <th:block th:if="${paragraphs == null}">
       <p class="leading-relaxed mb-3" th:text="${title}"></p>
     </th:block>

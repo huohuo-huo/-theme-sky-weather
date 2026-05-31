@@ -142,3 +142,18 @@
     padding: 1.25rem;
   }
 }
+
+/* Fix code block white-space and display issues on document pages */
+#article-content pre code {
+  white-space: pre !important;
+  display: block !important;
+  overflow-x: auto !important;
+  word-wrap: normal !important;
+  word-break: normal !important;
+}
+
+#article-content pre {
+  overflow-x: auto !important;
+  max-width: 100% !important;
+}
+

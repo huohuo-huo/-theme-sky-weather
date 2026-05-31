@@ -1,20 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--           动态侧边栏渲染                     -->
-<!-- 支持传入页面配置，优先使用页面定制配置          -->
+<!--           鍔ㄦ€佷晶杈规爮娓叉煋                     -->
+<!-- 鏀寔浼犲叆椤甸潰閰嶇疆锛屼紭鍏堜娇鐢ㄩ〉闈㈠畾鍒堕厤缃?         -->
 <!-- ========================================== -->
 
 <!-- 
-  参数说明：
-  - pageCfg: 页面侧边栏配置（可选）
-  - 如果 pageCfg.enable_custom_sidebar == true，使用页面配置
-  - 否则使用全局 sidebar_settings
+  鍙傛暟璇存槑锛?  - pageCfg: 椤甸潰渚ц竟鏍忛厤缃紙鍙€夛級
+  - 濡傛灉 pageCfg.enable_custom_sidebar == true锛屼娇鐢ㄩ〉闈㈤厤缃?  - 鍚﹀垯浣跨敤鍏ㄥ眬 sidebar_settings
   
-  支持两种配置格式：
-  1. 旧格式: sidebar_widgets 数组 [{widget: 'xxx'}, ...]
-  2. 新格式: enabled_widgets 字符串数组 ['xxx', 'yyy', ...]
+  鏀寔涓ょ閰嶇疆鏍煎紡锛?  1. 鏃ф牸寮? sidebar_widgets 鏁扮粍 [{widget: 'xxx'}, ...]
+  2. 鏂版牸寮? enabled_widgets 瀛楃涓叉暟缁?['xxx', 'yyy', ...]
 -->
 <th:block th:fragment="dynamic(pageCfg)" th:with="globalCfg = ${theme.config.general.sidebar_settings},
            useCustom = ${pageCfg?.enable_custom_sidebar == true},
@@ -29,13 +26,13 @@
            } },
            baseWidgets = ${globalWidgets != null && !#lists.isEmpty(globalWidgets) ? globalWidgets : defaultWidgets}">
 
-  <!-- 确定要渲染的组件列表 -->
-  <!-- 优先级: 启用定制 -> sidebar_widgets -> 全局配置 -->
+  <!-- 纭畾瑕佹覆鏌撶殑缁勪欢鍒楄〃 -->
+  <!-- 浼樺厛绾? 鍚敤瀹氬埗 -> sidebar_widgets -> 鍏ㄥ眬閰嶇疆 -->
   <th:block
     th:with="renderList = ${useCustom && customWidgets != null && !#lists.isEmpty(customWidgets) ? customWidgets : baseWidgets}">
 
     <th:block th:each="item : ${renderList}">
-      <!-- 解析小工具类型：支持对象格式 {widget: 'name'} 和字符串格式 'name' -->
+      <!-- 瑙ｆ瀽灏忓伐鍏风被鍨嬶細鏀寔瀵硅薄鏍煎紡 {widget: 'name'} 鍜屽瓧绗︿覆鏍煎紡 'name' -->
       <th:block th:with="widgetType = ${item instanceof T(java.lang.String) ? item : item.widget}">
 
         <th:block th:if="${widgetType eq 'welcome_card'}">

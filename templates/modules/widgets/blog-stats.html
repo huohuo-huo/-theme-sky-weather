@@ -1,57 +1,57 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--  博客统计组件 - Premium Refined Style    -->
+<!--  鍗氬缁熻缁勪欢 - Premium Refined Style    -->
 <!-- ========================================== -->
 
 <div th:fragment="stats"
   class="card bg-base-100/80 backdrop-blur-xl shadow-lg border border-base-content/5 rounded-[1.5rem] p-5"
   th:with="stats = ${siteStatsFinder.getStats()}">
 
-  <!-- 统计网格 - 2x2 精致布局 -->
+  <!-- 缁熻缃戞牸 - 2x2 绮捐嚧甯冨眬 -->
   <div class="grid grid-cols-2 gap-3">
-    <!-- 文章数 -->
+    <!-- 鏂囩珷鏁?-->
     <div
       class="relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-4 group hover:from-primary/10 hover:to-primary/20 transition-all cursor-default">
       <div class="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
       <div class="relative">
         <span class="icon-[heroicons--document-text] w-5 h-5 text-primary mb-2 block"></span>
         <p class="text-2xl font-bold text-base-content tracking-tight" th:text="${stats.post}">0</p>
-        <p class="text-xs text-base-content/50 mt-0.5">篇文章</p>
+        <p class="text-xs text-base-content/50 mt-0.5">绡囨枃绔?/p>
       </div>
     </div>
 
-    <!-- 分类数 -->
+    <!-- 鍒嗙被鏁?-->
     <div
       class="relative overflow-hidden bg-gradient-to-br from-secondary/5 to-secondary/10 rounded-2xl p-4 group hover:from-secondary/10 hover:to-secondary/20 transition-all cursor-default">
       <div class="absolute top-0 right-0 w-16 h-16 bg-secondary/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
       <div class="relative">
         <span class="icon-[heroicons--folder] w-5 h-5 text-secondary mb-2 block"></span>
         <p class="text-2xl font-bold text-base-content tracking-tight" th:text="${stats.category}">0</p>
-        <p class="text-xs text-base-content/50 mt-0.5">个分类</p>
+        <p class="text-xs text-base-content/50 mt-0.5">涓垎绫?/p>
       </div>
     </div>
 
-    <!-- 评论数 -->
+    <!-- 璇勮鏁?-->
     <div
       class="relative overflow-hidden bg-gradient-to-br from-accent/5 to-accent/10 rounded-2xl p-4 group hover:from-accent/10 hover:to-accent/20 transition-all cursor-default">
       <div class="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
       <div class="relative">
         <span class="icon-[heroicons--chat-bubble-left-right] w-5 h-5 text-accent mb-2 block"></span>
         <p class="text-2xl font-bold text-base-content tracking-tight" th:text="${stats.comment}">0</p>
-        <p class="text-xs text-base-content/50 mt-0.5">条评论</p>
+        <p class="text-xs text-base-content/50 mt-0.5">鏉¤瘎璁?/p>
       </div>
     </div>
 
-    <!-- 访问量 -->
+    <!-- 璁块棶閲?-->
     <div
       class="relative overflow-hidden bg-gradient-to-br from-info/5 to-info/10 rounded-2xl p-4 group hover:from-info/10 hover:to-info/20 transition-all cursor-default">
       <div class="absolute top-0 right-0 w-16 h-16 bg-info/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
       <div class="relative">
         <span class="icon-[heroicons--eye] w-5 h-5 text-info mb-2 block"></span>
         <p class="text-2xl font-bold text-base-content tracking-tight" th:text="${stats.visit}">0</p>
-        <p class="text-xs text-base-content/50 mt-0.5">次访问</p>
+        <p class="text-xs text-base-content/50 mt-0.5">娆¤闂?/p>
       </div>
     </div>
   </div>

@@ -106,14 +106,19 @@ function setupProgressiveContent() {
 
   const revealNext = (count = 2) => {
     const end = Math.min(revealedSectionCount + count, progressiveSections.length);
+    let added = false;
     for (; revealedSectionCount < end; revealedSectionCount += 1) {
       const sectionEl = progressiveSections[revealedSectionCount];
       content.insertBefore(sectionEl, loader);
       sectionEl.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach((heading) => observeDocHeading?.(heading));
+      added = true;
     }
     if (revealedSectionCount >= progressiveSections.length) {
       lazyObserver?.disconnect();
       loader.remove();
+    }
+    if (added) {
+      highlightNewCodeBlocks();
     }
   };
 
@@ -320,6 +325,28 @@ function setupDrawers() {
   });
 }
 
+function highlightNewCodeBlocks() {
+  const newCodeElements = Array.from(document.querySelectorAll('pre > code')).filter(code => {
+    return !code.closest('shiki-code');
+  });
+  if (newCodeElements.length === 0) return;
+  const highlightedWrappers = Array.from(document.querySelectorAll('shiki-code'));
+  const backups = highlightedWrappers.map(wrapper => {
+    const pre = wrapper.querySelector('pre');
+    if (pre) {
+      const parent = pre.parentElement;
+      const nextSibling = pre.nextSibling;
+      parent.removeChild(pre);
+      return { pre, parent, nextSibling };
+    }
+    return null;
+  }).filter(Boolean);
+  window.dispatchEvent(new Event("pjax:complete"));
+  backups.forEach(({ pre, parent, nextSibling }) => {
+    parent.insertBefore(pre, nextSibling);
+  });
+}
+
 function initDocPage() {
   cleanup();
   pageController = new AbortController();
@@ -328,6 +355,11 @@ function initDocPage() {
   setupVersionDropdowns();
   setupStickyBounds();
   setupDrawers();
+
+  // Dispatch pjax:complete event to let Shiki code highlighter reload
+  setTimeout(() => {
+    highlightNewCodeBlocks();
+  }, 100);
 }
 
 const boot = () => {

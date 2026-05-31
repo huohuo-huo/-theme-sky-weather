@@ -1,20 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--          通用分享弹窗组件                    -->
+<!--          閫氱敤鍒嗕韩寮圭獥缁勪欢                    -->
 <!-- ========================================== -->
 <!--
-  使用方式：
-  <th:block th:replace="~{modules/share-modal :: shareModal(
-    title='分享文章',
+  浣跨敤鏂瑰紡锛?  <th:block th:replace="~{modules/share-modal :: shareModal(
+    title='鍒嗕韩鏂囩珷',
     shareUrl=${post.status.permalink},
     shareTitle=${post.spec.title},
     shareItemIds=${theme.config.article.post_interaction.share_settings.share_item_ids}
   )}" />
   
-  触发方式：
-  <button @click="$dispatch('open-share-modal')">分享</button>
+  瑙﹀彂鏂瑰紡锛?  <button @click="$dispatch('open-share-modal')">鍒嗕韩</button>
 -->
 
 <div th:fragment="shareModal(title, shareUrl, shareTitle, shareItemIds)"
@@ -25,10 +23,10 @@
               data-qrcode-page-url=@{/assets/qrcode/qrcode-share.html}"
      th:data-share-item-ids="${shareItemIds != null ? #strings.listJoin(#lists.toList(shareItemIds), ',') : ''}">
 
-  <!-- 弹窗容器 - 使用 teleport 确保在视口顶层 -->
+  <!-- 寮圭獥瀹瑰櫒 - 浣跨敤 teleport 纭繚鍦ㄨ鍙ｉ《灞?-->
   <template x-teleport="body">
     <div x-show="isOpen" class="fixed inset-0 z-[9999]" x-cloak>
-      <!-- 遮罩 -->
+      <!-- 閬僵 -->
       <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"
            x-show="isOpen"
            x-transition:enter="transition ease-out duration-300"
@@ -39,7 +37,7 @@
            x-transition:leave-end="opacity-0"
            @click="closeModal()"></div>
       
-      <!-- 弹窗内容 - PC居中 / 移动端底部 -->
+      <!-- 寮圭獥鍐呭 - PC灞呬腑 / 绉诲姩绔簳閮?-->
       <div class="absolute inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div x-show="isOpen"
              x-transition:enter="transition ease-out duration-300"
@@ -50,20 +48,20 @@
              x-transition:leave-end="translate-y-full sm:translate-y-0 sm:scale-95 sm:opacity-0"
              class="w-full sm:w-auto sm:min-w-80">
           <div class="bg-base-100 rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden">
-            <!-- 移动端拖拽指示条 -->
+            <!-- 绉诲姩绔嫋鎷芥寚绀烘潯 -->
             <div class="flex justify-center pt-3 pb-1 sm:hidden">
               <div class="w-10 h-1 bg-base-300 rounded-full"></div>
             </div>
             
-            <!-- 标题栏 -->
+            <!-- 鏍囬鏍?-->
             <div class="flex items-center justify-between px-5 py-4 border-b border-base-200">
-              <h3 class="text-base font-semibold" th:text="${title} ?: '分享'">分享</h3>
+              <h3 class="text-base font-semibold" th:text="${title} ?: '鍒嗕韩'">鍒嗕韩</h3>
               <button @click="closeModal()" class="btn btn-ghost btn-circle btn-sm">
                 <span class="icon-[heroicons--x-mark] size-5"></span>
               </button>
             </div>
             
-            <!-- 分享平台 -->
+            <!-- 鍒嗕韩骞冲彴 -->
             <div class="p-5">
               <div class="flex justify-center gap-5 flex-wrap">
                 <template x-for="item in activeShareItems" :key="item.id">
@@ -79,20 +77,20 @@
                 </template>
               </div>
               
-              <!-- 无平台提示 -->
+              <!-- 鏃犲钩鍙版彁绀?-->
               <div x-show="activeShareItems.length === 0" class="text-center py-4 text-base-content/50 text-sm">
-                <p>未配置分享平台</p>
+                <p>鏈厤缃垎浜钩鍙?/p>
               </div>
             </div>
             
-            <!-- 链接复制区 -->
+            <!-- 閾炬帴澶嶅埗鍖?-->
             <div class="px-5 pb-5">
               <div class="flex items-center gap-2 p-2.5 bg-base-200/60 rounded-xl">
                 <span class="icon-[heroicons--link] size-4 text-base-content/40 shrink-0 ml-1"></span>
                 <input type="text" x-model="permalink" readonly
                        class="flex-1 bg-transparent text-sm text-base-content/60 outline-none truncate min-w-0" />
                 <button @click="copyUrl()" class="btn btn-sm btn-primary rounded-lg px-3 shrink-0">
-                  <span x-text="copied ? '已复制' : '复制'"></span>
+                  <span x-text="copied ? '宸插鍒? : '澶嶅埗'"></span>
                 </button>
               </div>
             </div>
@@ -105,3 +103,4 @@
 </div>
 
 </html>
+

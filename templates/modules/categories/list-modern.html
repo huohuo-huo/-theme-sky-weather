@@ -1,17 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!--
-  分类列表 - 玻璃拟态卡片样式
-  样式类型：
-  - modern：玻璃拟态卡片布局（网格、图片在上、文字在下）
-  特点：毛玻璃效果 + 半透明背景 + 柔和阴影
-  说明：输入变量 posts 为 #UrlContextListResult<ListedPostVo>
+  鍒嗙被鍒楄〃 - 鐜荤拑鎷熸€佸崱鐗囨牱寮?  鏍峰紡绫诲瀷锛?  - modern锛氱幓鐠冩嫙鎬佸崱鐗囧竷灞€锛堢綉鏍笺€佸浘鐗囧湪涓娿€佹枃瀛楀湪涓嬶級
+  鐗圭偣锛氭瘺鐜荤拑鏁堟灉 + 鍗婇€忔槑鑳屾櫙 + 鏌斿拰闃村奖
+  璇存槑锛氳緭鍏ュ彉閲?posts 涓?#UrlContextListResult<ListedPostVo>
 -->
 
-<!-- modern：玻璃拟态卡片，精致现代布局 -->
+<!-- modern锛氱幓鐠冩嫙鎬佸崱鐗囷紝绮捐嚧鐜颁唬甯冨眬 -->
 <div th:fragment="modern(posts, settings)" class="article-card-grid mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-  <!-- 中文注释：重构为 DaisyUI image-full 卡片。若有封面（或回退封面）使用覆盖式大图与底部文本；无有效封面使用常规卡片占位图。统一圆角、边框与悬停阴影。 -->
+  <!-- 涓枃娉ㄩ噴锛氶噸鏋勪负 DaisyUI image-full 鍗＄墖銆傝嫢鏈夊皝闈紙鎴栧洖閫€灏侀潰锛変娇鐢ㄨ鐩栧紡澶у浘涓庡簳閮ㄦ枃鏈紱鏃犳湁鏁堝皝闈娇鐢ㄥ父瑙勫崱鐗囧崰浣嶅浘銆傜粺涓€鍦嗚銆佽竟妗嗕笌鎮仠闃村奖銆?-->
   <th:block th:each="post : ${posts.items}" th:with="
               nested = ${settings?.cover_fallback},
               flatEnable = ${settings?.cover_fallback_enable},
@@ -24,25 +22,25 @@
               actualOk=${actual != null and not #strings.isEmpty(actual) ? actual : null},
               coverUrl=${(enable == true) ? ((mode == 'always' and defaultImg != null) ? defaultImg : (actualOk != null ? actualOk : defaultImg)) : actualOk}
             ">
-    <!-- 有（有效）封面：玻璃拟态卡片（图片在上、文字在下），精致现代 -->
+    <!-- 鏈夛紙鏈夋晥锛夊皝闈細鐜荤拑鎷熸€佸崱鐗囷紙鍥剧墖鍦ㄤ笂銆佹枃瀛楀湪涓嬶級锛岀簿鑷寸幇浠?-->
     <article th:if="${coverUrl != null}"
       th:with="isPinned = ${post.spec.pinned == true},
                       isPrivate = ${post.spec.visible != null and post.spec.visible.name() == 'PRIVATE' and currentUser != null and currentUser.metadata.name == post.spec.owner},
                       isLocked = ${post.metadata.annotations != null and post.metadata.annotations['content.halo.run/content-restriction'] != null and post.metadata.annotations['content.halo.run/content-restriction'] != ''}"
       class="card group cursor-pointer rounded-[1.5rem] backdrop-blur-xl bg-base-100/80 border border-base-content/5 shadow-lg hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 overflow-hidden">
-      <!-- 封面区域：16:10 比例 -->
+      <!-- 灏侀潰鍖哄煙锛?6:10 姣斾緥 -->
       <figure class="relative w-full aspect-video overflow-hidden">
         <a th:href="@{${post.status.permalink}}"
           class="block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary">
-          <img th:src="${coverUrl}" th:alt="|${post.spec.title} 的封面|" loading="lazy"
+          <img th:src="${coverUrl}" th:alt="|${post.spec.title} 鐨勫皝闈" loading="lazy"
             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         </a>
 
-        <!-- 置顶/推荐角标 - 渐变风格 -->
+        <!-- 缃《/鎺ㄨ崘瑙掓爣 - 娓愬彉椋庢牸 -->
         <span th:if="${isPinned}"
-          class="absolute top-3 left-3 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">置顶</span>
+          class="absolute top-3 left-3 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">缃《</span>
 
-        <!-- 发布时间 - 胶囊风格 -->
+        <!-- 鍙戝竷鏃堕棿 - 鑳跺泭椋庢牸 -->
         <div
           class="absolute top-3 right-3 px-2 py-1 rounded-full bg-base-100/80 backdrop-blur-md shadow-sm border border-base-content/5 flex items-center gap-1">
           <span class="icon-[heroicons--clock] w-3 h-3 text-base-content/60"></span>
@@ -51,26 +49,26 @@
         </div>
       </figure>
       <div class="card-body p-4 flex flex-col">
-        <!-- 上行：分类 + 标签（标题上方） -->
+        <!-- 涓婅锛氬垎绫?+ 鏍囩锛堟爣棰樹笂鏂癸級 -->
         <div class="flex items-center text-xs text-base-content/60 leading-5 gap-4 mb-2">
-          <!-- 分类 - 胶囊风格 -->
+          <!-- 鍒嗙被 - 鑳跺泭椋庢牸 -->
           <div class="flex items-center gap-2 min-w-0"
             th:with="firstCat=${!#lists.isEmpty(post.categories) ? post.categories[0] : null}">
             <span
               class="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/5 text-primary text-[10px] font-medium"
               th:if="${firstCat != null}">
               <a th:href="@{${firstCat.status.permalink}}" class="hover:underline max-w-[160px] truncate"
-                th:text="${firstCat.spec.displayName}">分类</a>
+                th:text="${firstCat.spec.displayName}">鍒嗙被</a>
             </span>
           </div>
-          <!-- 标签：使用 flex-wrap 避免格式错乱，最多显示2个 -->
+          <!-- 鏍囩锛氫娇鐢?flex-wrap 閬垮厤鏍煎紡閿欎贡锛屾渶澶氭樉绀?涓?-->
           <div class="flex items-center flex-wrap gap-2" th:if="${!#lists.isEmpty(post.tags)}">
             <th:block th:each="tag, tagStat : ${post.tags}">
               <span th:if="${tagStat.index < 2}"
                 class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-base-content/5 hover:bg-base-content/10 transition-colors">
                 <span th:if="${tagStat.index == 0}" class="icon-[heroicons--tag] w-3 h-3"></span>
                 <a th:href="@{${tag.status.permalink}}" class="hover:text-primary max-w-[70px] truncate"
-                  th:text="${tag.spec.displayName}">标签</a>
+                  th:text="${tag.spec.displayName}">鏍囩</a>
               </span>
             </th:block>
             <span th:if="${post.tags.size() > 2}" class="text-xs text-base-content/40"
@@ -78,19 +76,19 @@
           </div>
         </div>
         <h3 class="text-base font-semibold mb-2 text-base-content line-clamp-2">
-          <a th:href="@{${post.status.permalink}}" class="hover:text-primary" th:text="${post.spec.title}">文章标题</a>
+          <a th:href="@{${post.status.permalink}}" class="hover:text-primary" th:text="${post.spec.title}">鏂囩珷鏍囬</a>
         </h3>
-        <!-- 摘要：固定两行高度（无简介也占位），保证卡片内容区稳定不跳动 -->
+        <!-- 鎽樿锛氬浐瀹氫袱琛岄珮搴︼紙鏃犵畝浠嬩篃鍗犱綅锛夛紝淇濊瘉鍗＄墖鍐呭鍖虹ǔ瀹氫笉璺冲姩 -->
         <p class="text-sm text-base-content/70 line-clamp-2 w-full">
           <a th:href="@{${post.status.permalink}}" class="hover:text-base-content"
             th:text="${(post.spec.excerpt != null and post.spec.excerpt.raw != null and !post.spec.excerpt.raw.isEmpty()) ? post.spec.excerpt.raw : (post.status.excerpt ?: '')}"></a>
         </p>
-        <!-- 元信息：固定在内容区底部。仅保留下行：日期 + 统计。分类与标签已上移至标题上方。 -->
+        <!-- 鍏冧俊鎭細鍥哄畾鍦ㄥ唴瀹瑰尯搴曢儴銆備粎淇濈暀涓嬭锛氭棩鏈?+ 缁熻銆傚垎绫讳笌鏍囩宸蹭笂绉昏嚦鏍囬涓婃柟銆?-->
         <div class="mt-auto pt-2 space-y-1">
-          <!-- 下行专用：分类与标签已移至标题上方，此处不再展示。 -->
-          <!-- 下行：日期 + 统计（右侧为浏览/点赞/评论） -->
+          <!-- 涓嬭涓撶敤锛氬垎绫讳笌鏍囩宸茬Щ鑷虫爣棰樹笂鏂癸紝姝ゅ涓嶅啀灞曠ず銆?-->
+          <!-- 涓嬭锛氭棩鏈?+ 缁熻锛堝彸渚т负娴忚/鐐硅禐/璇勮锛?-->
           <div class="flex items-center gap-2 mt-auto pt-3 border-t border-base-content/5">
-            <!-- 胶囊式元信息 -->
+            <!-- 鑳跺泭寮忓厓淇℃伅 -->
             <div
               class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-base-200/50 text-[10px] text-base-content/60 group-hover:bg-base-200 transition-colors">
               <span class="icon-[heroicons--eye] w-3 h-3"></span>
@@ -113,13 +111,13 @@
       </div>
     </article>
 
-    <!-- 无（有效）封面：玻璃拟态卡片 + 占位图 -->
+    <!-- 鏃狅紙鏈夋晥锛夊皝闈細鐜荤拑鎷熸€佸崱鐗?+ 鍗犱綅鍥?-->
     <article th:if="${coverUrl == null}"
       th:with="isPinned = ${post.spec.pinned == true},
                       isPrivate = ${post.spec.visible != null and post.spec.visible.name() == 'PRIVATE' and currentUser != null and currentUser.metadata.name == post.spec.owner},
                       isLocked = ${post.metadata.annotations != null and post.metadata.annotations['content.halo.run/content-restriction'] != null and post.metadata.annotations['content.halo.run/content-restriction'] != ''}"
       class="card group cursor-pointer rounded-[1.5rem] backdrop-blur-xl bg-base-100/80 border border-base-content/5 shadow-lg hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 overflow-hidden">
-      <!-- 占位图区域：16:10 比例 -->
+      <!-- 鍗犱綅鍥惧尯鍩燂細16:10 姣斾緥 -->
       <figure class="relative w-full aspect-video overflow-hidden">
         <a th:href="@{${post.status.permalink}}"
           class="block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary">
@@ -130,11 +128,11 @@
           </div>
         </a>
 
-        <!-- 置顶/推荐角标 - 渐变风格 -->
+        <!-- 缃《/鎺ㄨ崘瑙掓爣 - 娓愬彉椋庢牸 -->
         <span th:if="${isPinned}"
-          class="absolute top-3 left-3 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">置顶</span>
+          class="absolute top-3 left-3 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">缃《</span>
 
-        <!-- 发布时间 - 胶囊风格 -->
+        <!-- 鍙戝竷鏃堕棿 - 鑳跺泭椋庢牸 -->
         <div
           class="absolute top-3 right-3 px-2 py-1 rounded-full bg-base-100/80 backdrop-blur-md shadow-sm border border-base-content/5 flex items-center gap-1">
           <span class="icon-[heroicons--clock] w-3 h-3 text-base-content/60"></span>
@@ -143,7 +141,7 @@
         </div>
       </figure>
       <div class="card-body p-4 flex flex-col">
-        <!-- 上行：分类 + 标签（标题上方） -->
+        <!-- 涓婅锛氬垎绫?+ 鏍囩锛堟爣棰樹笂鏂癸級 -->
         <div class="flex items-center text-xs text-base-content/60 leading-5 gap-4 mb-2">
           <div class="flex items-center gap-2 min-w-0"
             th:with="firstCat=${!#lists.isEmpty(post.categories) ? post.categories[0] : null}">
@@ -151,17 +149,17 @@
               class="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/5 text-primary text-[10px] font-medium"
               th:if="${firstCat != null}">
               <a th:href="@{${firstCat.status.permalink}}" class="hover:underline max-w-[160px] truncate"
-                th:text="${firstCat.spec.displayName}">分类</a>
+                th:text="${firstCat.spec.displayName}">鍒嗙被</a>
             </span>
           </div>
-          <!-- 标签：使用 flex-wrap 避免格式错乱，最多显示2个 -->
+          <!-- 鏍囩锛氫娇鐢?flex-wrap 閬垮厤鏍煎紡閿欎贡锛屾渶澶氭樉绀?涓?-->
           <div class="flex items-center flex-wrap gap-2" th:if="${!#lists.isEmpty(post.tags)}">
             <th:block th:each="tag, tagStat : ${post.tags}">
               <span th:if="${tagStat.index < 2}"
                 class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-base-content/5 hover:bg-base-content/10 transition-colors">
                 <span th:if="${tagStat.index == 0}" class="icon-[heroicons--tag] w-3 h-3"></span>
                 <a th:href="@{${tag.status.permalink}}" class="hover:text-primary max-w-[70px] truncate"
-                  th:text="${tag.spec.displayName}">标签</a>
+                  th:text="${tag.spec.displayName}">鏍囩</a>
               </span>
             </th:block>
             <span th:if="${post.tags.size() > 2}" class="text-xs text-base-content/40"
@@ -169,15 +167,15 @@
           </div>
         </div>
         <h3 class="text-base font-semibold mb-2 text-base-content line-clamp-2">
-          <a th:href="@{${post.status.permalink}}" class="hover:text-primary" th:text="${post.spec.title}">文章标题</a>
+          <a th:href="@{${post.status.permalink}}" class="hover:text-primary" th:text="${post.spec.title}">鏂囩珷鏍囬</a>
         </h3>
-        <!-- 摘要：固定两行高度（无简介也占位），保证卡片内容区稳定不跳动 -->
+        <!-- 鎽樿锛氬浐瀹氫袱琛岄珮搴︼紙鏃犵畝浠嬩篃鍗犱綅锛夛紝淇濊瘉鍗＄墖鍐呭鍖虹ǔ瀹氫笉璺冲姩 -->
         <p class="text-sm text-base-content/70 line-clamp-2 w-full">
           <a th:href="@{${post.status.permalink}}" class="hover:text-base-content"
             th:text="${(post.spec.excerpt != null and post.spec.excerpt.raw != null and !post.spec.excerpt.raw.isEmpty()) ? post.spec.excerpt.raw : (post.status.excerpt ?: '')}"></a>
         </p>
         <div class="mt-auto pt-2 space-y-1">
-          <!-- 下行：浏览数统计 -->
+          <!-- 涓嬭锛氭祻瑙堟暟缁熻 -->
           <div class="flex items-center gap-2 mt-auto pt-3 border-t border-base-content/5">
             <div
               class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-base-200/50 text-[10px] text-base-content/60 group-hover:bg-base-200 transition-colors">
@@ -193,3 +191,4 @@
 </div>
 
 </html>
+

@@ -1,19 +1,17 @@
-<!-- 标题内容模块 -->
-<!-- 字体按需加载脚本 -->
+﻿<!-- 鏍囬鍐呭妯″潡 -->
+<!-- 瀛椾綋鎸夐渶鍔犺浇鑴氭湰 -->
 <script th:inline="javascript" data-swup-reload-script>
     (function () {
-        // 获取当前使用的字体设置
-        const titleFont = /*[[${theme.config.index.title_settings.title_font}]]*/ 'font-default';
+        // 鑾峰彇褰撳墠浣跨敤鐨勫瓧浣撹缃?        const titleFont = /*[[${theme.config.index.title_settings.title_font}]]*/ 'font-default';
         const subtitleFont = /*[[${theme.config.index.subtitle_settings.subtitle_font}]]*/ 'font-default';
         const fontCdn = /*[[${theme.config.general.font_settings.font_cdn}]]*/ '';
 
-        // 已加载的字体跟踪
+        // 宸插姞杞界殑瀛椾綋璺熻釜
         const loadedFonts = {};
 
-        // 加载字体的函数
-        function loadFont(fontName, fontPath) {
+        // 鍔犺浇瀛椾綋鐨勫嚱鏁?        function loadFont(fontName, fontPath) {
             if (!fontCdn || !fontPath) return;
-            if (loadedFonts[fontName]) return; // 避免重复加载
+            if (loadedFonts[fontName]) return; // 閬垮厤閲嶅鍔犺浇
 
             const link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -22,33 +20,30 @@
             loadedFonts[fontName] = true;
         }
 
-        // 根据主标题字体加载
-        if (titleFont === 'font-lxgw-wenkai-bright') {
-            loadFont('霞鹜文楷亮', fontCdn + '/LXGWBright-SemiLight/result.css');
+        // 鏍规嵁涓绘爣棰樺瓧浣撳姞杞?        if (titleFont === 'font-lxgw-wenkai-bright') {
+            loadFont('闇為箿鏂囨シ浜?, fontCdn + '/LXGWBright-SemiLight/result.css');
         }
         else if (titleFont === 'font-siyuan-songti') {
-            loadFont('思源屏显臻宋', fontCdn + '/思源屏显臻宋/result.css');
+            loadFont('鎬濇簮灞忔樉鑷诲畫', fontCdn + '/鎬濇簮灞忔樉鑷诲畫/result.css');
         }
 
-        // 根据副标题字体加载
-        if (subtitleFont === 'font-lxgw-wenkai-bright') {
-            loadFont('霞鹜文楷亮', fontCdn + '/LXGWBright-SemiLight/result.css');
+        // 鏍规嵁鍓爣棰樺瓧浣撳姞杞?        if (subtitleFont === 'font-lxgw-wenkai-bright') {
+            loadFont('闇為箿鏂囨シ浜?, fontCdn + '/LXGWBright-SemiLight/result.css');
         }
         else if (subtitleFont === 'font-siyuan-songti') {
-            loadFont('思源屏显臻宋', fontCdn + '/思源屏显臻宋/result.css');
+            loadFont('鎬濇簮灞忔樉鑷诲畫', fontCdn + '/鎬濇簮灞忔樉鑷诲畫/result.css');
         }
 
-        // 英文字体和默认字体已在基础CSS中加载，无需动态处理
-    })();
+        // 鑻辨枃瀛椾綋鍜岄粯璁ゅ瓧浣撳凡鍦ㄥ熀纭€CSS涓姞杞斤紝鏃犻渶鍔ㄦ€佸鐞?    })();
 </script>
 
-<!-- 中层：标题内容 - 统一布局方案 -->
+<!-- 涓眰锛氭爣棰樺唴瀹?- 缁熶竴甯冨眬鏂规 -->
 <div class="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 text-center
             pb-32 sm:pb-36 md:pb-24 lg:pb-0
             transition-all duration-700 ease-out"
     :style="`transform: translateY(${scrollOffset * 0.3}px); opacity: ${1 - scrollOffset * 0.001}`">
 
-    <!-- 主标题 - 增强特效 -->
+    <!-- 涓绘爣棰?- 澧炲己鐗规晥 -->
     <h1 id="main-title" th:if="${theme.config.index.title_settings.show_title}"
         th:class="${'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-3 sm:mb-4 md:mb-6 text-white animate-in fade-in zoom-in duration-700 effect-base transition-all ' + theme.config.index.title_settings.style_effect + ' ' + theme.config.index.title_settings.title_font}"
         th:style="${!#strings.isEmpty(theme.config.index.title_settings.effect_color) ? '--title-color: ' + theme.config.index.title_settings.effect_color + '; animation-delay: 0.2s;' : 'animation-delay: 0.2s;'}"
@@ -60,7 +55,7 @@
             Weather Glass</span>
     </h1>
 
-    <!-- 副标题 - 增强特效 -->
+    <!-- 鍓爣棰?- 澧炲己鐗规晥 -->
     <div th:if="${theme.config.index.subtitle_settings.show_subtitle}"
         class="text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 max-w-xs sm:max-w-md md:max-w-2xl animate-in text-white fade-in slide-in-from-bottom-4 duration-700 transition-all"
         style="animation-delay: 0.4s;">
@@ -68,8 +63,9 @@
             th:class="${'transition-all duration-300 ' + theme.config.index.subtitle_settings.subtitle_font + ' ' + theme.config.index.subtitle_settings.subtitle_effect}"
             th:style="${!#strings.isEmpty(theme.config.index.subtitle_settings.subtitle_color) ? '--subtitle-color: ' + theme.config.index.subtitle_settings.subtitle_color : ''}"
             th:text="${theme.config.index.subtitle_settings.subtitle_text}">
-            记录生活，分享思考，探索无限可能
+            璁板綍鐢熸椿锛屽垎浜€濊€冿紝鎺㈢储鏃犻檺鍙兘
         </p>
     </div>
 
 </div>
+

@@ -1,37 +1,37 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN" th:fragment="html (content)">
   <!-- ========================================== -->
-  <!--        Steam 娓告垙搴撻〉闈㈠竷灞€                 -->
-  <!-- 璺敱锟?steam                               -->
-  <!-- 鎻掍欢锛歱lugin-steam                         -->
+  <!--        Steam 濞撳憡鍨欐惔鎾汇€夐棃銏犵鐏炩偓                 -->
+  <!-- 鐠侯垳鏁遍敓?steam                               -->
+  <!-- 閹绘帊娆㈤敍姝眑ugin-steam                         -->
   <!-- ========================================== -->
 
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- 鍚敤 View Transitions API (Safari 18+/Chrome 111+) -->
+    <!-- 閸氼垳鏁?View Transitions API (Safari 18+/Chrome 111+) -->
     <meta name="view-transition" content="same-origin" />
 
-    <!-- 闃叉涓婚闂儊 -->
+    <!-- 闂冨弶顒涙稉濠氼暯闂傤亞鍎?-->
     <th:block th:replace="~{modules/theme-script :: inline-script}" />
 
-    <!-- 页面标题 -->
+    <!-- 椤甸潰鏍囬 -->
     <title
-      th:text="${title ?: 'Steam 游戏'} + ' - ' + ${site.title} + (${site.subtitle != null and !#strings.isEmpty(site.subtitle)} ? ' - ' + ${site.subtitle} : '')"
+      th:text="${title ?: 'Steam 娓告垙'} + ' - ' + ${site.title} + (${site.subtitle != null and !#strings.isEmpty(site.subtitle)} ? ' - ' + ${site.subtitle} : '')"
     >
-      Steam 游戏
+      Steam 娓告垙
     </title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" th:href="${site.favicon}" />
 
-    <!-- 瀛椾綋 -->
+    <!-- 鐎涙ぞ缍?-->
     <th:block th:replace="~{modules/font-loader :: fonts}" />
-    <!-- 涓婚鏍峰紡 -->
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.21')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/steam.css?v={version}(version='1.0.21')}" />
-    <!-- 闊充箰鎾斁锟?CSS -->
+    <!-- 娑撳顣介弽宄扮础 -->
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.24')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/steam.css?v={version}(version='1.0.24')}" />
+    <!-- 闂婂厖绠伴幘顓熸杹閿?CSS -->
     <th:block th:replace="~{modules/music-player :: head}" />
   </head>
 
@@ -44,7 +44,7 @@
     x-data="{ gameBg: null }"
     x-init="fetch('/apis/api.steam.timxs.com/v1alpha1/profile').then(r => r.json()).then(d => { if(d.playing && d.summary?.gameid) gameBg = d.summary.gameid; }).catch(() => {})"
   >
-    <!-- 鍔ㄦ€佹父鎴忚儗锟?(姝ｅ湪娓哥帺鏃舵樉绀猴紝寮傛鍔犺浇) -->
+    <!-- 閸斻劍鈧焦鐖堕幋蹇氬剹閿?(濮濓絽婀〒鍝ュ负閺冭埖妯夌粈鐚寸礉瀵倹顒為崝鐘烘祰) -->
     <div x-show="gameBg" x-cloak class="pointer-events-none fixed inset-0 z-0">
       <img
         x-bind:src="gameBg ? 'https://cdn.cloudflare.steamstatic.com/steam/apps/' + gameBg + '/library_hero.jpg' : ''"
@@ -54,30 +54,30 @@
       <div class="via-base-100/80 to-base-100 absolute inset-0 bg-gradient-to-b from-transparent"></div>
     </div>
 
-    <!-- 缃戞牸鑳屾櫙锛堜粎褰撻€夋嫨 grid 鏍峰紡鏃舵樉绀猴級 -->
+    <!-- 缂冩垶鐗搁懗灞炬珯閿涘牅绮庤ぐ鎾烩偓澶嬪 grid 閺嶅嘲绱￠弮鑸垫▔缁€鐚寸礆 -->
     <div
       th:if="${enableCustomBg and bgStyle == 'grid'}"
       class="bg-grid-pattern pointer-events-none fixed inset-0 z-[1]"
     ></div>
 
     <div class="relative z-10">
-      <!-- 鍔犺浇灞忓箷 -->
+      <!-- 閸旂姾娴囩仦蹇撶 -->
       <th:block th:replace="~{modules/loading-screen :: loading-screen}" />
 
-      <!-- 瀵艰埅锟?-->
+      <!-- 鐎佃壈鍩呴敓?-->
       <th:block th:replace="~{modules/nav :: navbar}" />
 
-      <!-- 涓昏鍐呭鍖哄煙 -->
+      <!-- 娑撴槒顩﹂崘鍛啇閸栧搫鐓?-->
       <main id="swup" class="mt-6 flex-1 md:mt-8">
         <th:block th:replace="${content}" />
       </main>
 
-      <!-- 椤佃剼 -->
+      <!-- 妞や絻鍓?-->
       <th:block th:replace="~{modules/footer :: footer}" />
     </div>
 
     <div id="swup-page-extras">
-      <!-- 鎮诞 Dock 鎺у埗锟?-->
+      <!-- 閹剚璇?Dock 閹貉冨煑閿?-->
       <th:block th:replace="~{modules/floating-dock :: dock}" />
     </div>
 
@@ -85,12 +85,13 @@
     <div id="swup-scripts" hidden>
       <script
         type="module"
-        th:src="@{/assets/js/steam.js?v={version}(version='1.0.21')}"
+        th:src="@{/assets/js/steam.js?v={version}(version='1.0.24')}"
         data-swup-reload-script
       ></script>
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.21')}"></script>
-    <!-- 鎮诞闊充箰鎾斁锟?-->
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.24')}"></script>
+    <!-- 閹剚璇為棅鍏呯閹绢厽鏂侀敓?-->
     <th:block th:replace="~{modules/music-player :: player}" />
   </body>
 </html>
+

@@ -1,17 +1,17 @@
-<!-- ========================================== -->
+﻿<!-- ========================================== -->
 <!--    Gateway Fragments - Common             -->
-<!--    通用片段：Logo、语言切换、社交登录      -->
+<!--    閫氱敤鐗囨锛歀ogo銆佽瑷€鍒囨崲銆佺ぞ浜ょ櫥褰?     -->
 <!-- ========================================== -->
 
-<!-- 基础静态资源（必须引入） -->
+<!-- 鍩虹闈欐€佽祫婧愶紙蹇呴』寮曞叆锛?-->
 <th:block th:fragment="basicStaticResources">
     <th:block th:replace="~{gateway_fragments/common::basicStyleResources}"></th:block>
     <th:block th:replace="~{gateway_fragments/common::basicScriptResources}"></th:block>
 </th:block>
 
-<!-- 基础脚本资源 -->
+<!-- 鍩虹鑴氭湰璧勬簮 -->
 <th:block th:fragment="basicScriptResources">
-    <!-- RSA 密码加密 (Halo 2.23+ 官方架构：加密逻辑放在 common.html) -->
+    <!-- RSA 瀵嗙爜鍔犲瘑 (Halo 2.23+ 瀹樻柟鏋舵瀯锛氬姞瀵嗛€昏緫鏀惧湪 common.html) -->
     <th:block th:if="${not #strings.isEmpty(publicKey)} and ${fragmentTemplateName} == 'login_local'">
         <script src="/webjars/jsencrypt/bin/jsencrypt.min.js" defer></script>
         <script th:inline="javascript" type="text/javascript">
@@ -36,13 +36,13 @@
 
     <script th:inline="javascript">
         const i18nResources = {
-            sendVerificationCodeSuccess: '发送成功',
-            sendVerificationCodeFailed: '发送失败',
-            sendVerificationCodeSending: '发送中...',
-            passwordConfirmationFailed: '两次密码输入不一致',
+            sendVerificationCodeSuccess: '鍙戦€佹垚鍔?,
+            sendVerificationCodeFailed: '鍙戦€佸け璐?,
+            sendVerificationCodeSending: '鍙戦€佷腑...',
+            passwordConfirmationFailed: '涓ゆ瀵嗙爜杈撳叆涓嶄竴鑷?,
         };
 
-        // 密码确认验证
+        // 瀵嗙爜纭楠岃瘉
         window.setupPasswordConfirmation = function (passwordId, confirmPasswordId) {
             const password = document.getElementById(passwordId);
             const confirmPassword = document.getElementById(confirmPasswordId);
@@ -50,7 +50,7 @@
 
             function validate() {
                 const msg = password.value !== confirmPassword.value
-                    ? (window.i18nResources?.passwordConfirmationFailed || "密码不一致")
+                    ? (window.i18nResources?.passwordConfirmationFailed || "瀵嗙爜涓嶄竴鑷?)
                     : '';
                 confirmPassword.setCustomValidity(msg);
             }
@@ -58,7 +58,7 @@
             confirmPassword.addEventListener('input', validate);
         };
 
-        // 发送验证码
+        // 鍙戦€侀獙璇佺爜
         window.sendVerificationCode = function (button, sendRequest) {
             let countdown = 60;
             const originalText = button.textContent;
@@ -66,7 +66,7 @@
             button.addEventListener('click', async function () {
                 if (button.disabled) return;
                 button.disabled = true;
-                button.textContent = '发送中...';
+                button.textContent = '鍙戦€佷腑...';
 
                 try {
                     await sendRequest();
@@ -83,7 +83,7 @@
                 } catch (error) {
                     button.textContent = originalText;
                     button.disabled = false;
-                    alert(error.message || '发送失败');
+                    alert(error.message || '鍙戦€佸け璐?);
                 }
             });
         };
@@ -98,43 +98,43 @@
     </th:block>
     </th:block>
 </th:block>
-<!-- 基础样式资源 -->
+<!-- 鍩虹鏍峰紡璧勬簮 -->
 <th:block th:fragment="basicStyleResources">
     <link rel="stylesheet" href="/webjars/normalize.css/8.0.1/normalize.css" />
 
 </th:block>
 
 <!-- ========================================== -->
-<!--    站点 Logo                               -->
+<!--    绔欑偣 Logo                               -->
 <!-- ========================================== -->
 <div th:remove="tag" th:fragment="haloLogo">
     <div class="flex justify-center mb-8">
         <a href="/" class="flex items-center gap-3 group transition-all duration-300 hover:scale-105">
-            <!-- Logo 图片 -->
+            <!-- Logo 鍥剧墖 -->
             <img th:if="${site.logo != null and !site.logo.isEmpty()}" th:src="${site.logo}" th:alt="${site.title}"
                 class="w-10 h-10 rounded-xl shadow-lg" />
-            <!-- 站点名称 -->
+            <!-- 绔欑偣鍚嶇О -->
             <span class="text-2xl font-bold text-base-content tracking-tight" th:text="${site.title}">Site Title</span>
         </a>
     </div>
 </div>
 
 <!-- ========================================== -->
-<!--    社交账号登录                            -->
+<!--    绀句氦璐﹀彿鐧诲綍                            -->
 <!-- ========================================== -->
 <!-- ========================================== -->
-<!--    社交账号登录                            -->
+<!--    绀句氦璐﹀彿鐧诲綍                            -->
 <!-- ========================================== -->
 <div th:remove="tag" th:fragment="socialAuthProviders">
     <th:block th:unless="${#lists.isEmpty(socialAuthProviders)}">
-        <!-- 分隔线 -->
+        <!-- 鍒嗛殧绾?-->
         <div class="flex items-center gap-4 my-6">
             <div class="flex-1 h-px bg-base-content/10"></div>
-            <span class="text-xs text-base-content/40 uppercase tracking-wider">其他登录方式</span>
+            <span class="text-xs text-base-content/40 uppercase tracking-wider">鍏朵粬鐧诲綍鏂瑰紡</span>
             <div class="flex-1 h-px bg-base-content/10"></div>
         </div>
 
-        <!-- 社交登录按钮列表 (Grid Layout) -->
+        <!-- 绀句氦鐧诲綍鎸夐挳鍒楄〃 (Grid Layout) -->
         <div class="auth-provider-grid">
             <th:block th:each="provider : ${socialAuthProviders}">
                 <form class="social-auth-provider-form w-full"
@@ -148,7 +148,7 @@
         </div>
     </th:block>
 
-    <!-- Remember Me 联动脚本 -->
+    <!-- Remember Me 鑱斿姩鑴氭湰 -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const rememberMeCheckbox = document.getElementById("remember-me");
@@ -169,18 +169,18 @@
 </div>
 
 <!-- ========================================== -->
-<!--    表单登录方式切换                         -->
+<!--    琛ㄥ崟鐧诲綍鏂瑰紡鍒囨崲                         -->
 <!-- ========================================== -->
 <div th:remove="tag" th:fragment="formAuthProviders">
     <th:block th:unless="${#lists.isEmpty(formAuthProviders)}">
-        <!-- 分隔线 -->
+        <!-- 鍒嗛殧绾?-->
         <div class="flex items-center gap-4 my-6">
             <div class="flex-1 h-px bg-base-content/10"></div>
-            <span class="text-xs text-base-content/40 uppercase tracking-wider">其他方式</span>
+            <span class="text-xs text-base-content/40 uppercase tracking-wider">鍏朵粬鏂瑰紡</span>
             <div class="flex-1 h-px bg-base-content/10"></div>
         </div>
 
-        <!-- 其他登录方式 (Grid Layout) -->
+        <!-- 鍏朵粬鐧诲綍鏂瑰紡 (Grid Layout) -->
         <div class="auth-provider-grid">
             <th:block th:each="provider : ${formAuthProviders}">
                 <a th:href="'/login?method=' + ${provider.metadata.name}" class="auth-provider-btn">
@@ -194,40 +194,40 @@
 </div>
 
 <!-- ========================================== -->
-<!--    注册提示（登录页显示）                   -->
+<!--    娉ㄥ唽鎻愮ず锛堢櫥褰曢〉鏄剧ず锛?                  -->
 <!-- ========================================== -->
 <div th:remove="tag" th:fragment="signupNoticeContent">
     <div th:if="${globalInfo.allowRegistration}" class="text-center mt-6 text-sm text-base-content/60">
-        <span>还没有账户?</span>
-        <a th:href="@{/signup}" class="text-primary hover:underline font-medium ml-1">立即注册</a>
+        <span>杩樻病鏈夎处鎴?</span>
+        <a th:href="@{/signup}" class="text-primary hover:underline font-medium ml-1">绔嬪嵆娉ㄥ唽</a>
     </div>
 </div>
 
 <!-- ========================================== -->
-<!--    登录提示（注册页显示）                   -->
+<!--    鐧诲綍鎻愮ず锛堟敞鍐岄〉鏄剧ず锛?                  -->
 <!-- ========================================== -->
 <div th:remove="tag" th:fragment="loginNoticeContent">
     <div th:if="${globalInfo.allowRegistration}" class="text-center mt-6 text-sm text-base-content/60">
-        <span>已有账户?</span>
-        <a th:href="@{/login}" class="text-primary hover:underline font-medium ml-1">立即登录</a>
+        <span>宸叉湁璐︽埛?</span>
+        <a th:href="@{/login}" class="text-primary hover:underline font-medium ml-1">绔嬪嵆鐧诲綍</a>
     </div>
 </div>
 
 <!-- ========================================== -->
-<!--    返回站点链接                             -->
+<!--    杩斿洖绔欑偣閾炬帴                             -->
 <!-- ========================================== -->
 <div th:remove="tag" th:fragment="returnToSiteContent">
     <div class="text-center mt-6">
         <a th:href="@{/}"
             class="inline-flex items-center gap-2 text-sm text-base-content/50 hover:text-primary transition-colors">
             <span class="icon-[heroicons--arrow-left] w-4 h-4"></span>
-            <span>返回首页</span>
+            <span>杩斿洖棣栭〉</span>
         </a>
     </div>
 </div>
 
 <!-- ========================================== -->
-<!--    语言切换器                               -->
+<!--    璇█鍒囨崲鍣?                              -->
 <!-- ========================================== -->
 <div th:remove="tag" th:fragment="languageSwitcher">
     <div class="flex justify-center mt-8">
@@ -236,9 +236,9 @@
             <select id="language-select" onchange="changeLanguage()"
                 class="select select-ghost select-xs bg-transparent border-none focus:outline-none text-base-content/70">
                 <option value="en" th:selected="${#locale.toLanguageTag} == 'en'">English</option>
-                <option value="es" th:selected="${#locale.toLanguageTag} == 'es'">Español</option>
-                <option value="zh-CN" th:selected="${#locale.toLanguageTag} == 'zh-CN'">简体中文</option>
-                <option value="zh-TW" th:selected="${#locale.toLanguageTag} == 'zh-TW'">繁體中文</option>
+                <option value="es" th:selected="${#locale.toLanguageTag} == 'es'">Espa帽ol</option>
+                <option value="zh-CN" th:selected="${#locale.toLanguageTag} == 'zh-CN'">绠€浣撲腑鏂?/option>
+                <option value="zh-TW" th:selected="${#locale.toLanguageTag} == 'zh-TW'">绻侀珨涓枃</option>
             </select>
         </div>
     </div>
@@ -254,13 +254,13 @@
 </div>
 
 <!-- ========================================== -->
-<!--    密码重置方式                             -->
+<!--    瀵嗙爜閲嶇疆鏂瑰紡                             -->
 <!-- ========================================== -->
 <div th:remove="tag" th:fragment="passwordResetMethods">
     <th:block th:unless="${#lists.isEmpty(otherMethods)}">
         <div class="flex items-center gap-4 my-6">
             <div class="flex-1 h-px bg-base-content/10"></div>
-            <span class="text-xs text-base-content/40 uppercase tracking-wider">其他方式</span>
+            <span class="text-xs text-base-content/40 uppercase tracking-wider">鍏朵粬鏂瑰紡</span>
             <div class="flex-1 h-px bg-base-content/10"></div>
         </div>
         <div class="flex flex-wrap justify-center gap-3">

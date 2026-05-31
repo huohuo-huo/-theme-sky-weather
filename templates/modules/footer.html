@@ -1,23 +1,23 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
   <!-- ========================================== -->
-  <!--              页脚主容器                    -->
+  <!--              椤佃剼涓诲鍣?                   -->
   <!-- ========================================== -->
 
-  <!-- 主页脚容器 -->
+  <!-- 涓婚〉鑴氬鍣?-->
   <footer
     th:with="dockStyle = ${theme.config.general.floating_dock?.dock_style ?: 'bottom'},
                  hasBottomDock = ${dockStyle != 'side' and theme.config.general.floating_dock?.enable_dock != false}"
     th:class="${hasBottomDock} ? 'relative bg-base-100/80 backdrop-blur-xl border-t border-base-content/5 overflow-hidden pb-16' : 'relative bg-base-100/80 backdrop-blur-xl border-t border-base-content/5 overflow-hidden'"
     th:fragment="footer"
   >
-    <!-- 背景网格效果 -->
+    <!-- 鑳屾櫙缃戞牸鏁堟灉 -->
     <div
       class="absolute inset-0 opacity-[0.015]"
       style="background-image: radial-gradient(circle, currentColor 1px, transparent 1px); background-size: 24px 24px"
     ></div>
 
-    <!-- 背景装饰 - 多层光晕 -->
+    <!-- 鑳屾櫙瑁呴グ - 澶氬眰鍏夋檿 -->
     <div
       class="from-primary/12 via-secondary/8 to-accent/12 animate-pulse-slow absolute -top-24 left-1/4 h-48 w-48 rounded-full bg-gradient-to-br blur-3xl"
     ></div>
@@ -28,17 +28,17 @@
       class="from-primary/5 to-secondary/5 absolute top-1/2 left-1/2 h-32 w-32 rounded-full bg-gradient-to-r opacity-50 blur-2xl"
     ></div>
 
-    <!-- 页脚内容区域 -->
+    <!-- 椤佃剼鍐呭鍖哄煙 -->
     <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
-      <!-- 主要内容区域 -->
+      <!-- 涓昏鍐呭鍖哄煙 -->
       <div class="pt-12 pb-8">
         <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-          <!-- 品牌信息 -->
+          <!-- 鍝佺墝淇℃伅 -->
           <div class="md:col-span-2 lg:col-span-1" th:fragment="brand-section">
             <div class="mb-4 flex items-center gap-3">
-              <!-- 站点图标 - 支持 Iconify、SVG 代码和图片上传 -->
+              <!-- 绔欑偣鍥炬爣 - 鏀寔 Iconify銆丼VG 浠ｇ爜鍜屽浘鐗囦笂浼?-->
               <div class="text-primary flex h-10 w-10 items-center justify-center">
-                <!-- Iconify 图标选择器类型 - 兼容两种数据格式 -->
+                <!-- Iconify 鍥炬爣閫夋嫨鍣ㄧ被鍨?- 鍏煎涓ょ鏁版嵁鏍煎紡 -->
                 <span
                   th:if="${theme.config.footer.brand_settings.brand_icon_type == 'iconify' and theme.config.footer.brand_settings.brand_icon != null and !theme.config.footer.brand_settings.brand_icon.toString().startsWith('<svg')}"
                   th:utext="${theme.config.footer.brand_settings.brand_icon['value']}"
@@ -51,14 +51,14 @@
                   class="flex h-full w-full items-center justify-center"
                 >
                 </span>
-                <!-- SVG 代码类型 -->
+                <!-- SVG 浠ｇ爜绫诲瀷 -->
                 <span
                   th:if="${theme.config.footer.brand_settings.brand_icon_type == 'svg'}"
                   th:utext="${theme.config.footer.brand_settings.brand_icon_html}"
                   class="flex h-full w-full items-center justify-center"
                 >
                 </span>
-                <!-- 图片类型 -->
+                <!-- 鍥剧墖绫诲瀷 -->
                 <img
                   th:if="${theme.config.footer.brand_settings.brand_icon_type == 'image' && !#strings.isEmpty(theme.config.footer.brand_settings.brand_icon_image)}"
                   th:src="${theme.config.footer.brand_settings.brand_icon_image}"
@@ -88,19 +88,19 @@
               </div>
             </div>
 
-            <!-- 站点运行天数 -->
+            <!-- 绔欑偣杩愯澶╂暟 -->
             <div
               class="text-base-content/60 mt-4 flex items-center gap-2 text-sm"
               th:if="${theme.config.footer.brand_settings.show_site_days}"
             >
               <span class="icon-[heroicons--signal] text-success h-4 w-4"></span>
-              <span>网站运行</span>
+              <span>缃戠珯杩愯</span>
               <span class="text-primary font-semibold tabular-nums" id="siteDays"></span>
-              <span>天</span>
+              <span>澶?/span>
             </div>
           </div>
 
-          <!-- 快速导航 -->
+          <!-- 蹇€熷鑸?-->
           <div
             th:fragment="navigation-section"
             th:if="${theme.config.footer.navigation_settings.show_quick_nav and not #strings.isEmpty(theme.config.footer.navigation_settings.nav_menu)}"
@@ -121,7 +121,7 @@
             </th:block>
           </div>
 
-          <!-- 关注我们 -->
+          <!-- 鍏虫敞鎴戜滑 -->
           <div th:fragment="social-section" th:if="${theme.config.footer.social_settings.show_social_links}">
             <h4
               class="text-base-content mb-4 text-sm font-semibold"
@@ -153,17 +153,17 @@
         </div>
       </div>
 
-      <!-- 装饰分隔线 -->
+      <!-- 瑁呴グ鍒嗛殧绾?-->
       <div class="relative flex items-center gap-2 py-4">
         <div class="via-base-content/10 to-base-content/5 h-px flex-1 bg-gradient-to-r from-transparent"></div>
         <span class="icon-[heroicons--sparkles] text-base-content/10 h-3 w-3"></span>
         <div class="via-base-content/10 to-base-content/5 h-px flex-1 bg-gradient-to-l from-transparent"></div>
       </div>
 
-      <!-- 底部版权信息 -->
+      <!-- 搴曢儴鐗堟潈淇℃伅 -->
       <div class="pb-8" th:fragment="copyright-section">
         <div class="flex flex-col gap-4">
-          <!-- 法律链接 -->
+          <!-- 娉曞緥閾炬帴 -->
           <div
             class="text-base-content/50 flex items-center justify-center gap-3 text-xs"
             th:if="${theme.config.footer.copyright_settings.show_legal_links}"
@@ -178,13 +178,13 @@
                   class="bg-primary absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 transition-transform group-hover/link:scale-x-100"
                 ></span>
               </a>
-              <span th:if="${!iterStat.last}" class="text-base-content/15">•</span>
+              <span th:if="${!iterStat.last}" class="text-base-content/15">鈥?/span>
             </th:block>
           </div>
 
-          <!-- 版权文字 -->
+          <!-- 鐗堟潈鏂囧瓧 -->
           <div class="text-base-content/40 flex items-center justify-center gap-1 text-center text-xs font-light">
-            <!-- 版权图标（可选） -->
+            <!-- 鐗堟潈鍥炬爣锛堝彲閫夛級 -->
             <th:block th:if="${theme.config.footer.copyright_settings.copyright_icon != null}">
               <th:block th:with="cIcon = ${theme.config.footer.copyright_settings.copyright_icon}">
                 <span
@@ -202,7 +202,7 @@
             <span th:text="${theme.config.footer.copyright_settings.copyright_text}"></span>
           </div>
 
-          <!-- 备案信息 -->
+          <!-- 澶囨淇℃伅 -->
           <div class="text-base-content/30 space-y-2 text-center text-xs">
             <div class="flex flex-wrap items-center justify-center gap-2">
               <a
@@ -212,7 +212,7 @@
                 rel="noopener"
                 class="hover:text-primary inline-flex items-center gap-1 transition-all hover:scale-105"
               >
-                <!-- ICP 图标：自定义或默认 -->
+                <!-- ICP 鍥炬爣锛氳嚜瀹氫箟鎴栭粯璁?-->
                 <th:block th:with="icpIcon = ${theme.config.footer.copyright_settings.icp_icon}">
                   <th:block th:if="${icpIcon != null}">
                     <span
@@ -233,7 +233,7 @@
               <span
                 th:if="${theme.config.footer.copyright_settings.show_icp_info and theme.config.footer.copyright_settings.show_police_info}"
                 class="text-base-content/10"
-                >•</span
+                >鈥?/span
               >
               <a
                 th:if="${theme.config.footer.copyright_settings.show_police_info}"
@@ -243,7 +243,7 @@
                 rel="noopener"
                 class="hover:text-primary inline-flex items-center gap-1 transition-all hover:scale-105"
               >
-                <!-- 公安图标：自定义或默认 -->
+                <!-- 鍏畨鍥炬爣锛氳嚜瀹氫箟鎴栭粯璁?-->
                 <th:block th:with="policeIcon = ${theme.config.footer.copyright_settings.police_icon}">
                   <th:block th:if="${policeIcon != null}">
                     <span
@@ -260,7 +260,7 @@
                   <img
                     th:if="${policeIcon == null}"
                     src="https://img.alicdn.com/tfs/TB1..50QpXXXXX7XpXXXXXXXXXX-40-40.png"
-                    alt="公安备案"
+                    alt="鍏畨澶囨"
                     class="h-3 w-3 opacity-40"
                   />
                 </th:block>
@@ -268,7 +268,7 @@
               </a>
             </div>
 
-            <!-- 托管信息 -->
+            <!-- 鎵樼淇℃伅 -->
             <div
               th:if="${theme.config.footer.copyright_settings.show_hosting_info}"
               class="flex flex-wrap items-center justify-center gap-2"
@@ -280,7 +280,7 @@
                   rel="noopener"
                   class="hover:text-primary inline-flex items-center gap-1 transition-all hover:scale-105"
                 >
-                  <!-- 托管图标（可选） -->
+                  <!-- 鎵樼鍥炬爣锛堝彲閫夛級 -->
                   <th:block th:if="${hosting.icon != null}">
                     <th:block th:if="${!hosting.icon.toString().startsWith('<svg')}">
                       <span th:utext="${hosting.icon['value']}" class="flex h-3 w-3 items-center justify-center"></span>
@@ -291,12 +291,12 @@
                   </th:block>
                   <span th:text="${hosting.name}"></span>
                 </a>
-                <span th:if="${!iterStat.last}" class="text-base-content/10">•</span>
+                <span th:if="${!iterStat.last}" class="text-base-content/10">鈥?/span>
               </th:block>
               <span
                 th:if="${not #lists.isEmpty(theme.config.footer.copyright_settings.hosting_links)}"
                 class="text-base-content/10"
-                >•</span
+                >鈥?/span
               >
               <a
                 href="https://github.com/huohuo-huo/-theme-sky-weather"
@@ -309,7 +309,7 @@
               </a>
             </div>
 
-            <!-- 如果没有托管信息，单独显示主题链接 -->
+            <!-- 濡傛灉娌℃湁鎵樼淇℃伅锛屽崟鐙樉绀轰富棰橀摼鎺?-->
             <div th:unless="${theme.config.footer.copyright_settings.show_hosting_info}">
               <a
                 href="https://github.com/huohuo-huo/-theme-sky-weather"
@@ -326,21 +326,20 @@
       </div>
     </div>
 
-    <!-- 原生 JavaScript 页脚功能 -->
+    <!-- 鍘熺敓 JavaScript 椤佃剼鍔熻兘 -->
     <script>
       /**
-       * 计算站点运行天数
-       * @description 计算并更新站点运行天数显示
-       */
+       * 璁＄畻绔欑偣杩愯澶╂暟
+       * @description 璁＄畻骞舵洿鏂扮珯鐐硅繍琛屽ぉ鏁版樉绀?       */
       function calculateSiteDays() {
-        // 建站日期 - 从主题配置中获取
+        // 寤虹珯鏃ユ湡 - 浠庝富棰橀厤缃腑鑾峰彇
         const startDateStr = "[[${theme.config.footer.brand_settings.site_start_date}]]";
         const startDate = new Date(startDateStr);
         const currentDate = new Date();
         const timeDiff = currentDate.getTime() - startDate.getTime();
         const siteDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        // 更新页面显示
+        // 鏇存柊椤甸潰鏄剧ず
         const siteDaysElement = document.getElementById("siteDays");
         if (siteDaysElement) {
           siteDaysElement.textContent = siteDays;
@@ -348,17 +347,16 @@
       }
 
       /**
-       * 初始化公安备案链接
-       * @description 仅在未配置自定义 URL 时，从备案号中提取数字并构建链接
+       * 鍒濆鍖栧叕瀹夊妗堥摼鎺?       * @description 浠呭湪鏈厤缃嚜瀹氫箟 URL 鏃讹紝浠庡妗堝彿涓彁鍙栨暟瀛楀苟鏋勫缓閾炬帴
        */
       function initPoliceRecordLink() {
         const policeRecordLink = document.getElementById("policeRecordLink");
         if (!policeRecordLink) return;
 
-        // 如果已配置了自定义 URL（非 # 和非空），则不需要 JS 生成
+        // 濡傛灉宸查厤缃簡鑷畾涔?URL锛堥潪 # 鍜岄潪绌猴級锛屽垯涓嶉渶瑕?JS 鐢熸垚
         if (policeRecordLink.href && !policeRecordLink.href.endsWith("#")) return;
 
-        // 从主题配置获取公安备案号
+        // 浠庝富棰橀厤缃幏鍙栧叕瀹夊妗堝彿
         const policeNumber = "[[${theme.config.footer.copyright_settings.police_number}]]";
         if (policeNumber) {
           const recordCode = policeNumber.replace(/[^0-9]/g, "");
@@ -369,7 +367,7 @@
       }
 
       /**
-       * 页面加载完成后初始化页脚功能
+       * 椤甸潰鍔犺浇瀹屾垚鍚庡垵濮嬪寲椤佃剼鍔熻兘
        */
       document.addEventListener("DOMContentLoaded", function () {
         calculateSiteDays();
@@ -377,9 +375,10 @@
       });
     </script>
 
-    <!-- 系统页脚代码注入 -->
+    <!-- 绯荤粺椤佃剼浠ｇ爜娉ㄥ叆 -->
     <div id="swup-halo-footer">
       <halo:footer />
     </div>
   </footer>
 </html>
+

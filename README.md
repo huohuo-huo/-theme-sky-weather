@@ -1,6 +1,6 @@
 # Huohuo Weather Glass
 
-基于 Sky Blog Theme 二次开发的动态天气玻璃风 Halo 主题。主题围绕天气、光线和玻璃拟态重做了视觉表现，支持白天动态云层、黄昏火烧云、夜间雨景视频背景，以及全站玻璃卡片效果。
+基于 Sky Blog Theme 二次开发的动态天气玻璃风 Halo 主题。主题围绕天气、光线和玻璃拟态重做视觉表现，支持白天动态云层、黄昏火烧云、夜间雨景视频背景，以及全站玻璃卡片效果。
 
 [![Halo](https://img.shields.io/badge/Halo-2.23.0+-blue)](https://halo.run)
 [![License](https://img.shields.io/badge/License-GPL--3.0-green)](LICENSE)
@@ -14,37 +14,20 @@
 | 主题仓库 | [huohuo-huo/-theme-sky-weather](https://github.com/huohuo-huo/-theme-sky-weather) |
 | 问题反馈 | [GitHub Issues](https://github.com/huohuo-huo/-theme-sky-weather/issues) |
 
-### 白天动态云层
-
-![白天动态云层](.github/screenshots/weather-day.png)
-
-### 夜间雨景视频背景
-
-![夜间雨景视频背景](.github/screenshots/weather-night.png)
-
-### 文章页玻璃卡片
-
-![文章页玻璃卡片](.github/screenshots/article-glass.png)
-
-### 天气玻璃后台配置
-
-![天气玻璃后台配置](.github/screenshots/settings-weather.png)
-
 ## 主要特性
 
 - 动态天气玻璃背景：白天云层、黄昏火烧云、夜间雨景视频背景。
 - 全站玻璃卡片：文章、列表、侧边栏、页脚、瞬间、图库等区域统一玻璃质感。
 - 夜间视频播放列表：支持多段雨景视频顺序播放，并可配置透明度、雨量、风向和速度。
 - PJAX 生命周期适配：图库、文档、瞬间发布、天气背景等脚本在页面切换后可重新初始化。
-- 瞬间前端发布：支持图片、视频、音频上传，已修复 PJAX 切换后的发布弹窗绑定问题。
-- 多内容页面：文章、分类、标签、归档、作者、图库、友链、朋友圈、文档、追番、装备、Steam。
+- 文档页优化：适配 Docsme 文档页、目录、长文档渐进加载和代码块高亮刷新。
+- 多内容页面：文章、分类、标签、归档、作者、图库、友链、朋友圈、文档、追番、装备、Steam、豆瓣。
 - 可配置布局：分类列表支持现代、杂志、媒体、极简等样式，标签页和文章页已做卡片化优化。
-- 中文标题修正：修复多页面 fallback 标题与 SEO 元数据乱码问题。
 
 ## 兼容版本
 
 - Halo：`>= 2.23.0`
-- 当前主题版本：`1.0.21`
+- 当前主题版本：`1.0.24`
 - 许可证：GPL-3.0
 
 ## 安装
@@ -52,9 +35,9 @@
 请下载 Release Assets 中的主题安装包，不要下载 GitHub 自动生成的 `Source code (zip)` 或 `Source code (tar.gz)`。
 
 1. 打开 [Releases](https://github.com/huohuo-huo/-theme-sky-weather/releases)。
-2. 下载 `theme-sky-weather-v1.0.23.zip`。
+2. 下载 `theme-sky-weather-v1.0.24.zip`。
 3. 进入 Halo 后台。
-4. 打开「外观」→「主题」→「安装主题」。
+4. 打开「外观」->「主题」->「安装主题」。
 5. 上传下载的 zip 文件并启用主题。
 
 ## 推荐配置
@@ -69,6 +52,12 @@
 | 文章设置 | 配置文章头图、目录、分享、点赞和侧边栏组件 |
 | 分类/标签 | 选择列表风格，当前版本已重点优化极简卡片样式 |
 | 页脚设置 | 配置备案、社交链接、主题开源链接和运行天数 |
+
+## 文档页说明
+
+主题提供 Docsme 文档页适配，包含文档列表、详情页、目录、长文档渐进加载和代码块样式修复。`v1.0.24` 修复了文档页代码块被全局 `code` 样式压成单行、长文档滚动懒加载后 Shiki 未重新高亮的问题。
+
+已知边界：中文文档路径 404 属于 Docsme 插件路由编码匹配问题，不是主题模板链接问题，也不是 Halo Core 问题。若你的站点使用 Docsme 且文档 slug 为中文，遇到子文档 404 时，建议临时改用英文/拼音 slug，或等待 Docsme 插件侧修复。本站线上曾通过插件补丁修复该问题，但主题安装包不会包含第三方插件 jar 补丁。
 
 ## 天气玻璃背景
 
@@ -138,7 +127,7 @@ templates/assets/videos/
 1. 更新 `theme.yaml` 中的 `spec.version`。
 2. 推送代码到 `main`。
 3. 创建版本 tag 并推送。
-4. GitHub Actions 会自动创建 Release，并上传 `theme-sky-weather-v1.0.23.zip`。
+4. GitHub Actions 会自动创建 Release，并上传 `theme-sky-weather-v1.0.24.zip`。
 
 ## 反馈
 

@@ -1,17 +1,17 @@
-<!-- 朋友圈内容 - Apple Style V7 (Unified Sidebar Glow) -->
-<!-- 兼容基线：plugin-friends v1.4.5；消费 friends 分页模型，linkName 筛选由插件路由处理。 -->
+﻿<!-- 鏈嬪弸鍦堝唴瀹?- Apple Style V7 (Unified Sidebar Glow) -->
+<!-- 鍏煎鍩虹嚎锛歱lugin-friends v1.4.5锛涙秷璐?friends 鍒嗛〉妯″瀷锛宭inkName 绛涢€夌敱鎻掍欢璺敱澶勭悊銆?-->
 <div th:fragment="friends-content" th:with="rootCfg=${theme.config.friends_page_settings},
               cfg=${rootCfg.basic_info},
-              pageTitle=${cfg?.page_title ?: '朋友圈'},
-              pageDesc=${cfg?.page_description ?: '订阅朋友们的最新动态'},
+              pageTitle=${cfg?.page_title ?: '鏈嬪弸鍦?},
+              pageDesc=${cfg?.page_description ?: '璁㈤槄鏈嬪弸浠殑鏈€鏂板姩鎬?},
               listStyle=${cfg?.list_style ?: 'single_column'}">
 
-  <!-- 页面标题区域 - Apple风格简洁标题 -->
+  <!-- 椤甸潰鏍囬鍖哄煙 - Apple椋庢牸绠€娲佹爣棰?-->
   <header class="mb-10">
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl md:text-3xl font-bold text-base-content tracking-tight" th:text="${pageTitle}">朋友圈</h1>
-        <p class="text-sm text-base-content/50 mt-1.5 font-medium" th:text="${pageDesc}">订阅朋友们的最新动态</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-base-content tracking-tight" th:text="${pageTitle}">鏈嬪弸鍦?/h1>
+        <p class="text-sm text-base-content/50 mt-1.5 font-medium" th:text="${pageDesc}">璁㈤槄鏈嬪弸浠殑鏈€鏂板姩鎬?/p>
       </div>
       <!-- Apple Style Counter Pill -->
       <div class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-base-200/70 backdrop-blur-md">
@@ -21,7 +21,7 @@
     </div>
   </header>
 
-  <!-- ==================== 单列样式 - Apple News Card ==================== -->
+  <!-- ==================== 鍗曞垪鏍峰紡 - Apple News Card ==================== -->
   <div th:if="${listStyle == 'single_column'}" class="space-y-5">
     <article th:each="friend, iterStat : ${friends.items}" th:with="spec = ${friend.spec}" class="card group relative bg-base-100/90 backdrop-blur-xl rounded-[1.25rem] 
                     border border-base-content/[0.06] shadow-lg
@@ -39,7 +39,7 @@
               class="absolute -inset-2 bg-gradient-to-br from-primary/30 via-secondary/20 to-accent/30 rounded-xl blur-lg opacity-0 group-hover:opacity-70 motion-safe:transition-opacity motion-safe:duration-500">
             </div>
 
-            <img th:src="${spec.logo}" th:alt="|${spec.author} 头像|" class="relative w-12 h-12 rounded-xl object-cover ring-1 ring-base-content/10 
+            <img th:src="${spec.logo}" th:alt="|${spec.author} 澶村儚|" class="relative w-12 h-12 rounded-xl object-cover ring-1 ring-base-content/10 
                         group-hover:ring-primary/30 motion-safe:transition-all motion-safe:duration-300"
               loading="lazy" />
           </div>
@@ -47,10 +47,10 @@
           <!-- Author Info -->
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2">
-              <span class="font-bold text-lg text-base-content truncate" th:text="${spec.author}">作者</span>
+              <span class="font-bold text-lg text-base-content truncate" th:text="${spec.author}">浣滆€?/span>
               <span class="shrink-0 w-1 h-1 rounded-full bg-base-content/20"></span>
               <time class="shrink-0 text-xs text-base-content/40 font-medium tabular-nums" th:if="${spec.pubDate}"
-                th:text="${#dates.format(spec.pubDate, 'MM-dd HH:mm')}">时间</time>
+                th:text="${#dates.format(spec.pubDate, 'MM-dd HH:mm')}">鏃堕棿</time>
             </div>
             <!-- Site Domain Badge -->
             <span class="text-xs text-base-content/40 font-medium mt-0.5 block truncate">Friends Feed</span>
@@ -65,16 +65,16 @@
         <!-- Title (Bold, Apple News Style) -->
         <h2 class="text-lg font-bold text-base-content leading-snug mb-2.5 line-clamp-2
                    group-hover:text-primary motion-safe:transition-colors motion-safe:duration-300"
-          th:text="${spec.title}">标题</h2>
+          th:text="${spec.title}">鏍囬</h2>
 
         <!-- Description -->
         <p th:if="${spec.description}" class="text-sm text-base-content/60 line-clamp-2 leading-relaxed"
-          th:text="${spec.description}">描述</p>
+          th:text="${spec.description}">鎻忚堪</p>
       </a>
     </article>
   </div>
 
-  <!-- ==================== 双列样式 - Bento Grid ==================== -->
+  <!-- ==================== 鍙屽垪鏍峰紡 - Bento Grid ==================== -->
   <div th:if="${listStyle == 'two_columns'}" class="grid grid-cols-1 md:grid-cols-2 gap-5">
     <article th:each="friend, iterStat : ${friends.items}" th:with="spec = ${friend.spec}" class="card group relative bg-base-100/90 backdrop-blur-xl rounded-2xl 
                     border border-base-content/[0.06] shadow-lg
@@ -92,25 +92,25 @@
               <div
                 class="absolute -inset-1.5 bg-gradient-to-br from-primary/30 via-secondary/20 to-accent/30 rounded-xl blur-md opacity-0 group-hover:opacity-70 motion-safe:transition-opacity motion-safe:duration-500">
               </div>
-              <img th:src="${spec.logo}" th:alt="|${spec.author} 头像|" class="relative w-10 h-10 rounded-xl object-cover ring-1 ring-base-content/10 
+              <img th:src="${spec.logo}" th:alt="|${spec.author} 澶村儚|" class="relative w-10 h-10 rounded-xl object-cover ring-1 ring-base-content/10 
                           group-hover:ring-primary/30 motion-safe:transition-all" loading="lazy" />
             </div>
-            <span class="text-sm font-bold text-base-content truncate" th:text="${spec.author}">作者</span>
+            <span class="text-sm font-bold text-base-content truncate" th:text="${spec.author}">浣滆€?/span>
           </div>
           <!-- Date Badge -->
           <time class="shrink-0 text-[11px] text-base-content/40 font-medium 
                        px-2.5 py-1 rounded-lg bg-base-200/60 tabular-nums" th:if="${spec.pubDate}"
-            th:text="${#dates.format(spec.pubDate, 'MM-dd')}">日期</time>
+            th:text="${#dates.format(spec.pubDate, 'MM-dd')}">鏃ユ湡</time>
         </div>
 
         <!-- Title (Bold, 2 lines) -->
         <h3 class="text-base font-bold text-base-content line-clamp-2 mb-2.5 flex-1
                    group-hover:text-primary motion-safe:transition-colors motion-safe:duration-300 leading-snug"
-          th:text="${spec.title}">标题</h3>
+          th:text="${spec.title}">鏍囬</h3>
 
         <!-- Description (2 lines) -->
         <p th:if="${spec.description}" class="text-sm text-base-content/50 line-clamp-2 leading-relaxed mb-4"
-          th:text="${spec.description}">描述...</p>
+          th:text="${spec.description}">鎻忚堪...</p>
 
         <!-- Footer: Divider + Read More -->
         <div class="flex items-center justify-between mt-auto pt-3.5 border-t border-base-content/[0.06]">
@@ -124,7 +124,7 @@
     </article>
   </div>
 
-  <!-- ==================== 空状态 - Apple Style ==================== -->
+  <!-- ==================== 绌虹姸鎬?- Apple Style ==================== -->
   <div th:if="${#lists.isEmpty(friends.items)}"
     class="bg-base-100/80 backdrop-blur-xl rounded-2xl border border-base-content/5 shadow-sm">
     <div class="flex flex-col items-center justify-center py-24">
@@ -132,12 +132,12 @@
         class="w-16 h-16 rounded-2xl bg-gradient-to-br from-base-200/80 to-base-200/40 flex items-center justify-center mb-5 shadow-sm">
         <span class="icon-[heroicons--inbox] w-8 h-8 text-base-content/25"></span>
       </div>
-      <h3 class="text-base font-semibold text-base-content/60">暂无朋友动态</h3>
+      <h3 class="text-base font-semibold text-base-content/60">鏆傛棤鏈嬪弸鍔ㄦ€?/h3>
       <p class="text-sm text-base-content/40 mt-1.5 font-medium">No updates from friends yet</p>
     </div>
   </div>
 
-  <!-- ==================== 分页 - Apple Pill Nav ==================== -->
+  <!-- ==================== 鍒嗛〉 - Apple Pill Nav ==================== -->
   <div th:if="${friends.hasPrevious() || friends.hasNext()}" class="mt-12 flex items-center justify-center">
     <div class="inline-flex items-center p-1 rounded-full bg-base-200/60 backdrop-blur-md">
       <!-- Previous Button -->
@@ -162,9 +162,10 @@
     </div>
   </div>
 
-  <!-- ==================== 底部提示 ==================== -->
+  <!-- ==================== 搴曢儴鎻愮ず ==================== -->
   <div th:if="${!#lists.isEmpty(friends.items) and !friends.hasNext()}" class="text-center mt-12 mb-4">
-    <span class="text-xs text-base-content/25 font-medium tracking-widest">— END —</span>
+    <span class="text-xs text-base-content/25 font-medium tracking-widest">鈥?END 鈥?/span>
   </div>
 
 </div>
+

@@ -1,5 +1,5 @@
-<th:block th:fragment="docs(context)">
-  <!-- 兼容基线：plugin-docsme Finder >=1.4.0；免费版 1.5.0 / 专业版 1.6.0 均可用；0 篇文档项目不生成详情链接。 -->
+﻿<th:block th:fragment="docs(context)">
+  <!-- 鍏煎鍩虹嚎锛歱lugin-docsme Finder >=1.4.0锛涘厤璐圭増 1.5.0 / 涓撲笟鐗?1.6.0 鍧囧彲鐢紱0 绡囨枃妗ｉ」鐩笉鐢熸垚璇︽儏閾炬帴銆?-->
   <th:block th:with="docsSettings = ${theme.config.index.docs_settings}">
     <section
       th:if="${docsSettings != null and docsSettings.enable_docs == true}"
@@ -15,9 +15,9 @@
           <div>
             <h2
               class="text-base-content text-lg font-bold tracking-tight select-none"
-              th:text="${docsSettings?.docs_title} ?: '文档中心'"
+              th:text="${docsSettings?.docs_title} ?: '鏂囨。涓績'"
             >
-              文档中心
+              鏂囨。涓績
             </h2>
             <p
               class="text-base-content/40 mt-0.5 text-xs font-medium"
@@ -40,15 +40,15 @@
 
       <th:block th:unless="${pluginFinder.available('plugin-docsme', '>=1.4.0')}">
         <div class="bg-base-100/50 border-base-content/5 rounded-2xl border border-dashed py-8 text-center">
-          <p class="text-base-content/60 mb-1 text-sm">需要安装或升级 Docsme 插件 (≥1.4.0)</p>
-          <p class="text-base-content/40 mb-3 text-xs">免费版请安装 1.5.0 免授权版本；专业版/商业版可使用 1.6.0</p>
+          <p class="text-base-content/60 mb-1 text-sm">闇€瑕佸畨瑁呮垨鍗囩骇 Docsme 鎻掍欢 (鈮?.4.0)</p>
+          <p class="text-base-content/40 mb-3 text-xs">鍏嶈垂鐗堣瀹夎 1.5.0 鍏嶆巿鏉冪増鏈紱涓撲笟鐗?鍟嗕笟鐗堝彲浣跨敤 1.6.0</p>
           <a
             href="https://www.halo.run/store/apps/app-yffxw"
             target="_blank"
             rel="noopener noreferrer"
             class="bg-primary/10 text-primary hover:bg-primary/20 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors"
           >
-            <span class="icon-[material-symbols--download] h-3.5 w-3.5"></span> 获取 Docsme
+            <span class="icon-[material-symbols--download] h-3.5 w-3.5"></span> 鑾峰彇 Docsme
           </a>
         </div>
       </th:block>
@@ -66,7 +66,7 @@
                 class="group hover:bg-primary/[0.03] flex items-center justify-between px-4 py-3 transition-colors duration-200 sm:py-3.5"
               >
                 <div class="flex min-w-0 flex-1 items-center gap-3.5 sm:gap-4">
-                  <!-- 小图标 -->
+                  <!-- 灏忓浘鏍?-->
                   <div
                     class="from-primary/10 to-secondary/10 ring-base-content/5 group-hover:ring-primary/20 relative flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ring-1 transition-all duration-300 group-hover:scale-105 sm:h-9 sm:w-9 sm:rounded-xl"
                   >
@@ -90,22 +90,22 @@
                     </span>
                   </div>
 
-                  <!-- 名字与一句话描述同行 (侧边排布) -->
+                  <!-- 鍚嶅瓧涓庝竴鍙ヨ瘽鎻忚堪鍚岃 (渚ц竟鎺掑竷) -->
                   <div class="flex min-w-0 flex-1 flex-col pr-4 sm:flex-row sm:items-center sm:gap-3">
                     <span
                       class="text-base-content group-hover:text-primary truncate text-sm font-semibold transition-colors"
                       th:text="${project.spec.displayName}"
-                      >项目名</span
+                      >椤圭洰鍚?/span
                     >
                     <span
                       class="text-base-content/40 hidden max-w-[200px] truncate text-[11px] sm:block sm:text-xs lg:max-w-xs xl:max-w-md"
-                      th:text="${project.spec.description ?: '暂无相关描述'}"
-                      >描述</span
+                      th:text="${project.spec.description ?: '鏆傛棤鐩稿叧鎻忚堪'}"
+                      >鎻忚堪</span
                     >
                   </div>
                 </div>
 
-                <!-- 尾部状态与动作 -->
+                <!-- 灏鹃儴鐘舵€佷笌鍔ㄤ綔 -->
                 <div class="flex flex-shrink-0 items-center gap-4">
                   <span
                     class="text-base-content/40 bg-base-content/5 hidden items-center gap-1 rounded-md px-2.5 py-1 font-mono text-[10px] sm:flex"
@@ -143,10 +143,10 @@
 
                   <div class="flex min-w-0 flex-1 flex-col pr-4 sm:flex-row sm:items-center sm:gap-3">
                     <span class="text-base-content truncate text-sm font-semibold" th:text="${project.spec.displayName}"
-                      >项目名</span
+                      >椤圭洰鍚?/span
                     >
                     <span class="text-base-content/40 hidden max-w-[200px] truncate text-[11px] sm:block sm:text-xs"
-                      >暂无文档</span
+                      >鏆傛棤鏂囨。</span
                     >
                   </div>
                 </div>
@@ -164,13 +164,14 @@
             </th:block>
           </div>
 
-          <!-- 空状态 -->
+          <!-- 绌虹姸鎬?-->
           <div th:if="${result == null or result.items == null or result.items.isEmpty()}" class="py-10 text-center">
             <span class="icon-[heroicons--book-open] text-base-content/20 mx-auto mb-3 block h-8 w-8"></span>
-            <p class="text-base-content/40 text-xs font-medium">暂无文档项目，准备大作中</p>
+            <p class="text-base-content/40 text-xs font-medium">鏆傛棤鏂囨。椤圭洰锛屽噯澶囧ぇ浣滀腑</p>
           </div>
         </th:block>
       </th:block>
     </section>
   </th:block>
 </th:block>
+

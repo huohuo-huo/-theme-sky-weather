@@ -1,19 +1,19 @@
-<!doctype html>
+﻿<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
   <!-- ========================================== -->
-  <!--              标准导航栏组件                -->
+  <!--              鏍囧噯瀵艰埅鏍忕粍浠?               -->
   <!-- ========================================== -->
 
-  <!-- 主导航栏容器 -->
+  <!-- 涓诲鑸爮瀹瑰櫒 -->
   <div th:fragment="navbar" class="drawer nav-wrapper sticky top-0 z-50" x-data="navbarController">
-    <!-- 移动端抽屉开关 -->
-    <input id="mobile-menu-drawer" type="checkbox" class="drawer-toggle" aria-label="打开移动端菜单" />
+    <!-- 绉诲姩绔娊灞夊紑鍏?-->
+    <input id="mobile-menu-drawer" type="checkbox" class="drawer-toggle" aria-label="鎵撳紑绉诲姩绔彍鍗? />
 
-    <!-- 导航栏内容区域 -->
+    <!-- 瀵艰埅鏍忓唴瀹瑰尯鍩?-->
     <div class="drawer-content">
       <nav class="navbar">
         <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-2 px-2 sm:gap-4 sm:px-6 lg:px-8">
-          <!-- Logo 区域 -->
+          <!-- Logo 鍖哄煙 -->
           <div class="flex-shrink-0">
             <a href="/" class="flex items-center gap-2.5 text-lg font-bold sm:text-xl">
               <th:block th:replace="~{modules/logo :: icon('w-8 h-8')}" />
@@ -21,14 +21,14 @@
             </a>
           </div>
 
-          <!-- 主菜单区域（桌面端） -->
+          <!-- 涓昏彍鍗曞尯鍩燂紙妗岄潰绔級 -->
           <div class="hidden flex-1 justify-end lg:flex">
             <nav class="flex items-center gap-0.5">
               <th:block
                 th:with="primaryMenu = ${menuFinder.getByName(theme.config.nav.menu_settings.primary_menu ?: 'primary')}"
               >
                 <div th:each="menuItem : ${primaryMenu.menuItems}" class="group relative">
-                  <!-- 带子菜单的菜单项 -->
+                  <!-- 甯﹀瓙鑿滃崟鐨勮彍鍗曢」 -->
                   <th:block th:if="${menuItem.children != null and !menuItem.children.isEmpty()}">
                     <div class="dropdown dropdown-bottom dropdown-center dropdown-hover group/dropdown">
                       <a
@@ -66,7 +66,7 @@
                     </div>
                   </th:block>
 
-                  <!-- 普通菜单项（无子菜单） -->
+                  <!-- 鏅€氳彍鍗曢」锛堟棤瀛愯彍鍗曪級 -->
                   <th:block th:unless="${menuItem.children != null and !menuItem.children.isEmpty()}">
                     <a
                       th:href="@{${menuItem.status.href}}"
@@ -87,16 +87,16 @@
             </nav>
           </div>
 
-          <!-- 功能区域（右侧操作区） -->
+          <!-- 鍔熻兘鍖哄煙锛堝彸渚ф搷浣滃尯锛?-->
           <div class="flex flex-shrink-0 items-center gap-1.5 sm:gap-2">
-            <!-- 搜索功能：兼容 PluginSearchWidget v1.7.1，入口只调用全局 SearchWidget.open()。 -->
+            <!-- 鎼滅储鍔熻兘锛氬吋瀹?PluginSearchWidget v1.7.1锛屽叆鍙ｅ彧璋冪敤鍏ㄥ眬 SearchWidget.open()銆?-->
             <div
               th:if="${theme.config.nav.right_settings.show_search}"
             >
               <button
                 type="button"
-                aria-label="打开搜索"
-                title="搜索"
+                aria-label="鎵撳紑鎼滅储"
+                title="鎼滅储"
                 class="flex h-10 w-10 items-center justify-center rounded-full transition-transform hover:scale-110"
                 onclick="window.SearchWidget?.open?.()"
               >
@@ -118,7 +118,7 @@
               </button>
             </div>
 
-            <!-- 主题切换功能 -->
+            <!-- 涓婚鍒囨崲鍔熻兘 -->
             <div
               th:if="${theme.config.nav.theme_settings.show_theme_toggle}"
               class="relative"
@@ -132,8 +132,8 @@
                 type="button"
                 @click="toggleTheme()"
                 class="flex h-10 w-10 items-center justify-center rounded-full transition-transform hover:scale-110"
-                :title="isAuto ? '当前跟随系统，点击切换浅色模式' : (!isDark ? '当前浅色模式，点击切换深色模式' : '当前深色模式，点击切换跟随系统')"
-                :aria-label="isAuto ? '当前跟随系统，点击切换浅色模式' : (!isDark ? '当前浅色模式，点击切换深色模式' : '当前深色模式，点击切换跟随系统')"
+                :title="isAuto ? '褰撳墠璺熼殢绯荤粺锛岀偣鍑诲垏鎹㈡祬鑹叉ā寮? : (!isDark ? '褰撳墠娴呰壊妯″紡锛岀偣鍑诲垏鎹㈡繁鑹叉ā寮? : '褰撳墠娣辫壊妯″紡锛岀偣鍑诲垏鎹㈣窡闅忕郴缁?)"
+                :aria-label="isAuto ? '褰撳墠璺熼殢绯荤粺锛岀偣鍑诲垏鎹㈡祬鑹叉ā寮? : (!isDark ? '褰撳墠娴呰壊妯″紡锛岀偣鍑诲垏鎹㈡繁鑹叉ā寮? : '褰撳墠娣辫壊妯″紡锛岀偣鍑诲垏鎹㈣窡闅忕郴缁?)"
               >
                 <span
                   x-cloak
@@ -183,10 +183,10 @@
               </button>
             </div>
 
-            <!-- 用户操作功能 -->
+            <!-- 鐢ㄦ埛鎿嶄綔鍔熻兘 -->
             <div th:if="${theme.config.nav.right_settings.show_user_actions}" class="flex items-center">
               <div th:with="currentUser = ${contributorFinder.getContributor(#authentication.name)}">
-                <!-- 已登录用户 -->
+                <!-- 宸茬櫥褰曠敤鎴?-->
                 <div
                   th:if="${!#strings.equals(currentUser.name, 'anonymousUser')}"
                   class="group/user relative"
@@ -196,7 +196,7 @@
                   <div
                     role="button"
                     tabindex="0"
-                    aria-label="打开用户菜单"
+                    aria-label="鎵撳紑鐢ㄦ埛鑿滃崟"
                     aria-haspopup="menu"
                     :aria-expanded="userMenuOpen.toString()"
                     class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-transform hover:scale-110"
@@ -220,7 +220,7 @@
                     </div>
                   </div>
 
-                  <!-- 用户下拉菜单 -->
+                  <!-- 鐢ㄦ埛涓嬫媺鑿滃崟 -->
                   <div
                     x-show="userMenuOpen"
                     x-transition:enter="transition ease-out duration-200"
@@ -267,7 +267,7 @@
                         class="text-base-content/70 hover:text-base-content hover:bg-primary/10 flex items-center gap-3 rounded-lg text-sm transition-all duration-200"
                       >
                         <span class="icon-[heroicons--cog-8-tooth] h-4 w-4"></span>
-                        <span>控制台</span>
+                        <span>鎺у埗鍙?/span>
                       </a>
                     </li>
                     <li>
@@ -276,7 +276,7 @@
                         class="text-base-content/70 hover:text-base-content hover:bg-primary/10 flex items-center gap-3 rounded-lg text-sm transition-all duration-200"
                       >
                         <span class="icon-[heroicons--user] h-4 w-4"></span>
-                        <span>个人中心</span>
+                        <span>涓汉涓績</span>
                       </a>
                     </li>
                     <div class="divider my-1 opacity-50"></div>
@@ -286,19 +286,19 @@
                         class="text-error/70 hover:text-error hover:bg-error/10 flex items-center gap-3 rounded-lg text-sm transition-all duration-200"
                       >
                         <span class="icon-[heroicons--arrow-left-on-rectangle] h-4 w-4"></span>
-                        <span>退出登录</span>
+                        <span>閫€鍑虹櫥褰?/span>
                       </a>
                     </li>
                   </div>
                 </div>
 
-                <!-- 未登录用户 -->
+                <!-- 鏈櫥褰曠敤鎴?-->
                 <a
                   th:unless="${!#strings.equals(currentUser.name, 'anonymousUser')}"
                   href="/login"
                   class="flex h-10 w-10 items-center justify-center rounded-full transition-transform hover:scale-110"
-                  title="登录"
-                  aria-label="登录"
+                  title="鐧诲綍"
+                  aria-label="鐧诲綍"
                 >
                   <th:block
                     th:if="${theme.config.nav.right_settings.login_icon != null and !#strings.isEmpty(theme.config.nav.right_settings.login_icon)}"
@@ -319,15 +319,15 @@
               </div>
             </div>
 
-            <!-- 移动端菜单按钮 -->
+            <!-- 绉诲姩绔彍鍗曟寜閽?-->
             <div class="-mr-1 lg:hidden">
               <label
                 for="mobile-menu-drawer"
                 role="button"
                 tabindex="0"
-                aria-label="打开移动端菜单"
+                aria-label="鎵撳紑绉诲姩绔彍鍗?
                 aria-controls="mobile-menu-drawer"
-                title="菜单"
+                title="鑿滃崟"
                 class="drawer-button flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-transform hover:scale-110"
               >
                 <span
@@ -340,15 +340,15 @@
       </nav>
     </div>
 
-    <!-- ========== 移动端菜单抽屉 ========== -->
+    <!-- ========== 绉诲姩绔彍鍗曟娊灞?========== -->
     <div class="drawer-side z-[100]">
-      <label for="mobile-menu-drawer" aria-label="关闭移动端菜单" class="drawer-overlay"></label>
+      <label for="mobile-menu-drawer" aria-label="鍏抽棴绉诲姩绔彍鍗? class="drawer-overlay"></label>
 
       <aside
-        aria-label="移动端导航菜单"
+        aria-label="绉诲姩绔鑸彍鍗?
         class="bg-base-100 border-base-content/6 drawer-slide-in relative flex h-screen w-[17rem] flex-col overflow-hidden border-r shadow-[4px_0_40px_-8px_rgba(0,0,0,0.12)]"
       >
-        <!-- 滚动条美化样式 -->
+        <!-- 婊氬姩鏉＄編鍖栨牱寮?-->
         <style>
           #mobile-nav-scroll::-webkit-scrollbar {
             width: 3px;
@@ -368,7 +368,7 @@
             background: oklch(var(--bc) / 0.25);
           }
 
-          /* 头像区点阵纹理 */
+          /* 澶村儚鍖虹偣闃电汗鐞?*/
           .sidebar-header-texture {
             background-image: radial-gradient(circle, oklch(var(--bc) / 0.06) 1px, transparent 1px);
             background-size: 16px 16px;
@@ -377,26 +377,26 @@
           }
         </style>
 
-        <!-- 層次装饰光晕 -->
-        <!-- 左上 primary 光晕 -->
+        <!-- 灞ゆ瑁呴グ鍏夋檿 -->
+        <!-- 宸︿笂 primary 鍏夋檿 -->
         <div class="bg-primary/8 pointer-events-none absolute -top-16 -left-8 h-52 w-52 rounded-full blur-3xl"></div>
-        <!-- 右下 second 对角光晕 (与左上呗应) -->
+        <!-- 鍙充笅 second 瀵硅鍏夋檿 (涓庡乏涓婂憲搴? -->
         <div
           class="bg-secondary/6 pointer-events-none absolute -right-10 -bottom-20 h-48 w-48 rounded-full blur-3xl"
         ></div>
-        <!-- 右侧渐变光边（增加立体感）-->
+        <!-- 鍙充晶娓愬彉鍏夎竟锛堝鍔犵珛浣撴劅锛?->
         <div
           class="via-base-content/10 pointer-events-none absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent to-transparent"
         ></div>
 
-        <!-- ===== 头部：居中头像/Logo + 名称 + 统计 ===== -->
+        <!-- ===== 澶撮儴锛氬眳涓ご鍍?Logo + 鍚嶇О + 缁熻 ===== -->
         <div
           class="sidebar-header-texture relative overflow-hidden px-6 pt-8 pb-5"
           th:with="currentUser = ${contributorFinder.getContributor(#authentication.name)},
                  isLoggedIn = ${!#strings.equals(currentUser.name, 'anonymousUser')}"
         >
           <div class="flex flex-col items-center">
-            <!-- 已登录：用户头像 -->
+            <!-- 宸茬櫥褰曪細鐢ㄦ埛澶村儚 -->
             <a th:if="${isLoggedIn}" href="/uc" class="group mb-3">
               <div
                 class="ring-primary/20 ring-offset-base-100 group-hover:ring-primary/50 shadow-primary/10 h-18 w-18 overflow-hidden rounded-full shadow-lg ring-2 ring-offset-2 transition-all duration-300"
@@ -414,7 +414,7 @@
                 />
               </div>
             </a>
-            <!-- 未登录：站点 Logo -->
+            <!-- 鏈櫥褰曪細绔欑偣 Logo -->
             <a th:unless="${isLoggedIn}" href="/" class="group mb-3">
               <div
                 class="bg-base-200 ring-base-content/10 ring-offset-base-100 group-hover:ring-primary/30 shadow-base-content/5 flex h-18 w-18 items-center justify-center overflow-hidden rounded-full shadow-lg ring-2 ring-offset-2 transition-all duration-300"
@@ -423,33 +423,32 @@
               </div>
             </a>
 
-            <!-- 名称 -->
+            <!-- 鍚嶇О -->
             <a
               th:if="${isLoggedIn}"
               href="/uc"
               class="text-base-content hover:text-primary text-sm font-semibold transition-colors"
               th:text="${currentUser.displayName}"
-              >用户名</a
+              >鐢ㄦ埛鍚?/a
             >
             <a
               th:unless="${isLoggedIn}"
               href="/"
               class="text-base-content hover:text-primary text-sm font-semibold transition-colors"
               th:text="${siteTitle}"
-              >站点名称</a
+              >绔欑偣鍚嶇О</a
             >
 
-            <!-- 副标题 -->
+            <!-- 鍓爣棰?-->
             <p
               th:unless="${isLoggedIn}"
               class="text-base-content/40 mt-1 text-xs"
               th:text="${#strings.abbreviate(siteSubtitle ?: '', 24)}"
             >
-              一段简介
-            </p>
+              涓€娈电畝浠?            </p>
           </div>
 
-          <!-- 统计数据行 -->
+          <!-- 缁熻鏁版嵁琛?-->
           <div
             class="mt-5 flex items-center justify-center gap-6"
             th:with="allPosts = ${postFinder.list({page: 1, size: 1})},
@@ -462,7 +461,7 @@
                 th:text="${allPosts.total}"
                 >0</span
               >
-              <span class="text-base-content/40 mt-1 text-xs">文章</span>
+              <span class="text-base-content/40 mt-1 text-xs">鏂囩珷</span>
             </a>
             <div class="bg-base-content/10 h-6 w-px"></div>
             <a href="/tags" class="group flex flex-col items-center">
@@ -471,7 +470,7 @@
                 th:text="${#lists.size(allTags)}"
                 >0</span
               >
-              <span class="text-base-content/40 mt-1 text-xs">标签</span>
+              <span class="text-base-content/40 mt-1 text-xs">鏍囩</span>
             </a>
             <div class="bg-base-content/10 h-6 w-px"></div>
             <a href="/categories" class="group flex flex-col items-center">
@@ -480,19 +479,19 @@
                 th:text="${#lists.size(allCategories)}"
                 >0</span
               >
-              <span class="text-base-content/40 mt-1 text-xs">分类</span>
+              <span class="text-base-content/40 mt-1 text-xs">鍒嗙被</span>
             </a>
           </div>
         </div>
 
-        <!-- ===== 菜单区域 ===== -->
+        <!-- ===== 鑿滃崟鍖哄煙 ===== -->
         <div id="mobile-nav-scroll" class="flex-1 overflow-y-auto overscroll-contain px-3 py-4">
           <nav class="space-y-0.5 pb-4">
             <th:block
               th:with="primaryMenu = ${menuFinder.getByName(theme.config.nav.menu_settings.primary_menu ?: 'primary')}"
             >
               <div th:each="menuItem, iterStat : ${primaryMenu.menuItems}">
-                <!-- 带子菜单 -->
+                <!-- 甯﹀瓙鑿滃崟 -->
                 <th:block th:if="${menuItem.children != null and !menuItem.children.isEmpty()}">
                   <div x-data="{ open: false }">
                     <button
@@ -521,7 +520,7 @@
                       <span
                         class="flex-1 text-left text-sm font-medium transition-transform duration-300 group-hover:translate-x-1"
                         th:text="${menuItem.status.displayName}"
-                        >菜单项</span
+                        >鑿滃崟椤?/span
                       >
                       <span
                         class="icon-[heroicons--chevron-down] text-base-content/25 h-3.5 w-3.5 flex-shrink-0 transition-transform duration-300"
@@ -561,14 +560,14 @@
                         <span
                           class="transition-transform duration-300 group-hover:translate-x-1"
                           th:text="${childItem.status.displayName}"
-                          >子项</span
+                          >瀛愰」</span
                         >
                       </a>
                     </div>
                   </div>
                 </th:block>
 
-                <!-- 无子菜单 -->
+                <!-- 鏃犲瓙鑿滃崟 -->
                 <th:block th:unless="${menuItem.children != null and !menuItem.children.isEmpty()}">
                   <a
                     th:href="@{${menuItem.status.href}}"
@@ -595,7 +594,7 @@
                     <span
                       class="text-sm font-medium transition-transform duration-300 group-hover:translate-x-1"
                       th:text="${menuItem.status.displayName}"
-                      >菜单项</span
+                      >鑿滃崟椤?/span
                     >
                   </a>
                 </th:block>
@@ -604,7 +603,7 @@
           </nav>
         </div>
 
-        <!-- 底部遮罩淡出 -->
+        <!-- 搴曢儴閬僵娣″嚭 -->
         <div
           class="from-base-100 pointer-events-none absolute right-0 bottom-0 left-0 z-10 h-6 bg-gradient-to-t to-transparent"
         ></div>
@@ -612,3 +611,4 @@
     </div>
   </div>
 </html>
+

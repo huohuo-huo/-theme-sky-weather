@@ -1,31 +1,31 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN" th:fragment="html (content)">
   <!-- ========================================== -->
-  <!--        鍏充簬椤甸潰甯冨眬                         -->
-  <!-- 鑷畾涔夋ā鏉匡細page_about.html                 -->
+  <!--        閸忓厖绨い鐢告桨鐢啫鐪?                        -->
+  <!-- 閼奉亜鐣炬稊澶嬆侀弶鍖＄窗page_about.html                 -->
   <!-- ========================================== -->
 
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- 鍚敤 View Transitions API (Safari 18+/Chrome 111+) -->
+    <!-- 閸氼垳鏁?View Transitions API (Safari 18+/Chrome 111+) -->
     <meta name="view-transition" content="same-origin" />
 
-    <!-- 闃叉涓婚闂儊 -->
+    <!-- 闂冨弶顒涙稉濠氼暯闂傤亞鍎?-->
     <th:block th:replace="~{modules/theme-script :: inline-script}" />
 
-    <!-- 椤甸潰鏍囬 -->
+    <!-- 妞ょ敻娼伴弽鍥暯 -->
     <title
       th:text="${singlePage.spec.title} + ' - ' + ${site.title} + (${site.subtitle != null and !#strings.isEmpty(site.subtitle)} ? ' - ' + ${site.subtitle} : '')"
     >
     </title>
-    <!-- 瀛椾綋 -->
+    <!-- 鐎涙ぞ缍?-->
     <th:block th:replace="~{modules/font-loader :: fonts}" />
-    <!-- 涓婚鏍峰紡 -->
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.21')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/about.css?v={version}(version='1.0.21')}" />
-    <!-- 闊充箰鎾斁锟?CSS -->
+    <!-- 娑撳顣介弽宄扮础 -->
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.24')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/about.css?v={version}(version='1.0.24')}" />
+    <!-- 闂婂厖绠伴幘顓熸杹閿?CSS -->
     <th:block th:replace="~{modules/music-player :: head}" />
   </head>
 
@@ -36,43 +36,44 @@
                  bgClass = ${enableCustomBg ? (bgStyle == 'grid' ? 'bg-base-100' : 'bg-' + bgStyle) : 'bg-base-100'}"
     th:class="'min-h-screen text-base-content relative ' + ${bgClass}"
   >
-    <!-- 缃戞牸鑳屾櫙锛堜粎褰撻€夋嫨 grid 鏍峰紡鏃舵樉绀猴級 -->
+    <!-- 缂冩垶鐗搁懗灞炬珯閿涘牅绮庤ぐ鎾烩偓澶嬪 grid 閺嶅嘲绱￠弮鑸垫▔缁€鐚寸礆 -->
     <div
       th:if="${enableCustomBg and bgStyle == 'grid'}"
       class="bg-grid-pattern pointer-events-none fixed inset-0 z-[1]"
     ></div>
 
     <div class="relative z-10">
-      <!-- 鍔犺浇灞忓箷 -->
+      <!-- 閸旂姾娴囩仦蹇撶 -->
       <th:block th:replace="~{modules/loading-screen :: loading-screen}" />
 
-      <!-- 瀵艰埅锟?-->
+      <!-- 鐎佃壈鍩呴敓?-->
       <th:block th:replace="~{modules/nav :: navbar}" />
 
-      <!-- 涓昏鍐呭鍖哄煙 -->
+      <!-- 娑撴槒顩﹂崘鍛啇閸栧搫鐓?-->
       <main id="swup" class="mt-6 flex-1 md:mt-8">
         <th:block th:replace="${content}" />
       </main>
 
-      <!-- 椤佃剼 -->
+      <!-- 妞や絻鍓?-->
       <th:block th:replace="~{modules/footer :: footer}" />
     </div>
 
     <div id="swup-page-extras">
-      <!-- 鎮诞 Dock 鎺у埗锟?-->
+      <!-- 閹剚璇?Dock 閹貉冨煑閿?-->
       <th:block th:replace="~{modules/floating-dock :: dockWithConfig(${theme.config.about_settings}, 'comment')}" />
     </div>
 
-    <!-- JavaScript - 浣跨敤 ES Module -->
+    <!-- JavaScript - 娴ｈ法鏁?ES Module -->
     <div id="swup-scripts" hidden>
       <script
         type="module"
-        th:src="@{/assets/js/about.js?v={version}(version='1.0.21')}"
+        th:src="@{/assets/js/about.js?v={version}(version='1.0.24')}"
         data-swup-reload-script
       ></script>
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.21')}"></script>
-    <!-- 鎮诞闊充箰鎾斁锟?-->
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.24')}"></script>
+    <!-- 閹剚璇為棅鍏呯閹绢厽鏂侀敓?-->
     <th:block th:replace="~{modules/music-player :: player}" />
   </body>
 </html>
+

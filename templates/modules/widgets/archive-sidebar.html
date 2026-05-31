@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--           文章归档侧边栏组件                  -->
+<!--           鏂囩珷褰掓。渚ц竟鏍忕粍浠?                 -->
 <!-- ========================================== -->
 
 <th:block th:fragment="widget" th:with="globalArchives = ${postFinder.archives(1, 100)}">
@@ -27,13 +27,13 @@
                     th:utext="${cfg.icon}"></span>
             </th:block>
 
-            <span th:text="${cfg?.title ?: '归档探索'}">归档探索</span>
+            <span th:text="${cfg?.title ?: '褰掓。鎺㈢储'}">褰掓。鎺㈢储</span>
         </h3>
 
-        <!-- 归档树形菜单 -->
+        <!-- 褰掓。鏍戝舰鑿滃崟 -->
         <div class="space-y-2">
             <div th:each="archive, iterStat : ${globalArchives.items}" class="archive-year-group">
-                <!-- 年份头部 -->
+                <!-- 骞翠唤澶撮儴 -->
                 <button type="button"
                     class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-base-content/5 transition-colors group text-base-content archive-toggle-btn"
                     th:data-year="${archive.year}" th:data-expanded="${iterStat.first}">
@@ -48,7 +48,7 @@
                         th:classappend="${iterStat.first ? 'rotate-180' : ''}"></span>
                 </button>
 
-                <!-- 月份列表 (利用 grid 动画实现平滑折叠) -->
+                <!-- 鏈堜唤鍒楄〃 (鍒╃敤 grid 鍔ㄧ敾瀹炵幇骞虫粦鎶樺彔) -->
                 <div class="grid transition-all duration-300 ease-out archive-list-wrapper"
                     th:classappend="${iterStat.first ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}">
                     <div class="overflow-hidden">
@@ -56,7 +56,7 @@
                             <a th:each="monthData : ${archive.months}"
                                 th:href="@{/archives/{year}/{month}(year=${archive.year},month=${monthData.month})}"
                                 class="archive-month-link flex items-center justify-between py-1.5 pl-4 pr-3 rounded-r-xl text-[13.5px] transition-all relative left-[-2px] border-l-2 border-transparent text-base-content/60 hover:text-primary hover:bg-primary/5">
-                                <span th:text="${monthData.month} + '月'"></span>
+                                <span th:text="${monthData.month} + '鏈?"></span>
                                 <span class="text-[11px] font-medium opacity-40 font-mono"
                                     th:text="${#lists.size(monthData.posts)}"></span>
                             </a>
@@ -155,8 +155,7 @@
                     }
                 };
 
-                // 确保在DOM加载或是Pjax加载后执行
-                if (document.readyState === 'loading') {
+                // 纭繚鍦―OM鍔犺浇鎴栨槸Pjax鍔犺浇鍚庢墽琛?                if (document.readyState === 'loading') {
                     document.addEventListener('DOMContentLoaded', initArchiveSidebar);
                 } else {
                     initArchiveSidebar();
@@ -167,3 +166,4 @@
 </th:block>
 
 </html>
+

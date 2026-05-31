@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" class="h-full">
 
 <head>
@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
     <script th:src="@{/assets/js/main.js}" defer></script>
     <style>
-        /* ============================= 高端按钮效果 (自 About 页面移植) ============================= */
+        /* ============================= 楂樼鎸夐挳鏁堟灉 (鑷?About 椤甸潰绉绘) ============================= */
         .error-actions .btn {
             position: relative;
             overflow: hidden;
@@ -17,7 +17,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 主按钮 - 深色发光效果 */
+        /* 涓绘寜閽?- 娣辫壊鍙戝厜鏁堟灉 */
         .error-actions .btn-neutral {
             background: var(--color-base-content);
             color: var(--color-base-100);
@@ -38,7 +38,7 @@
             transition: opacity 0.4s ease;
         }
 
-        /* 流光扫过效果 */
+        /* 娴佸厜鎵繃鏁堟灉 */
         .error-actions .btn-neutral::after {
             content: '';
             position: absolute;
@@ -69,7 +69,7 @@
             left: 100%;
         }
 
-        /* 次要按钮 - 边框发光效果 */
+        /* 娆¤鎸夐挳 - 杈规鍙戝厜鏁堟灉 */
         .error-actions .btn-outline {
             background: transparent;
             color: var(--color-base-content);
@@ -77,7 +77,7 @@
             box-shadow: 0 2px 10px color-mix(in oklch, var(--color-base-content) 10%, transparent);
         }
 
-        /* 渐变边框动画背景 */
+        /* 娓愬彉杈规鍔ㄧ敾鑳屾櫙 */
         .error-actions .btn-outline::before {
             content: '';
             position: absolute;
@@ -94,7 +94,7 @@
             animation: error-border-spin 3s linear infinite paused;
         }
 
-        /* 内部背景遮罩 */
+        /* 鍐呴儴鑳屾櫙閬僵 */
         .error-actions .btn-outline::after {
             content: '';
             position: absolute;
@@ -134,7 +134,7 @@
             background: color-mix(in oklch, var(--color-primary) 5%, var(--color-base-100));
         }
 
-        /* 按钮文字层 */
+        /* 鎸夐挳鏂囧瓧灞?*/
         .error-actions .btn span,
         .error-actions .btn {
             z-index: 1;
@@ -190,11 +190,10 @@
         <div class="error-actions flex flex-col sm:flex-row items-center justify-center gap-5">
             <a href="/" class="btn btn-neutral btn-lg">
                 <span class="icon-[heroicons--home] w-5 h-5"></span>
-                返回首页
+                杩斿洖棣栭〉
             </a>
             <button onclick="history.back()" class="btn btn-outline btn-lg">
-                返回上一页
-            </button>
+                杩斿洖涓婁竴椤?            </button>
         </div>
     </div>
 

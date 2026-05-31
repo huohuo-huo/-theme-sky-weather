@@ -1,16 +1,26 @@
-<!-- Docsme 文档内容页面 - 完全自定义 -->
-<!-- 兼容基线：plugin-docsme 免费版 1.5.0 / 专业版 1.6.0；消费 project/docTree/docTrees/crumbs/versions/languages/linkNavigation。 -->
+﻿<!-- Docsme 鏂囨。鍐呭椤甸潰 - 瀹屽叏鑷畾涔?-->
+<!-- 鍏煎鍩虹嚎锛歱lugin-docsme 鍏嶈垂鐗?1.5.0 / 涓撲笟鐗?1.6.0锛涙秷璐?project/docTree/docTrees/crumbs/versions/languages/linkNavigation銆?-->
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org"
   th:replace="~{modules/doc-layout :: html(head = ~{::head}, content = ~{::content}, scripts = ~{::scripts}, dock = ~{::dock})}">
 <th:block th:fragment="head">
-  <!-- 代码高亮样式 -->
+  <!-- 浠ｇ爜楂樹寒鏍峰紡 -->
   <th:block th:replace="~{plugin:plugin-docsme:modules/prism}" />
+  <!-- Docsme/Shiki may inject a preview blur after theme CSS; keep published docs readable. -->
+  <style>
+    .doc-layout #article-content pre:has(code),
+    .doc-layout #article-content pre,
+    .doc-layout #doc-content pre:has(code),
+    .doc-layout #doc-content pre {
+      filter: none !important;
+      -webkit-filter: none !important;
+    }
+  </style>
 </th:block>
 <th:block th:fragment="content">
   <th:block th:replace="~{modules/doc-content :: content}" />
 </th:block>
-<!-- 文档页专用 Dock 和抽屉 -->
+<!-- 鏂囨。椤典笓鐢?Dock 鍜屾娊灞?-->
 <th:block th:fragment="dock">
   <th:block th:replace="~{modules/doc/floating-dock :: doc-dock}" />
   <th:block th:replace="~{modules/doc/floating-dock :: doc-comment-drawer}" />
@@ -18,13 +28,14 @@
   <th:block th:replace="~{modules/doc/floating-dock :: doc-sidebar-drawer(config=null)}" />
 </th:block>
 <th:block th:fragment="scripts">
-  <!-- 禁用插件的主题切换功能，使用主题自带的 -->
+  <!-- 绂佺敤鎻掍欢鐨勪富棰樺垏鎹㈠姛鑳斤紝浣跨敤涓婚鑷甫鐨?-->
   <script>
     var docsme = { disableThemeFunction: true };
   </script>
-  <!-- 其他插件脚本（搜索、绘图、KaTeX） -->
+  <!-- 鍏朵粬鎻掍欢鑴氭湰锛堟悳绱€佺粯鍥俱€並aTeX锛?-->
   <th:block th:replace="~{plugin:plugin-docsme:modules/plugin-scripts}" />
-  <!-- 目录生成脚本已移至 doc.js -->
+  <!-- 鐩綍鐢熸垚鑴氭湰宸茬Щ鑷?doc.js -->
 </th:block>
 
 </html>
+

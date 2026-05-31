@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--        标签页主体内容（索引与归档）          -->
-<!-- 说明：结构参考 modules/categories/content.html -->
+<!--        鏍囩椤典富浣撳唴瀹癸紙绱㈠紩涓庡綊妗ｏ級          -->
+<!-- 璇存槑锛氱粨鏋勫弬鑰?modules/categories/content.html -->
 <!-- ========================================== -->
 
-<!-- 标签集合内容片段：/tags -->
+<!-- 鏍囩闆嗗悎鍐呭鐗囨锛?tags -->
 <main class="relative" th:fragment="tag-collection"
   th:with="rootCfg = ${theme.config.tag_settings},
                cfg = ${rootCfg.basic_info},
@@ -14,14 +14,14 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 主体内容区域（两列布局） -->
+  <!-- 涓讳綋鍐呭鍖哄煙锛堜袱鍒楀竷灞€锛?-->
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：标签切换块与文章列表 -->
+      <!-- 宸︿晶锛氭爣绛惧垏鎹㈠潡涓庢枃绔犲垪琛?-->
       <section class="flex-1" th:classappend="${sidebarCfg.show_sidebar != true ? 'max-w-6xl mx-auto' : ''}">
         <th:block th:with="tags = ${tagFinder.listAll()}">
 
-          <!-- 标签切换块 - 根据后台设置渲染不同风格 -->
+          <!-- 鏍囩鍒囨崲鍧?- 鏍规嵁鍚庡彴璁剧疆娓叉煋涓嶅悓椋庢牸 -->
           <th:block th:switch="${theme.config.tag_settings.basic_info.tag_display_style}">
             <th:block th:case="'pills'">
               <th:block th:replace="~{modules/tags/tag-switch :: pills(${tags}, null)}" />
@@ -40,19 +40,19 @@
             </th:block>
           </th:block>
 
-          <!-- 无标签提示 -->
+          <!-- 鏃犳爣绛炬彁绀?-->
           <th:block th:if="${#lists.isEmpty(tags)}">
             <div class="mt-6 flex items-center justify-center">
-              <span class="text-sm font-light text-base-content/60">暂无标签</span>
+              <span class="text-sm font-light text-base-content/60">鏆傛棤鏍囩</span>
             </div>
           </th:block>
 
-          <!-- 有标签：在 /tags（全部）分页显示所有文章 -->
+          <!-- 鏈夋爣绛撅細鍦?/tags锛堝叏閮級鍒嗛〉鏄剧ず鎵€鏈夋枃绔?-->
           <th:block th:unless="${#lists.isEmpty(tags)}" th:with="pageSize=${site.post.tagPageSize ?: 10}, 
                              pageParam=${param.page != null and !#lists.isEmpty(param.page) ? param.page[0] : '1'}, 
                              currentPage=${#numbers.formatInteger(pageParam, 0)}, 
                              posts=${postFinder.list({page: currentPage, size: pageSize})}">
-            <!-- 动态渲染不同风格的列表 -->
+            <!-- 鍔ㄦ€佹覆鏌撲笉鍚岄鏍肩殑鍒楄〃 -->
             <th:block th:switch="${theme.config.tag_settings.basic_info.list_style}">
               <th:block th:case="'modern'">
                 <th:block
@@ -76,12 +76,12 @@
               </th:block>
             </th:block>
 
-            <!-- 无文章提示 -->
+            <!-- 鏃犳枃绔犳彁绀?-->
             <div th:if="${posts.total == 0}" class="mt-6 flex items-center justify-center">
-              <span class="text-sm font-light text-base-content/60">暂无文章</span>
+              <span class="text-sm font-light text-base-content/60">鏆傛棤鏂囩珷</span>
             </div>
 
-            <!-- 分页 -->
+            <!-- 鍒嗛〉 -->
             <th:block th:replace="~{modules/categories/pagination :: pagination(
                 context=@{/tags/},
                 prevUrl=@{/tags(page=${posts.page - 1})},
@@ -95,7 +95,7 @@
         </th:block>
       </section>
 
-      <!-- 右侧：侧边栏 -->
+      <!-- 鍙充晶锛氫晶杈规爮 -->
       <aside th:if="${sidebarCfg.show_sidebar == true}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -104,7 +104,7 @@
   </div>
 </main>
 
-<!-- 标签归档内容片段：/tags/:slug -->
+<!-- 鏍囩褰掓。鍐呭鐗囨锛?tags/:slug -->
 <main class="relative" th:fragment="tag-archive"
   th:with="rootCfg = ${theme.config.tag_settings},
                cfg = ${rootCfg.basic_info},
@@ -112,14 +112,14 @@
                globalSidebarCfg = ${theme.config.general.sidebar_settings},
                useCustomSidebar = ${sidebarCfg?.enable_custom_sidebar == true},
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
-  <!-- 主体内容区域 -->
+  <!-- 涓讳綋鍐呭鍖哄煙 -->
   <div class="article-list-shell max-w-[1380px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-12">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-      <!-- 左侧：标签切换块与当前标签文章列表 -->
+      <!-- 宸︿晶锛氭爣绛惧垏鎹㈠潡涓庡綋鍓嶆爣绛炬枃绔犲垪琛?-->
       <section class="flex-1"
         th:classappend="${theme.config.tag_settings.sidebar_settings.show_sidebar != true ? 'max-w-6xl mx-auto' : ''}">
 
-        <!-- 标签切换块 -->
+        <!-- 鏍囩鍒囨崲鍧?-->
         <th:block th:with="tags = ${tagFinder.listAll()}">
           <th:block th:switch="${theme.config.tag_settings.basic_info.tag_display_style}">
             <th:block th:case="'pills'">
@@ -140,7 +140,7 @@
           </th:block>
         </th:block>
 
-        <!-- 文章列表（当前标签） -->
+        <!-- 鏂囩珷鍒楄〃锛堝綋鍓嶆爣绛撅級 -->
         <th:block th:switch="${theme.config.tag_settings.basic_info.list_style}">
           <th:block th:case="'modern'">
             <th:block
@@ -164,7 +164,7 @@
           </th:block>
         </th:block>
 
-        <!-- 分页 -->
+        <!-- 鍒嗛〉 -->
         <th:block th:replace="~{modules/categories/pagination :: pagination(
             context=@{/tags/{slug}/(slug=${tag.metadata.name})},
             prevUrl=${posts.prevUrl},
@@ -176,7 +176,7 @@
         )}" />
       </section>
 
-      <!-- 右侧：侧边栏 -->
+      <!-- 鍙充晶锛氫晶杈规爮 -->
       <aside th:if="${sidebarCfg.show_sidebar == true}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -186,3 +186,4 @@
 </main>
 
 </html>
+

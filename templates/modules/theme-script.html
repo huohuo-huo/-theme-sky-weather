@@ -1,29 +1,27 @@
-<!doctype html>
+﻿<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
   <!-- ========================================== -->
-  <!--          主题切换内联脚本（防闪烁）          -->
+  <!--          涓婚鍒囨崲鍐呰仈鑴氭湰锛堥槻闂儊锛?         -->
   <!-- ========================================== -->
 
   <!--
-  此脚本必须在 <head> 中尽早执行，在页面渲染前应用主题
-  避免页面加载时的主题闪烁问题
+  姝よ剼鏈繀椤诲湪 <head> 涓敖鏃╂墽琛岋紝鍦ㄩ〉闈㈡覆鏌撳墠搴旂敤涓婚
+  閬垮厤椤甸潰鍔犺浇鏃剁殑涓婚闂儊闂
   
-  优先级逻辑：
-  1. 如果前端开关开启 && localStorage 有缓存 → 使用缓存主题
-  2. 否则 → 使用默认配置主题
+  浼樺厛绾ч€昏緫锛?  1. 濡傛灉鍓嶇寮€鍏冲紑鍚?&& localStorage 鏈夌紦瀛?鈫?浣跨敤缂撳瓨涓婚
+  2. 鍚﹀垯 鈫?浣跨敤榛樿閰嶇疆涓婚
 -->
   <script th:fragment="inline-script" th:inline="javascript">
     (function () {
-      // === 主题初始化 ===
+      // === 涓婚鍒濆鍖?===
       const showThemeToggle = /*[[${theme.config.nav.theme_settings.show_theme_toggle}]]*/ true;
       const savedTheme = localStorage.getItem("theme-mode");
       const defaultTheme = /*[[${theme.config.nav.theme_settings.default_theme}]]*/ "dark_theme";
       const lightTheme = /*[[${theme.config.nav.theme_settings.light_theme}]]*/ "light";
       const darkTheme = /*[[${theme.config.nav.theme_settings.dark_theme}]]*/ "dark";
 
-      // === 注入环境变量 ===
-      window.SYS_WEATHER_DEBUG = /*[[${theme.config.general.debug_settings.enable_weather_debug ?: false}]]*/ false; // 旧兼容接口
-      window.SYS_GLOBAL_DEBUG = window.SYS_WEATHER_DEBUG; // 将来如果有全局其他 debug 可在此处叠加
+      // === 娉ㄥ叆鐜鍙橀噺 ===
+      window.SYS_WEATHER_DEBUG = /*[[${theme.config.general.debug_settings.enable_weather_debug ?: false}]]*/ false; // 鏃у吋瀹规帴鍙?      window.SYS_GLOBAL_DEBUG = window.SYS_WEATHER_DEBUG; // 灏嗘潵濡傛灉鏈夊叏灞€鍏朵粬 debug 鍙湪姝ゅ鍙犲姞
       window.SkyWeatherGlassConfig = {
         enabled: /*[[${theme.config.index.background_settings.background_type == 'weather-glass'}]]*/ false,
         mode: /*[[${theme.config.index.background_settings.weather_glass_mode ?: 'auto'}]]*/ "auto",
@@ -38,18 +36,15 @@
         nightMediaOpacity: /*[[${theme.config.index.background_settings.weather_glass_night_media_opacity ?: 34}]]*/ 34,
       };
 
-      // === PJAX 开关 ===
-      // 音乐播放器开启时强制启用 PJAX（续播依赖），否则读后台配置
+      // === PJAX 寮€鍏?===
+      // 闊充箰鎾斁鍣ㄥ紑鍚椂寮哄埗鍚敤 PJAX锛堢画鎾緷璧栵級锛屽惁鍒欒鍚庡彴閰嶇疆
       const musicEnabled = /*[[${theme.config.music?.music_settings?.enable == true}]]*/ false;
       const pjaxSetting = /*[[${theme.config.music?.music_settings?.enable_pjax != false}]]*/ true;
       window.__skyPjaxEnabled = musicEnabled || pjaxSetting;
 
-      // === PJAX 脚本生命周期工具 ===
-      // 保留 SkyPjax 名称作为历史兼容接口，供后台注入脚本使用：
-      // - SkyPjax.once(key, fn): 全站只执行一次，适合点击特效、统计、播放器等全局脚本
-      // - SkyPjax.onPage(fn): 首屏和每次 PJAX 后执行，适合当前页面 DOM 初始化
-      // - SkyPjax.onCleanup(fn): PJAX 离开当前页前执行，适合清理监听器/定时器
-      const pjaxState = window.__skyPjaxState || {
+      // === PJAX 鑴氭湰鐢熷懡鍛ㄦ湡宸ュ叿 ===
+      // 淇濈暀 SkyPjax 鍚嶇О浣滀负鍘嗗彶鍏煎鎺ュ彛锛屼緵鍚庡彴娉ㄥ叆鑴氭湰浣跨敤锛?      // - SkyPjax.once(key, fn): 鍏ㄧ珯鍙墽琛屼竴娆★紝閫傚悎鐐瑰嚮鐗规晥銆佺粺璁°€佹挱鏀惧櫒绛夊叏灞€鑴氭湰
+      // - SkyPjax.onPage(fn): 棣栧睆鍜屾瘡娆?PJAX 鍚庢墽琛岋紝閫傚悎褰撳墠椤甸潰 DOM 鍒濆鍖?      // - SkyPjax.onCleanup(fn): PJAX 绂诲紑褰撳墠椤靛墠鎵ц锛岄€傚悎娓呯悊鐩戝惉鍣?瀹氭椂鍣?      const pjaxState = window.__skyPjaxState || {
         onceKeys: new Set(),
         pageCallbacks: new Set(),
         cleanupCallbacks: new Set(),
@@ -115,11 +110,10 @@
         },
       };
 
-      // === 解析系统主题偏好 ===
+      // === 瑙ｆ瀽绯荤粺涓婚鍋忓ソ ===
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-      // 计算当前是否为暗色模式
-      // 优先级：localStorage > 默认配置，auto 模式跟随系统
+      // 璁＄畻褰撳墠鏄惁涓烘殫鑹叉ā寮?      // 浼樺厛绾э細localStorage > 榛樿閰嶇疆锛宎uto 妯″紡璺熼殢绯荤粺
       function resolveIsDark() {
         const effectiveMode = showThemeToggle && savedTheme ? savedTheme : defaultTheme;
         if (effectiveMode === "auto") {
@@ -146,18 +140,18 @@
         document.documentElement.setAttribute("data-color-scheme", newThemeMode);
       }
 
-      // 监听系统主题变化（仅在 auto 模式下响应）
+      // 鐩戝惉绯荤粺涓婚鍙樺寲锛堜粎鍦?auto 妯″紡涓嬪搷搴旓級
       if (typeof prefersDark.addEventListener === "function") {
         prefersDark.addEventListener("change", handleSystemThemeChange);
       } else if (typeof prefersDark.addListener === "function") {
         prefersDark.addListener(handleSystemThemeChange);
       }
 
-      // === 全局字体按需加载 ===
+      // === 鍏ㄥ眬瀛椾綋鎸夐渶鍔犺浇 ===
       const bodyFont = /*[[${theme.config.general.font_settings.body_font}]]*/ "font-default";
       const fontCdn = /*[[${theme.config.general.font_settings.font_cdn}]]*/ "";
 
-      // 加载字体文件
+      // 鍔犺浇瀛椾綋鏂囦欢
       if (fontCdn && bodyFont === "font-lxgw-wenkai-bright") {
         const link = document.createElement("link");
         link.rel = "stylesheet";
@@ -166,14 +160,14 @@
       } else if (fontCdn && bodyFont === "font-siyuan-songti") {
         const link = document.createElement("link");
         link.rel = "stylesheet";
-        link.href = fontCdn + "/思源屏显臻宋/result.css";
+        link.href = fontCdn + "/鎬濇簮灞忔樉鑷诲畫/result.css";
         document.head.appendChild(link);
       }
 
-      // 应用字体类到 html 元素（全局生效）
-      if (bodyFont && bodyFont !== "font-default") {
+      // 搴旂敤瀛椾綋绫诲埌 html 鍏冪礌锛堝叏灞€鐢熸晥锛?      if (bodyFont && bodyFont !== "font-default") {
         document.documentElement.classList.add(bodyFont);
       }
     })();
   </script>
 </html>
+

@@ -1,6 +1,6 @@
-<!-- ========================================== -->
-<!--    关于页面 - Squareform 风格              -->
-<!-- 设计：浅色 + 极简 + 网格背景 + Clip 效果   -->
+﻿<!-- ========================================== -->
+<!--    鍏充簬椤甸潰 - Squareform 椋庢牸              -->
+<!-- 璁捐锛氭祬鑹?+ 鏋佺畝 + 缃戞牸鑳屾櫙 + Clip 鏁堟灉   -->
 <!-- ========================================== -->
 <th:block th:fragment="content">
 
@@ -30,53 +30,53 @@
     pageContent=${singlePage.content?.content},
     heroActions=${cfg?.hero_actions},
     showPrimaryBtn=${cfg?.hero_actions?.primary_group?.show_primary != false},
-    primaryBtnText=${cfg?.hero_actions?.primary_group?.primary_text ?: '查看作品'},
+    primaryBtnText=${cfg?.hero_actions?.primary_group?.primary_text ?: '鏌ョ湅浣滃搧'},
     primaryBtnLink=${cfg?.hero_actions?.primary_group?.primary_link ?: '#sf-projects'},
     showSecondaryBtn=${cfg?.hero_actions?.secondary_group?.show_secondary != false},
-    secondaryBtnText=${cfg?.hero_actions?.secondary_group?.secondary_text ?: '联系我'},
+    secondaryBtnText=${cfg?.hero_actions?.secondary_group?.secondary_text ?: '鑱旂郴鎴?},
     secondaryBtnLink=${cfg?.hero_actions?.secondary_group?.secondary_link},
     ctaCfg=${cfg?.cta},
     showCta=${cfg?.cta?.show_cta != false},
-    ctaTitle=${cfg?.cta?.title ?: '让我们一起打造卓越的数字体验'},
-    ctaBtnText=${cfg?.cta?.button_text ?: '立即开始'},
+    ctaTitle=${cfg?.cta?.title ?: '璁╂垜浠竴璧锋墦閫犲崜瓒婄殑鏁板瓧浣撻獙'},
+    ctaBtnText=${cfg?.cta?.button_text ?: '绔嬪嵆寮€濮?},
     ctaBtnLink=${cfg?.cta?.button_link ?: '#sf-comments'}
   ">
 
     <div class="about-squareform">
 
-      <!-- ========== Hero - 居中极简 ========== -->
+      <!-- ========== Hero - 灞呬腑鏋佺畝 ========== -->
       <section class="sf-hero">
         <div class="sf-hero-content" data-reveal="fade-up">
-          <!-- 角色标签 -->
+          <!-- 瑙掕壊鏍囩 -->
           <div class="sf-role-badge">
             <span class="sf-badge-dot"></span>
             <span th:text="${role}">Full Stack Developer</span>
           </div>
           
-          <!-- 超大标题 -->
+          <!-- 瓒呭ぇ鏍囬 -->
           <h1 class="sf-hero-title">
             <span class="sf-title-line" th:text="${nickname}">SQUAREFORM</span>
           </h1>
           
-          <!-- 简介 -->
+          <!-- 绠€浠?-->
           <p class="sf-hero-desc" th:utext="${bio}">
             Translating imagination into interactive, responsive, and timeless digital solutions that connect users and brands.
           </p>
           
-          <!-- CTA 按钮 -->
+          <!-- CTA 鎸夐挳 -->
           <div class="sf-hero-actions">
             <a th:if="${showPrimaryBtn}" 
                th:href="${primaryBtnLink}" 
                th:text="${primaryBtnText}"
-               class="btn btn-neutral btn-lg">查看作品</a>
+               class="btn btn-neutral btn-lg">鏌ョ湅浣滃搧</a>
             <a th:if="${showSecondaryBtn}" 
                th:href="${secondaryBtnLink != null && !secondaryBtnLink.isEmpty() ? secondaryBtnLink : (socialLinks != null && !socialLinks.isEmpty() ? socialLinks[0]?.url : '#')}" 
                th:target="${secondaryBtnLink != null && !secondaryBtnLink.isEmpty() ? '_self' : '_blank'}"
                th:text="${secondaryBtnText}"
-               class="btn btn-outline btn-lg">联系我</a>
+               class="btn btn-outline btn-lg">鑱旂郴鎴?/a>
           </div>
           
-          <!-- 社交图标 - 黑色小方块 -->
+          <!-- 绀句氦鍥炬爣 - 榛戣壊灏忔柟鍧?-->
           <div th:if="${socialLinks != null && !socialLinks.isEmpty()}" class="sf-social-icons">
             <a th:each="social : ${socialLinks}" 
                th:if="${social.url != null && !social.url.isEmpty()}"
@@ -94,11 +94,11 @@
         </div>
       </section>
 
-      <!-- ========== 技术栈滚动条 ========== -->
+      <!-- ========== 鎶€鏈爤婊氬姩鏉?========== -->
       <section th:if="${techStack != null && !techStack.isEmpty()}" class="sf-clients-section">
         <div class="sf-tech-marquee">
           <div class="sf-marquee-track">
-            <!-- 第一组 -->
+            <!-- 绗竴缁?-->
             <th:block th:each="tech : ${techStack}">
               <span class="sf-tech-tag">
                 <span class="sf-tech-icon" th:if="${tech.icon != null and !tech.icon.toString().startsWith('<svg')}"
@@ -108,7 +108,7 @@
                 <span th:text="${tech.name}">Tech</span>
               </span>
             </th:block>
-            <!-- 第二组 -->
+            <!-- 绗簩缁?-->
             <th:block th:each="tech : ${techStack}">
               <span class="sf-tech-tag">
                 <span class="sf-tech-icon" th:if="${tech.icon != null and !tech.icon.toString().startsWith('<svg')}"
@@ -118,7 +118,7 @@
                 <span th:text="${tech.name}">Tech</span>
               </span>
             </th:block>
-            <!-- 第三组（确保无缝） -->
+            <!-- 绗笁缁勶紙纭繚鏃犵紳锛?-->
             <th:block th:each="tech : ${techStack}">
               <span class="sf-tech-tag">
                 <span class="sf-tech-icon" th:if="${tech.icon != null and !tech.icon.toString().startsWith('<svg')}"
@@ -132,14 +132,14 @@
         </div>
       </section>
 
-      <!-- ========== 关于介绍 ========== -->
+      <!-- ========== 鍏充簬浠嬬粛 ========== -->
       <section class="sf-section">
         <div class="sf-container">
           <div class="sf-section-header" data-reveal="fade-up">
        
           </div>
           
-          <!-- 统计数据 -->
+          <!-- 缁熻鏁版嵁 -->
           <div th:if="${showSiteStats}" 
                class="sf-stats-grid" 
                th:with="siteStats=${siteStatsFinder.getStats()}"
@@ -176,17 +176,17 @@
         </div>
       </section>
 
-      <!-- ========== 创作历程 ========== -->
+      <!-- ========== 鍒涗綔鍘嗙▼ ========== -->
       <section id="sf-projects" class="sf-section">
         <div class="sf-container">
           <div class="sf-section-header" data-reveal="fade-up">
-            <span class="sf-section-tag">我的创作</span>
-            <h2 class="sf-section-title">创作历程</h2>
+            <span class="sf-section-tag">鎴戠殑鍒涗綔</span>
+            <h2 class="sf-section-title">鍒涗綔鍘嗙▼</h2>
           </div>
           
           <div class="sf-projects-grid">
             
-            <!-- 文章热力图 -->
+            <!-- 鏂囩珷鐑姏鍥?-->
             <div th:if="${showArticleHeatmap}" 
                  class="sf-project-card sf-card-wide" 
                  data-reveal="fade-up" data-reveal-delay="100">
@@ -195,21 +195,20 @@
                   <div class="sf-card-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
                   </div>
-                  <h3 class="sf-card-title">写作活跃度</h3>
+                  <h3 class="sf-card-title">鍐欎綔娲昏穬搴?/h3>
                   <span class="sf-card-badge">
-                    <span id="article-count">0</span> 篇
-                  </span>
+                    <span id="article-count">0</span> 绡?                  </span>
                 </div>
                 <div class="sf-heatmap-wrapper" id="article-heatmap-container">
                   <div class="heatmap-canvas"></div>
                 </div>
                 <div class="sf-heatmap-legend">
-                  <span>少</span>
+                  <span>灏?/span>
                   <span class="sf-legend-dot sf-l0"></span>
                   <span class="sf-legend-dot sf-l1"></span>
                   <span class="sf-legend-dot sf-l2"></span>
                   <span class="sf-legend-dot sf-l3"></span>
-                  <span>多</span>
+                  <span>澶?/span>
                 </div>
                 <div class="heatmap-tooltip" id="article-tooltip"></div>
                 <script th:inline="javascript" data-swup-reload-script>
@@ -222,7 +221,7 @@
               </th:block>
             </div>
 
-            <!-- GitHub 热力图 - 全屏 -->
+            <!-- GitHub 鐑姏鍥?- 鍏ㄥ睆 -->
             <div th:if="${githubUsername != null && !githubUsername.isEmpty() && showGithubCalendar}" 
                  class="sf-project-card sf-card-wide" 
                  data-reveal="fade-up" data-reveal-delay="200">
@@ -230,7 +229,7 @@
                 <div class="sf-card-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                 </div>
-                <h3 class="sf-card-title">GitHub 贡献</h3>
+                <h3 class="sf-card-title">GitHub 璐＄尞</h3>
                 <a th:href="${'https://github.com/' + githubUsername}" 
                    target="_blank" 
                    class="sf-card-link">
@@ -254,7 +253,7 @@
                   <div class="sf-card-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
                   </div>
-                  <h3 class="sf-card-title">统计数据</h3>
+                  <h3 class="sf-card-title">缁熻鏁版嵁</h3>
                 </div>
                 <div class="sf-github-stats">
                   <img id="github-stats-img" alt="GitHub Stats" loading="lazy" />
@@ -266,7 +265,7 @@
                   <div class="sf-card-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4a2 2 0 0 1 2-2h2"/><path d="M20 7V4a2 2 0 0 0-2-2h-2"/><path d="M4 17v3a2 2 0 0 0 2 2h2"/><path d="M20 17v3a2 2 0 0 1-2 2h-2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
                   </div>
-                  <h3 class="sf-card-title">常用语言</h3>
+                  <h3 class="sf-card-title">甯哥敤璇█</h3>
                 </div>
                 <div class="sf-github-stats">
                   <img id="github-langs-img" alt="Top Languages" loading="lazy" />
@@ -278,12 +277,12 @@
         </div>
       </section>
 
-      <!-- ========== 技能工具 ========== -->
+      <!-- ========== 鎶€鑳藉伐鍏?========== -->
       <section th:if="${techStack != null && !techStack.isEmpty()}" class="sf-section">
         <div class="sf-container">
           <div class="sf-section-header" data-reveal="fade-up">
-            <span class="sf-section-tag">开发工具</span>
-            <h2 class="sf-section-title">技术栈</h2>
+            <span class="sf-section-tag">寮€鍙戝伐鍏?/span>
+            <h2 class="sf-section-title">鎶€鏈爤</h2>
         </div>
 
           <div class="sf-toolkit-grid" data-reveal="fade-up" data-reveal-delay="200">
@@ -300,33 +299,33 @@
                 <progress class="progress w-full" 
                           th:value="${percent}" max="100"></progress>
                 <span class="sf-tool-percent" 
-                      th:text="'熟练度: ' + ${percent} + '%'">熟练度: 95%</span>
+                      th:text="'鐔熺粌搴? ' + ${percent} + '%'">鐔熺粌搴? 95%</span>
             </div>
             </th:block>
           </div>
         </div>
       </section>
 
-      <!-- ========== 位置 ========== -->
+      <!-- ========== 浣嶇疆 ========== -->
       <section th:if="${showLocation && locationLat != null && locationLng != null}" 
                class="sf-section">
         <div class="sf-container">
           <div class="sf-location-card" data-reveal="fade-up">
             <div class="sf-location-info">
-              <span class="sf-section-tag">我的位置</span>
-              <h3 class="sf-location-name" th:text="${locationName ?: '位置'}">北京</h3>
+              <span class="sf-section-tag">鎴戠殑浣嶇疆</span>
+              <h3 class="sf-location-name" th:text="${locationName ?: '浣嶇疆'}">鍖椾含</h3>
               <p class="sf-location-desc" 
                  th:if="${locationDesc != null}" 
                  th:text="${locationDesc}"></p>
               <div class="sf-location-coords">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 1.892.402 3.13 1.5 4.5L12 22l6.5-7.5c1.098-1.37 1.5-2.608 1.5-4.5a8 8 0 0 0-8-8"/></svg>
-                <span th:text="${locationLat} + '°N, ' + ${locationLng} + '°E'">39.9042°N, 116.4074°E</span>
+                <span th:text="${locationLat} + '掳N, ' + ${locationLng} + '掳E'">39.9042掳N, 116.4074掳E</span>
               </div>
               <a th:href="${'https://uri.amap.com/marker?position=' + locationLng + ',' + locationLat + '&name=' + locationName + '&coordinate=gaode&callnative=1'}"
                  target="_blank"
                  class="btn btn-neutral btn-sm gap-2 mt-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                在高德地图中查看
+                鍦ㄩ珮寰峰湴鍥句腑鏌ョ湅
               </a>
             </div>
             <div class="sf-location-map" 
@@ -337,12 +336,12 @@
         </div>
       </section>
 
-      <!-- ========== 自定义内容 ========== -->
+      <!-- ========== 鑷畾涔夊唴瀹?========== -->
       <section th:if="${showPageContent && pageContent != null && !pageContent.isEmpty()}" class="sf-section">
         <div class="sf-container">
           <div class="sf-section-header" data-reveal="fade-up">
-            <span class="sf-section-tag">更多信息</span>
-            <h2 class="sf-section-title">详细介绍</h2>
+            <span class="sf-section-tag">鏇村淇℃伅</span>
+            <h2 class="sf-section-title">璇︾粏浠嬬粛</h2>
           </div>
           <div class="sf-content-card sf-content-visible">
             <div id="article-content" class="sf-prose" th:utext="${pageContent}"></div>
@@ -355,23 +354,22 @@
         <div class="sf-container">
           <div class="sf-cta-card" data-reveal="fade-up">
             <h2 class="sf-cta-title" th:text="${ctaTitle}">
-              让我们一起打造卓越的数字体验 — 立即开始您的下一个项目
-        </h2>
+              璁╂垜浠竴璧锋墦閫犲崜瓒婄殑鏁板瓧浣撻獙 鈥?绔嬪嵆寮€濮嬫偍鐨勪笅涓€涓」鐩?        </h2>
             <a th:href="${ctaBtnLink}" 
                th:text="${ctaBtnText}"
-               class="btn btn-neutral btn-lg sf-cta-btn">立即开始</a>
+               class="btn btn-neutral btn-lg sf-cta-btn">绔嬪嵆寮€濮?/a>
           </div>
         </div>
       </section>
 
-      <!-- ========== 评论 ========== -->
+      <!-- ========== 璇勮 ========== -->
       <section id="sf-comments"
                th:if="${enableComment && (singlePage.spec.allowComment == null || singlePage.spec.allowComment)}"
                class="sf-section">
         <div class="sf-container">
           <div class="sf-section-header" data-reveal="fade-up">
-            <span class="sf-section-tag">联系我</span>
-            <h2 class="sf-section-title">留言板</h2>
+            <span class="sf-section-tag">鑱旂郴鎴?/span>
+            <h2 class="sf-section-title">鐣欒█鏉?/h2>
           </div>
           <div class="sf-comment-card" data-reveal="fade-up" data-reveal-delay="200">
             <halo:comment 
@@ -385,7 +383,7 @@
 
     </div>
 
-    <!-- GitHub 配置 -->
+    <!-- GitHub 閰嶇疆 -->
     <script th:if="${githubUsername != null && !githubUsername.isEmpty() && (showGithubStats || showGithubCalendar)}" 
             th:inline="javascript" data-swup-reload-script>
       window.aboutGithubConfig = {
@@ -399,3 +397,4 @@
   </th:block>
 
 </th:block>
+

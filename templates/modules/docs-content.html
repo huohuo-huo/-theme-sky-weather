@@ -1,13 +1,13 @@
-<!-- 兼容基线：plugin-docsme 免费版 1.5.0 / 专业版 1.6.0；0 篇文档项目不生成详情链接。 -->
-<!-- 文档列表页 - Apple 简约风格 -->
+﻿<!-- 鍏煎鍩虹嚎锛歱lugin-docsme 鍏嶈垂鐗?1.5.0 / 涓撲笟鐗?1.6.0锛? 绡囨枃妗ｉ」鐩笉鐢熸垚璇︽儏閾炬帴銆?-->
+<!-- 鏂囨。鍒楄〃椤?- Apple 绠€绾﹂鏍?-->
 <div th:fragment="content" class="mx-auto max-w-7xl px-4 py-12">
-  <!-- 页面标题 - 居中简约 -->
+  <!-- 椤甸潰鏍囬 - 灞呬腑绠€绾?-->
   <header class="mb-12 text-center">
-    <h1 class="text-base-content text-2xl font-bold tracking-tight md:text-3xl">文档中心</h1>
-    <p class="text-base-content/50 mt-2">查阅项目文档和使用指南</p>
+    <h1 class="text-base-content text-2xl font-bold tracking-tight md:text-3xl">鏂囨。涓績</h1>
+    <p class="text-base-content/50 mt-2">鏌ラ槄椤圭洰鏂囨。鍜屼娇鐢ㄦ寚鍗?/p>
   </header>
 
-  <!-- 文档项目列表 -->
+  <!-- 鏂囨。椤圭洰鍒楄〃 -->
   <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
     <th:block th:each="project : ${projects}" th:with="docCount=${project.status.totalDocs ?: 0}">
       <a
@@ -15,7 +15,7 @@
         th:href="${project.status.permalink}"
         class="glow-card group bg-base-100/80 border-base-content/[0.06] hover:border-base-content/10 block cursor-pointer rounded-2xl border p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:shadow-lg"
       >
-        <!-- 图标 -->
+        <!-- 鍥炬爣 -->
         <div
           class="bg-primary/10 group-hover:bg-primary/20 mb-4 flex h-12 w-12 items-center justify-center rounded-xl transition-colors"
         >
@@ -31,21 +31,21 @@
           ></span>
         </div>
 
-        <!-- 标题 -->
+        <!-- 鏍囬 -->
         <h2
           class="text-base-content group-hover:text-primary mb-2 text-lg font-semibold transition-colors"
           th:text="${project.spec.displayName}"
         >
-          项目名称
+          椤圭洰鍚嶇О
         </h2>
 
-        <!-- 统计信息 -->
+        <!-- 缁熻淇℃伅 -->
         <div class="text-base-content/50 flex items-center gap-2 text-sm">
           <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
-          <span th:text="${docCount + ' 篇文档'}">0 篇文档</span>
+          <span th:text="${docCount + ' 绡囨枃妗?}">0 绡囨枃妗?/span>
         </div>
 
-        <!-- 箭头指示 -->
+        <!-- 绠ご鎸囩ず -->
         <div class="text-base-content/30 group-hover:text-primary mt-4 flex items-center justify-end transition-colors">
           <span class="icon-[heroicons--arrow-right] h-5 w-5"></span>
         </div>
@@ -68,11 +68,11 @@
           ></span>
         </div>
 
-        <h2 class="text-base-content/70 mb-2 text-lg font-semibold" th:text="${project.spec.displayName}">项目名称</h2>
+        <h2 class="text-base-content/70 mb-2 text-lg font-semibold" th:text="${project.spec.displayName}">椤圭洰鍚嶇О</h2>
 
         <div class="text-base-content/40 flex items-center gap-2 text-sm">
           <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
-          <span>暂无文档</span>
+          <span>鏆傛棤鏂囨。</span>
         </div>
 
         <div class="text-base-content/20 mt-4 flex items-center justify-end">
@@ -82,13 +82,14 @@
     </th:block>
   </div>
 
-  <!-- 空状态 -->
+  <!-- 绌虹姸鎬?-->
   <div
     th:if="${projects == null || projects.isEmpty()}"
     class="glow-card bg-base-100/80 border-base-content/[0.06] rounded-2xl border p-12 text-center shadow-lg backdrop-blur-xl"
   >
     <span class="icon-[heroicons--document-text] text-base-content/20 mx-auto mb-4 h-16 w-16"></span>
-    <p class="text-base-content/50 text-lg">暂无文档项目</p>
-    <p class="text-base-content/30 mt-2 text-sm">请在后台创建文档项目</p>
+    <p class="text-base-content/50 text-lg">鏆傛棤鏂囨。椤圭洰</p>
+    <p class="text-base-content/30 mt-2 text-sm">璇峰湪鍚庡彴鍒涘缓鏂囨。椤圭洰</p>
   </div>
 </div>
+

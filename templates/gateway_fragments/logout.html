@@ -1,10 +1,10 @@
-<!-- ========================================== -->
+﻿<!-- ========================================== -->
 <!--    Gateway Fragments - Logout             -->
-<!--    登出表单片段                            -->
+<!--    鐧诲嚭琛ㄥ崟鐗囨                            -->
 <!-- ========================================== -->
 
 <form th:fragment="form" class="space-y-6" th:action="@{/logout}" method="post">
-    <!-- 用户信息卡片 -->
+    <!-- 鐢ㄦ埛淇℃伅鍗＄墖 -->
     <div th:if="${currentUser != null}"
         class="flex items-center gap-4 p-4 rounded-2xl bg-base-200/50 border border-base-content/5">
         <img th:src="${currentUser.spec.avatar ?: '/themes/theme-sky-weather/assets/images/default-avatar.png'}"
@@ -15,15 +15,14 @@
         </div>
     </div>
 
-    <!-- 确认登出按钮 -->
+    <!-- 纭鐧诲嚭鎸夐挳 -->
     <div class="auth-actions space-y-3">
         <button type="submit"
             class="btn btn-error btn-lg w-full transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]">
-            确认退出
-        </button>
+            纭閫€鍑?        </button>
 
         <a th:href="@{/}" class="btn btn-ghost btn-lg w-full">
-            取消
+            鍙栨秷
         </a>
     </div>
 </form>
