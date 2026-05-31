@@ -44,7 +44,7 @@
 ## 兼容版本
 
 - Halo：`>= 2.23.0`
-- 当前主题版本：`1.0.16`
+- 当前主题版本：`1.0.17`
 - 许可证：GPL-3.0
 
 ## 安装
@@ -52,7 +52,7 @@
 请下载 Release Assets 中的主题安装包，不要下载 GitHub 自动生成的 `Source code (zip)` 或 `Source code (tar.gz)`。
 
 1. 打开 [Releases](https://github.com/huohuo-huo/-theme-sky-weather/releases)。
-2. 下载 `theme-sky-weather-v1.0.16.zip`。
+2. 下载 `theme-sky-weather-v1.0.17.zip`。
 3. 进入 Halo 后台。
 4. 打开「外观」→「主题」→「安装主题」。
 5. 上传下载的 zip 文件并启用主题。
@@ -137,8 +137,8 @@ templates/assets/videos/
 
 1. 更新 `theme.yaml` 中的 `spec.version`。
 2. 推送代码到 `main`。
-3. 创建形如 `v1.0.16` 的 tag 并推送。
-4. GitHub Actions 会自动创建 Release，并上传 `theme-sky-weather-v1.0.16.zip`。
+3. 创建形如 `v1.0.17` 的 tag 并推送。
+4. GitHub Actions 会自动创建 Release，并上传 `theme-sky-weather-v1.0.17.zip`。
 
 ## 反馈
 

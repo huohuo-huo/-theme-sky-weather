@@ -1097,7 +1097,7 @@ spec:
               if: $get(index_background_type).value === 'weather-glass'
               label: 夜雨背景视频池
               help: 多个视频 URL 可用英文逗号或换行分隔；填了视频池时优先按视频池循环播放，并提前预载下一段。
-              value: "/themes/theme-sky-weather/assets/videos/night-rain-city.mp4,/themes/theme-sky-weather/assets/videos/night-rain-times-square.mp4,/themes/theme-sky-weather/assets/videos/night-rain-lamp.mp4,/themes/theme-sky-weather/assets/videos/night-rain-city-overlook.mp4,/themes/theme-sky-weather/assets/videos/night-rain-window.mp4"
+              value: "/themes/theme-sky-weather/assets/videos/night-rain-pool-01.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-02.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-03.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-04.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-05.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-06.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-07.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-08.mp4"
               rows: 4
             - $formkit: toggle
               name: weather_glass_night_media_order
