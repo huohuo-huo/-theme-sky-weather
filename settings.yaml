@@ -961,7 +961,7 @@ spec:
           name: background_settings
           label: 首页头部与天气背景
           value:
-            enable_header: false
+            enable_header: true
             background_type: weather-glass
             background_image: "https://www.dmoe.cc/random.php"
             effect_style: starry-sky
@@ -985,7 +985,7 @@ spec:
               name: enable_header
               label: 启用首页头部
               help: 控制首页头部、主标题、副标题、底部过渡和瞬间说说；天气玻璃为全站固定背景，由“背景类型”单独控制。
-              value: false
+              value: true
             - $formkit: toggle
               id: index_background_type
               name: background_type
@@ -1208,7 +1208,7 @@ spec:
           label: 主标题设置
           if: $get(index_enable_header).value
           value:
-            show_title: true
+            show_title: false
             custom_title: "Huohuo Weather Glass"
             decoration_effect: effect-particles
             title_font: font-titan-one
@@ -1220,7 +1220,7 @@ spec:
               name: show_title
               label: 显示主标题
               help: 是否显示首页头部的主标题
-              value: true
+              value: false
             - $formkit: text
               name: custom_title
               key: custom_title_field
@@ -1383,7 +1383,7 @@ spec:
           label: 底部过渡设置
           if: $get(index_enable_header).value
           value:
-            show_wave_transition: true
+            show_wave_transition: false
             wave_color: "var(--sky-container)"
           children:
             - $formkit: switch
@@ -1391,7 +1391,7 @@ spec:
               name: show_wave_transition
               label: 显示波浪过渡
               help: 是否显示首页头部底部的波浪过渡效果
-              value: true
+              value: false
             - $formkit: text
               name: wave_color
               key: wave_color_field
