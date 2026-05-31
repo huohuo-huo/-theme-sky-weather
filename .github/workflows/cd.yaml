@@ -2,8 +2,8 @@ name: CD
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*"
   release:
     types:
       - published
@@ -12,7 +12,7 @@ on:
       tag:
         description: Release tag to upload the theme package to
         required: true
-        default: v1.0.14
+        default: v1.0.15
 
 permissions:
   contents: write
@@ -21,7 +21,6 @@ jobs:
   package:
     name: Package Theme
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[upload-release]')
     steps:
       - uses: actions/checkout@v4
 
@@ -33,8 +32,10 @@ jobs:
             echo "tag=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
           else
-            echo "tag=v1.0.14" >> "$GITHUB_OUTPUT"
+            echo "tag=v1.0.15" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Package theme
@@ -44,7 +45,32 @@ jobs:
           zip -qr "dist/theme-sky-weather-${{ steps.release.outputs.tag }}.zip" . \
             -x ".git/*" ".github/*" "dist/*"
 
-      - name: Upload release asset
+      - name: Create or update release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload "${{ steps.release.outputs.tag }}" dist/*.zip --clobber
+        shell: bash
+        run: |
+          tag="${{ steps.release.outputs.tag }}"
+          notes_file="$(mktemp)"
+          cat > "$notes_file" <<'EOF'
+          ## Huohuo Weather Glass
+
+          基于 Sky Blog Theme 二次开发的动态天气玻璃风 Halo 主题。
+
+          ### 主要特性
+
+          - 白天动态云层、黄昏火烧云、夜间雨景视频背景
+          - 全站玻璃卡片视觉
+          - 瞬间、图库、友链、文档、分类、标签等页面适配
+          - 适配 Halo 2.23.0+
+
+          ### 安装
+
+          请下载下方 `theme-sky-weather-${{ steps.release.outputs.tag }}.zip`，不要下载 GitHub 自动生成的 Source code。
+          EOF
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release edit "$tag" --title "Huohuo Weather Glass $tag" --notes-file "$notes_file"
+          else
+            gh release create "$tag" --title "Huohuo Weather Glass $tag" --notes-file "$notes_file"
+          fi
+          gh release upload "$tag" dist/*.zip --clobber
