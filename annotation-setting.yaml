@@ -5,7 +5,7 @@
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
-  name: theme-sky-blog-equipment-group-icon
+  name: theme-sky-weather-equipment-group-icon
 spec:
   targetRef:
     group: equipment.kunkunyu.com
@@ -24,7 +24,7 @@ spec:
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
-  name: theme-sky-blog-equipment-cardstyle
+  name: theme-sky-weather-equipment-cardstyle
 spec:
   targetRef:
     group: equipment.kunkunyu.com
@@ -71,7 +71,7 @@ spec:
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
-  name: theme-sky-blog-menuitem-icon
+  name: theme-sky-weather-menuitem-icon
 spec:
   targetRef:
     group: ""
@@ -90,7 +90,7 @@ spec:
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
-  name: theme-sky-blog-category-icon
+  name: theme-sky-weather-category-icon
 spec:
   targetRef:
     group: content.halo.run
@@ -109,7 +109,7 @@ spec:
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
-  name: theme-sky-blog-tag-icon
+  name: theme-sky-weather-tag-icon
 spec:
   targetRef:
     group: content.halo.run

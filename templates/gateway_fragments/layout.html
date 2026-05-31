@@ -26,10 +26,10 @@
     <title th:text="${title}">Auth</title>
 
     <th:block th:replace="~{modules/theme-script :: inline-script}" />
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.14')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.16')}" />
 
     <!-- Auth 甯冨眬 CSS -->
-    <link rel="stylesheet" th:href="@{'/assets/css/auth-' + ${authLayout} + '.css?v=1.0.14'}" />
+    <link rel="stylesheet" th:href="@{'/assets/css/auth-' + ${authLayout} + '.css?v=1.0.16'}" />
 
     <th:block th:replace="~{gateway_fragments/common::basicStaticResources}"></th:block>
 
@@ -79,8 +79,8 @@
                 <div class="floating-shape floating-shape-2"></div>
                 <div class="floating-shape floating-shape-3"></div>
                 <div class="brand-text">
-                    <h1 th:text="${not #strings.isEmpty(authSiteTitleSimple) ? authSiteTitleSimple : site.title}">Sky
-                        Blog</h1>
+                    <h1 th:text="${not #strings.isEmpty(authSiteTitleSimple) ? authSiteTitleSimple : site.title}">Huohuo
+                        Weather Glass</h1>
                     <p th:text="${brandSlogan}">探索、记录、分享</p>
                 </div>
             </div>
@@ -292,7 +292,7 @@
     </th:block>
 
     <!-- Auth 甯冨眬 JS -->
-    <script type="module" th:src="@{'/assets/js/auth-' + ${authLayout} + '.js?v=1.0.14'}"></script>
+    <script type="module" th:src="@{'/assets/js/auth-' + ${authLayout} + '.js?v=1.0.16'}"></script>
 </body>
 
 </html>

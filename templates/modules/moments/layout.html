@@ -24,8 +24,8 @@
     <!-- 瀛椾綋 -->
     <th:block th:replace="~{modules/font-loader :: fonts}" />
     <!-- 涓婚鏍峰紡 -->
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.14')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/moments.css?v={version}(version='1.0.14')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.16')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/moments.css?v={version}(version='1.0.16')}" />
     <!-- 闊充箰鎾斁锟?CSS -->
     <th:block th:replace="~{modules/music-player :: head}" />
   </head>
@@ -68,11 +68,11 @@
     <div id="swup-scripts" hidden>
       <script
         type="module"
-        th:src="@{/assets/js/moments.js?v={version}(version='1.0.14')}"
+        th:src="@{/assets/js/moments.js?v={version}(version='1.0.16')}"
         data-swup-reload-script
       ></script>
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.14')}"></script>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.16')}"></script>
     <!-- 鎮诞闊充箰鎾斁锟?-->
     <th:block th:replace="~{modules/music-player :: player}" />
   </body>
