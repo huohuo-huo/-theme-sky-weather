@@ -7,7 +7,7 @@
     <!-- 用户信息卡片 -->
     <div th:if="${currentUser != null}"
         class="flex items-center gap-4 p-4 rounded-2xl bg-base-200/50 border border-base-content/5">
-        <img th:src="${currentUser.spec.avatar ?: '/images/default-avatar.png'}"
+        <img th:src="${currentUser.spec.avatar ?: '/themes/theme-sky-weather/assets/images/default-avatar.png'}"
             th:alt="${currentUser.spec.displayName}" class="w-12 h-12 rounded-full object-cover shadow-md" />
         <div class="flex-1 min-w-0">
             <p class="font-semibold text-base-content truncate" th:text="${currentUser.spec.displayName}">User</p>
