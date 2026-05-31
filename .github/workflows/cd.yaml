@@ -1,16 +1,50 @@
 name: CD
 
 on:
+  push:
+    branches:
+      - main
   release:
     types:
       - published
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to upload the theme package to
+        required: true
+        default: v1.0.14
+
+permissions:
+  contents: write
 
 jobs:
-  cd:
-    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v3
-    permissions:
-      contents: write
-    with:
-      skip-appstore-release: true
-      node-version: 22
-      pnpm-version: 9
+  package:
+    name: Package Theme
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[upload-release]')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve release tag
+        id: release
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=v1.0.14" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Package theme
+        shell: bash
+        run: |
+          mkdir -p dist
+          zip -qr "dist/theme-sky-weather-${{ steps.release.outputs.tag }}.zip" . \
+            -x ".git/*" ".github/*" "dist/*"
+
+      - name: Upload release asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ steps.release.outputs.tag }}" dist/*.zip --clobber
