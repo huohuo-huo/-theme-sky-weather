@@ -22,33 +22,33 @@
     <!-- 瀛椾綋 - 寮傛鍔犺浇锛屼笉闃诲娓叉煋 -->
     <th:block th:replace="~{modules/font-loader :: fonts}" />
     <!-- 涓婚鏍峰紡 -->
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.18')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/index.css?v={version}(version='1.0.18')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.19')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/index.css?v={version}(version='1.0.19')}" />
     <!-- 浠ヤ笅鏍峰紡浠呭湪鍚敤棣栭〉澶撮儴鏃跺姞锟?-->
     <th:block th:if="${theme.config.index.background_settings?.enable_header != false}">
       <!-- 鑳屾櫙鐗规晥鏍峰紡 - 鍙湪閫夋嫨 CSS 鐗规晥鏃跺姞锟?-->
       <link
         th:if="${theme.config.index.background_settings.background_type == 'effect'}"
         rel="stylesheet"
-        th:href="@{/assets/css/index-effects.css?v={version}(version='1.0.18')}"
+        th:href="@{/assets/css/index-effects.css?v={version}(version='1.0.19')}"
       />
       <!-- 澶╂皵鑱斿姩鐗规晥鏍峰紡 - 鍙湪閫夋嫨澶╂皵鑱斿姩鏃跺姞锟?-->
       <link
         th:if="${theme.config.index.background_settings.background_type == 'weather'}"
         rel="stylesheet"
-        th:href="@{/assets/css/index-weather-effects.css?v={version}(version='1.0.18')}"
+        th:href="@{/assets/css/index-weather-effects.css?v={version}(version='1.0.19')}"
       />
       <!-- 鏍囬鐗规晥鏍峰紡 - 鍙湪鏄剧ず鏍囬鏃跺姞锟?-->
       <link
         th:if="${theme.config.index.title_settings.show_title}"
         rel="stylesheet"
-        th:href="@{/assets/css/index-title-effects.css?v={version}(version='1.0.18')}"
+        th:href="@{/assets/css/index-title-effects.css?v={version}(version='1.0.19')}"
       />
       <!-- 鍓爣棰樼壒鏁堟牱锟?- 鍙湪鏄剧ず鍓爣棰樻椂鍔犺浇 -->
       <link
         th:if="${theme.config.index.subtitle_settings.show_subtitle}"
         rel="stylesheet"
-        th:href="@{/assets/css/index-subtitle-effects.css?v={version}(version='1.0.18')}"
+        th:href="@{/assets/css/index-subtitle-effects.css?v={version}(version='1.0.19')}"
       />
     </th:block>
 
@@ -101,11 +101,11 @@
     <div id="swup-scripts" hidden>
       <script
         type="module"
-        th:src="@{/assets/js/index.js?v={version}(version='1.0.18')}"
+        th:src="@{/assets/js/index.js?v={version}(version='1.0.19')}"
         data-swup-reload-script
       ></script>
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.18')}"></script>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.19')}"></script>
     <!-- 鎮诞闊充箰鎾斁锟?-->
     <th:block th:replace="~{modules/music-player :: player}" />
   </body>

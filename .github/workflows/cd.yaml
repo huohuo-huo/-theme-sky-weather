@@ -12,7 +12,7 @@ on:
       tag:
         description: Release tag to upload the theme package to
         required: true
-        default: v1.0.18
+        default: v1.0.19
 
 permissions:
   contents: write
@@ -35,16 +35,15 @@ jobs:
           elif [ "${{ github.event_name }}" = "push" ]; then
             echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
           else
-            echo "tag=v1.0.18" >> "$GITHUB_OUTPUT"
+            echo "tag=v1.0.19" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Package theme
         shell: bash
         run: |
           mkdir -p dist
-          zip -qr "dist/theme-sky-weather-${{ steps.release.outputs.tag }}.zip" . \
-            -x ".git/*" ".github/*" "dist/*"
-
+          export TAG=${{ steps.release.outputs.tag }}
+          python3 scripts/package-theme.py
       - name: Create or update release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
