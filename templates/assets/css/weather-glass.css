@@ -204,6 +204,8 @@
 }
 
 html.weather-glass-active {
+  --wg-readable-content: rgba(20, 31, 43, 0.92);
+  --wg-readable-muted: rgba(20, 31, 43, 0.68);
   --wg-card-bg: rgba(255, 255, 255, 0.2);
   --wg-card-border: rgba(255, 255, 255, 0.35);
   --wg-card-shadow:
@@ -220,6 +222,8 @@ html.weather-glass-active[data-weather-glass-mode="dusk"] {
 }
 
 html.weather-glass-active[data-weather-glass-mode="night"] {
+  --wg-readable-content: rgba(236, 243, 255, 0.94);
+  --wg-readable-muted: rgba(236, 243, 255, 0.68);
   --wg-card-bg: rgba(14, 24, 38, 0.58);
   --wg-card-border: rgba(218, 230, 255, 0.26);
   --wg-card-shadow:
@@ -270,8 +274,7 @@ html.weather-glass-active .moment-floating-card,
 html.weather-glass-active aside > div,
 html.weather-glass-active [class*="bg-base-100"],
 html.weather-glass-active [class*="bg-base-200"],
-html.weather-glass-active [class*="bg-base-300"],
-html.weather-glass-active [class*="shadow"] {
+html.weather-glass-active [class*="bg-base-300"] {
   background: var(--wg-card-bg) !important;
   border-color: var(--wg-card-border) !important;
   border-radius: 24px !important;
@@ -286,6 +289,26 @@ html.weather-glass-active .moment-card:hover,
 html.weather-glass-active .moment-floating-card:hover {
   transform: translateY(-2px);
   background: color-mix(in srgb, var(--wg-card-bg), rgba(255, 255, 255, 0.12)) !important;
+}
+
+html.weather-glass-active[data-weather-glass-mode="day"] .sky-moment-card,
+html.weather-glass-active[data-weather-glass-mode="dusk"] .sky-moment-card,
+html.weather-glass-active[data-weather-glass-mode="day"] .sky-moment-card [class*="text-base-content"],
+html.weather-glass-active[data-weather-glass-mode="dusk"] .sky-moment-card [class*="text-base-content"] {
+  color: var(--wg-readable-content) !important;
+}
+
+html.weather-glass-active[data-weather-glass-mode="day"] .sky-moment-card time,
+html.weather-glass-active[data-weather-glass-mode="dusk"] .sky-moment-card time,
+html.weather-glass-active[data-weather-glass-mode="day"] .sky-moment-card .border-t,
+html.weather-glass-active[data-weather-glass-mode="dusk"] .sky-moment-card .border-t {
+  color: var(--wg-readable-muted) !important;
+}
+
+html.weather-glass-active .post-reading-card:hover,
+html.weather-glass-active .page-reading-card:hover,
+html.weather-glass-active .sf-content-card:hover {
+  transform: none !important;
 }
 
 html.weather-glass-active .btn,

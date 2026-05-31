@@ -35,8 +35,8 @@
     <link rel="canonical" th:href="@{/douban}" />
 
     <th:block th:replace="~{modules/font-loader :: fonts}" />
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.19')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/douban.css?v={version}(version='1.0.19')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.20')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/douban.css?v={version}(version='1.0.20')}" />
     <th:block th:replace="~{modules/music-player :: head}" />
   </head>
 
@@ -75,11 +75,11 @@
     <div id="swup-scripts" hidden>
       <script
         type="module"
-        th:src="@{/assets/js/douban.js?v={version}(version='1.0.19')}"
+        th:src="@{/assets/js/douban.js?v={version}(version='1.0.20')}"
         data-swup-reload-script
       ></script>
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.19')}"></script>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.20')}"></script>
     <th:block th:replace="~{modules/music-player :: player}" />
   </body>
 </html>

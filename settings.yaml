@@ -961,7 +961,7 @@ spec:
           name: background_settings
           label: 首页头部与天气背景
           value:
-            enable_header: true
+            enable_header: false
             background_type: weather-glass
             background_image: "https://www.dmoe.cc/random.php"
             effect_style: starry-sky
@@ -974,7 +974,7 @@ spec:
             weather_glass_cloud_count: 18
             weather_glass_rain_density: 52
             weather_glass_rain_speed: 55
-            weather_glass_rain_wind: 10
+            weather_glass_rain_wind: 0
             weather_glass_night_media: "/themes/theme-sky-weather/assets/videos/night-rain-pool-01.mp4"
             weather_glass_night_media_playlist: "/themes/theme-sky-weather/assets/videos/night-rain-pool-01.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-02.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-03.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-04.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-05.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-06.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-07.mp4,/themes/theme-sky-weather/assets/videos/night-rain-pool-08.mp4"
             weather_glass_night_media_order: sequence
@@ -985,7 +985,7 @@ spec:
               name: enable_header
               label: 启用首页头部
               help: 控制首页头部、主标题、副标题、底部过渡和瞬间说说；天气玻璃为全站固定背景，由“背景类型”单独控制。
-              value: true
+              value: false
             - $formkit: toggle
               id: index_background_type
               name: background_type
@@ -1065,7 +1065,7 @@ spec:
               if: $get(index_background_type).value === 'weather-glass'
               label: 夜雨偏转
               help: 控制夜雨斜向偏移，不影响云层方向。
-              value: 10
+              value: 0
               min: -40
               max: 40
               step: 1
@@ -1108,9 +1108,9 @@ spec:
               name: weather_glass_night_media_opacity
               if: $get(index_background_type).value === 'weather-glass'
               label: 夜雨背景可见度
-              help: 控制夜雨背景媒体的透明度，建议 25-45，避免影响正文可读性。
+              help: 控制夜雨背景媒体的透明度，建议 30-70，避免影响正文可读性。
               value: 34
-              min: 0
+              min: 30
               max: 70
               step: 1
             - $formkit: attachment

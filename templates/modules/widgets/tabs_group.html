@@ -304,7 +304,7 @@
           <div th:if="${momentsListStyle == 'two_columns'}" class="columns-1 md:columns-2 gap-6 [column-fill:_balance]">
             <th:block th:each="moment : ${momentsList}">
               <article th:with="content = ${moment.spec.content}"
-                class="card group relative bg-base-100/80 backdrop-blur-xl border border-base-content/5 shadow-lg rounded-[1.5rem] overflow-hidden hover:shadow-2xl hover:bg-base-100 transition-all duration-300 cursor-pointer break-inside-avoid mb-6">
+                class="sky-moment-card card group relative bg-base-100/80 backdrop-blur-xl border border-base-content/5 shadow-lg rounded-[1.5rem] overflow-hidden hover:shadow-2xl hover:bg-base-100 transition-all duration-300 cursor-pointer break-inside-avoid mb-6">
 
                 <!-- 头部信息 -->
                 <div class="p-5 pb-3">
@@ -462,7 +462,7 @@
           <div th:if="${momentsListStyle == 'single_column'}" class="space-y-4">
             <th:block th:each="moment : ${momentsList}">
               <article th:with="content = ${moment.spec.content}"
-                class="card group bg-base-100/80 backdrop-blur-xl border border-base-content/5 shadow-lg rounded-[1.5rem] overflow-hidden hover:shadow-xl hover:bg-base-100 transition-all duration-300">
+                class="sky-moment-card card group bg-base-100/80 backdrop-blur-xl border border-base-content/5 shadow-lg rounded-[1.5rem] overflow-hidden hover:shadow-xl hover:bg-base-100 transition-all duration-300">
 
                 <div class="p-5">
                   <!-- 头部 -->
