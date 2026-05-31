@@ -14,6 +14,22 @@
 | 主题仓库 | [huohuo-huo/-theme-sky-weather](https://github.com/huohuo-huo/-theme-sky-weather) |
 | 问题反馈 | [GitHub Issues](https://github.com/huohuo-huo/-theme-sky-weather/issues) |
 
+### 白天动态云层
+
+![白天动态云层](.github/screenshots/weather-day.png)
+
+### 夜间雨景视频背景
+
+![夜间雨景视频背景](.github/screenshots/weather-night.png)
+
+### 文章页玻璃卡片
+
+![文章页玻璃卡片](.github/screenshots/article-glass.png)
+
+### 天气玻璃后台配置
+
+![天气玻璃后台配置](.github/screenshots/settings-weather.png)
+
 ## 主要特性
 
 - 动态天气玻璃背景：白天云层、黄昏火烧云、夜间雨景视频背景。
