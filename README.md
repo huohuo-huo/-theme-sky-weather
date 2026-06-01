@@ -27,7 +27,7 @@
 ## 兼容版本
 
 - Halo：`>= 2.23.0`
-- 当前主题版本：`1.0.24`
+- 当前主题版本：`1.0.25`
 - 许可证：GPL-3.0
 
 ## 安装
@@ -35,7 +35,7 @@
 请下载 Release Assets 中的主题安装包，不要下载 GitHub 自动生成的 `Source code (zip)` 或 `Source code (tar.gz)`。
 
 1. 打开 [Releases](https://github.com/huohuo-huo/-theme-sky-weather/releases)。
-2. 下载 `theme-sky-weather-v1.0.24.zip`。
+2. 下载 `theme-sky-weather-v1.0.25.zip`。
 3. 进入 Halo 后台。
 4. 打开「外观」->「主题」->「安装主题」。
 5. 上传下载的 zip 文件并启用主题。
@@ -55,7 +55,7 @@
 
 ## 文档页说明
 
-主题提供 Docsme 文档页适配，包含文档列表、详情页、目录、长文档渐进加载和代码块样式修复。`v1.0.24` 修复了文档页代码块被全局 `code` 样式压成单行、长文档滚动懒加载后 Shiki 未重新高亮的问题。
+主题提供 Docsme 文档页适配，包含文档列表、详情页、目录、长文档渐进加载和代码块样式修复。`v1.0.24` 修复了文档页代码块被全局 `code` 样式压成单行、长文档滚动懒加载后 Shiki 未重新高亮的问题。`v1.0.25` 修复了 `v1.0.24` 包中部分模板文件编码损坏导致的页面解析失败问题。
 
 已知边界：中文文档路径 404 属于 Docsme 插件路由编码匹配问题，不是主题模板链接问题，也不是 Halo Core 问题。若你的站点使用 Docsme 且文档 slug 为中文，遇到子文档 404 时，建议临时改用英文/拼音 slug，或等待 Docsme 插件侧修复。本站线上曾通过插件补丁修复该问题，但主题安装包不会包含第三方插件 jar 补丁。
 
@@ -127,7 +127,7 @@ templates/assets/videos/
 1. 更新 `theme.yaml` 中的 `spec.version`。
 2. 推送代码到 `main`。
 3. 创建版本 tag 并推送。
-4. GitHub Actions 会自动创建 Release，并上传 `theme-sky-weather-v1.0.24.zip`。
+4. GitHub Actions 会自动创建 Release，并上传 `theme-sky-weather-v1.0.25.zip`。
 
 ## 反馈
 
