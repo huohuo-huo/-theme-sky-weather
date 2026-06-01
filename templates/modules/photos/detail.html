@@ -1,6 +1,6 @@
-﻿<!-- ========================================== -->
-<!--        鍥惧簱鐓х墖璇︽儏椤?                      -->
-<!-- 鍏煎鍩虹嚎锛歅luginPhotos v2.1.0锛涗娇鐢?photo/detail 妯″瀷锛孍XIF 涓嶅寘鍚?GPS 瀛楁銆?-->
+<!-- ========================================== -->
+<!--        图库照片详情页                       -->
+<!-- 兼容基线：PluginPhotos v2.1.0；使用 photo/detail 模型，EXIF 不包含 GPS 字段。 -->
 <!-- ========================================== -->
 <th:block th:fragment="content">
   <th:block
@@ -8,7 +8,7 @@
     th:with="
     cfg=${theme.config.photos_settings},
     showDownloadBtn=${cfg?.show_download_btn != false},
-    photoTitle=${photo.spec.displayName ?: (title ?: '鐓х墖')},
+    photoTitle=${photo.spec.displayName ?: (title ?: '照片')},
     photoDesc=${photo.spec.description},
     hasTags=${photo.spec.tags != null and !#lists.isEmpty(photo.spec.tags)},
     exif=${photo.exif},
@@ -18,14 +18,14 @@
   "
   >
     <main class="photo-detail-page mx-auto max-w-[90rem] px-4 py-6 md:px-8 md:py-8">
-      <!-- 椤堕儴瀵艰埅锛氳繑鍥炰笌涓婁笅鏂?-->
+      <!-- 顶部导航：返回与上下文 -->
       <div class="photo-detail-toolbar mb-6 flex items-center justify-between gap-4">
         <a
           th:href="${backUrl ?: '/photos'}"
           class="btn btn-ghost btn-sm text-base-content/70 hover:text-base-content pl-0 transition-colors hover:bg-transparent"
         >
           <span class="icon-[heroicons--chevron-left] size-5"></span>
-          杩斿洖鍥惧簱
+          返回图库
         </a>
 
         <div class="text-base-content/50 text-sm tabular-nums" th:if="${position != null and total != null}">
@@ -36,13 +36,13 @@
       </div>
 
       <div class="photo-detail-layout grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem]">
-        <!-- 宸︿晶锛氱収鐗囪垶鍙?-->
+        <!-- 左侧：照片舞台 -->
         <section class="photo-detail-viewer group relative">
           <a
             th:if="${photoUrl != null and prev != null}"
             th:href="${photoUrl.detail(prev)}"
             class="btn btn-circle btn-sm md:btn-md border-base-content/10 bg-base-100/70 text-base-content hover:bg-base-100 absolute top-1/2 left-3 z-10 -translate-y-1/2 opacity-100 shadow-sm backdrop-blur transition-all hover:scale-105 md:left-5 md:opacity-0 md:group-hover:opacity-100"
-            aria-label="涓婁竴寮?
+            aria-label="上一张"
           >
             <span class="icon-[heroicons--chevron-left] size-5"></span>
           </a>
@@ -53,13 +53,13 @@
             th:if="${photoUrl != null and next != null}"
             th:href="${photoUrl.detail(next)}"
             class="btn btn-circle btn-sm md:btn-md border-base-content/10 bg-base-100/70 text-base-content hover:bg-base-100 absolute top-1/2 right-3 z-10 -translate-y-1/2 opacity-100 shadow-sm backdrop-blur transition-all hover:scale-105 md:right-5 md:opacity-0 md:group-hover:opacity-100"
-            aria-label="涓嬩竴寮?
+            aria-label="下一张"
           >
             <span class="icon-[heroicons--chevron-right] size-5"></span>
           </a>
         </section>
 
-        <!-- 鍙充晶锛氱瓥灞曚俊鎭潰鏉?-->
+        <!-- 右侧：策展信息面板 -->
         <aside class="photo-detail-panel">
           <section>
             <p class="text-base-content/35 mb-3 text-[11px] font-bold tracking-[0.26em] uppercase">Photo</p>
@@ -68,14 +68,14 @@
               th:title="${photoTitle}"
               th:text="${photoTitle}"
             >
-              鐓х墖鏍囬
+              照片标题
             </h1>
             <p
               class="text-base-content/70 text-sm leading-relaxed"
               th:if="${!#strings.isEmpty(photoDesc)}"
               th:text="${photoDesc}"
             >
-              鐓х墖鎻忚堪
+              照片描述
             </p>
           </section>
 
@@ -85,7 +85,7 @@
               th:text="${tag}"
               class="badge badge-sm badge-outline border-base-content/20 text-base-content/80 hover:bg-base-content/5 cursor-default px-3 py-3 transition-colors"
             >
-              鏍囩
+              标签
             </span>
           </section>
 
@@ -97,7 +97,7 @@
               class="btn btn-neutral h-11 w-full gap-2 rounded-xl"
             >
               <span class="icon-[heroicons--arrow-top-right-on-square] size-4"></span>
-              鏌ョ湅鍘熷浘
+              查看原图
             </a>
             <a
               th:if="${showDownloadBtn}"
@@ -106,15 +106,15 @@
               class="photo-detail-secondary-action border-base-content/10 bg-base-content/5 text-base-content/60 hover:border-base-content/15 hover:bg-base-content/10 hover:text-base-content flex h-10 w-full items-center justify-center gap-2 rounded-xl border text-sm font-semibold shadow-none transition-colors"
             >
               <span class="icon-[heroicons--arrow-down-tray] size-4"></span>
-              涓嬭浇鍘熷浘
+              下载原图
             </a>
           </section>
 
-          <!-- EXIF 淇℃伅鍖?-->
+          <!-- EXIF 信息区 -->
           <section th:if="${hasExifFields}">
             <h2 class="text-base-content mb-4 flex items-center gap-2 text-sm font-semibold">
               <span class="icon-[heroicons--camera] text-base-content/70 size-4"></span>
-              鎷嶆憚鍙傛暟
+              拍摄参数
             </h2>
 
             <div class="photo-detail-meta-card">
@@ -163,14 +163,14 @@
                 th:if="${exif.imageWidth != null and exif.imageHeight != null}"
               >
                 <span>Size</span>
-                <strong th:text="${exif.imageWidth + ' 脳 ' + exif.imageHeight}">4000 脳 3000</strong>
+                <strong th:text="${exif.imageWidth + ' × ' + exif.imageHeight}">4000 × 3000</strong>
               </div>
             </div>
           </section>
 
-          <!-- 闄勮繎鐓х墖 -->
+          <!-- 附近照片 -->
           <section th:if="${photoUrl != null and neighbors != null and !#lists.isEmpty(neighbors)}">
-            <h2 class="text-base-content mb-4 text-sm font-semibold">闄勮繎鎺㈢储</h2>
+            <h2 class="text-base-content mb-4 text-sm font-semibold">附近探索</h2>
             <div class="grid grid-cols-3 gap-3">
               <a
                 th:each="neighbor : ${neighbors}"
@@ -180,7 +180,7 @@
               >
                 <img
                   th:src="${neighbor.spec.cover ?: neighbor.spec.url}"
-                  th:alt="${neighbor.spec.displayName ?: '鐓х墖'}"
+                  th:alt="${neighbor.spec.displayName ?: '照片'}"
                   class="h-full w-full object-cover transition-transform duration-500 group-hover/neighbor:scale-110"
                   loading="lazy"
                 />
@@ -194,8 +194,7 @@
 
   <div th:if="${photo == null}" class="mx-auto max-w-4xl px-4 py-20 text-center">
     <span class="icon-[mdi--image-off-outline] text-base-content/30 mx-auto mb-4 h-16 w-16"></span>
-    <p class="text-base-content/50 text-lg">鐓х墖涓嶅瓨鍦?/p>
-    <a href="/photos" class="btn btn-neutral btn-sm mt-4">杩斿洖鍥惧簱</a>
+    <p class="text-base-content/50 text-lg">照片不存在</p>
+    <a href="/photos" class="btn btn-neutral btn-sm mt-4">返回图库</a>
   </div>
 </th:block>
-

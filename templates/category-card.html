@@ -1,9 +1,8 @@
-﻿<!doctype html>
+<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
 
-<!-- 鑷畾涔夋ā鏉匡細寮哄埗浣跨敤鍗＄墖椋庢牸锛堝拷鐣ュ叏灞€璁剧疆锛?-->
+<!-- 自定义模板：强制使用卡片风格（忽略全局设置） -->
 
 <th:block th:replace="~{modules/categories/layout :: html (~{modules/categories/content :: category-archive-card})}" />
 
 </html>
-

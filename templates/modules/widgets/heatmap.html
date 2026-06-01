@@ -1,10 +1,10 @@
-﻿<th:block th:fragment="heatmap(context)">
-  <!-- GitHub 鐑姏鍥?-->
+<th:block th:fragment="heatmap(context)">
+  <!-- GitHub 热力图 -->
   <div th:if="${showHeatmap and heatmapType == 'github' and githubUsername != null and !githubUsername.isEmpty()}"
     class="heatmap-card rounded-[1.5rem] backdrop-blur-xl bg-base-100/70 border border-base-content/5 shadow-lg p-5"
     x-data="githubHeatmap()" x-init="init()" x-cloak>
 
-    <!-- 楠ㄦ灦灞忓姞杞界姸鎬?-->
+    <!-- 骨架屏加载状态 -->
     <div x-show="loading" class="heatmap-skeleton">
       <div class="flex flex-wrap gap-[3px]">
         <template x-for="i in 371" :key="i">
@@ -13,24 +13,24 @@
       </div>
     </div>
 
-    <!-- 鐑姏鍥惧浘鐗?-->
+    <!-- 热力图图片 -->
     <img x-show="!loading && !error" x-ref="img" x-transition:enter="transition ease-out duration-300"
       x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="github-heatmap-img"
       alt="GitHub Contributions" />
 
-    <!-- 閿欒鐘舵€?-->
+    <!-- 错误状态 -->
     <div x-show="error" x-cloak class="heatmap-error">
       <span class="icon-[heroicons--exclamation-triangle] heatmap-error-icon"></span>
-      <p class="heatmap-error-text">GitHub 鐑姏鍥惧姞杞藉け璐?/p>
+      <p class="heatmap-error-text">GitHub 热力图加载失败</p>
       <button @click="retry()" class="heatmap-retry-btn">
         <span class="icon-[heroicons--arrow-path] w-3 h-3 mr-1 inline-block"></span>
-        閲嶈瘯
+        重试
       </button>
     </div>
 
-    <!-- 搴曢儴淇℃伅鏍?-->
+    <!-- 底部信息栏 -->
     <div x-show="!loading && !error" class="heatmap-footer flex items-center justify-between mt-3">
-      <span class="text-xs text-base-content/40">GitHub 骞村害璐＄尞</span>
+      <span class="text-xs text-base-content/40">GitHub 年度贡献</span>
       <div class="heatmap-legend hidden sm:flex items-center gap-1 text-xs text-base-content/40">
         <span>Less</span>
         <span class="inline-block w-2.5 h-2.5 rounded-sm border border-base-content/10 bg-base-content/[0.03]"></span>
@@ -64,7 +64,8 @@
             return;
           }
 
-          // 寤惰繜鍔犺浇鐑姏鍥撅紝涓嶉樆濉為灞?          this.$nextTick(() => {
+          // 延迟加载热力图，不阻塞首屏
+          this.$nextTick(() => {
             if ('requestIdleCallback' in window) {
               requestIdleCallback(() => this.loadImage(), { timeout: 3000 });
             } else {
@@ -144,26 +145,26 @@
   </script>
 
 
-  <!-- 鏂囩珷鐑姏鍥?-->
+  <!-- 文章热力图 -->
   <th:block th:if="${showHeatmap and heatmapType == 'article'}">
-    <!-- 鑾峰彇鏈€杩戠殑鏂囩珷鐢ㄤ簬缁熻 -->
+    <!-- 获取最近的文章用于统计 -->
     <th:block th:with="recentPosts = ${postFinder.list({page: 1, size: 500})}">
       <div
         class="heatmap-card rounded-[1.5rem] backdrop-blur-xl bg-base-100/70 border border-base-content/5 shadow-lg p-5"
         x-data="articleHeatmap()" x-init="init()" x-cloak>
 
-        <!-- 鐑姏鍥惧鍣?-->
+        <!-- 热力图容器 -->
         <div x-ref="container" class="w-full overflow-x-auto"></div>
 
-        <!-- 绌烘€佹彁绀?-->
+        <!-- 空态提示 -->
         <div x-show="isEmpty" x-cloak class="heatmap-empty">
           <span class="icon-[heroicons--document-text] heatmap-empty-icon"></span>
-          <p class="heatmap-empty-text">鏆傛棤鏂囩珷鍙戝竷璁板綍</p>
+          <p class="heatmap-empty-text">暂无文章发布记录</p>
         </div>
 
-        <!-- 搴曢儴淇℃伅鏍?-->
+        <!-- 底部信息栏 -->
         <div x-show="!isEmpty" class="heatmap-footer flex items-center justify-between mt-3">
-          <span class="text-xs text-base-content/40">骞村害鏂囩珷 路 <span x-text="totalCount"></span> 绡?/span>
+          <span class="text-xs text-base-content/40">年度文章 · <span x-text="totalCount"></span> 篇</span>
           <div class="heatmap-legend hidden sm:flex items-center gap-1 text-xs text-base-content/40">
             <span>Less</span>
             <span x-ref="level0"
@@ -176,7 +177,7 @@
           </div>
         </div>
 
-        <!-- 瀛樺偍鏂囩珷鏁版嵁 - 浠呯粺璁″叕寮€鏂囩珷 -->
+        <!-- 存储文章数据 - 仅统计公开文章 -->
         <div x-ref="postsData" style="display:none;">
           <th:block th:each="post : ${recentPosts.items}">
             <span
@@ -186,7 +187,7 @@
           </th:block>
         </div>
 
-        <!-- 鑷畾涔?Tooltip锛氬繀椤绘斁鍦?articleHeatmap 鏍硅妭鐐瑰唴閮紝閬垮厤 PJAX 涓?x-ref 涓㈠け鏍逛綔鐢ㄥ煙 -->
+        <!-- 自定义 Tooltip：必须放在 articleHeatmap 根节点内部，避免 PJAX 下 x-ref 丢失根作用域 -->
         <div x-ref="tooltip" class="heatmap-tooltip" style="display:none;"></div>
       </div>
 
@@ -205,7 +206,8 @@
             _initialized: false,
 
             init() {
-              // 闃叉閲嶅鍒濆鍖?              if (this._initialized) return;
+              // 防止重复初始化
+              if (this._initialized) return;
               this._initialized = true;
 
               this.parseData();
@@ -224,7 +226,8 @@
               const container = this.$refs.postsData;
               if (!container) return;
 
-              // 闃叉閲嶅鍒濆鍖?- 閲嶇疆鎵€鏈夌姸鎬?              this.totalCount = 0;
+              // 防止重复初始化 - 重置所有状态
+              this.totalCount = 0;
               this.data = new Map();
               this.postsByDate = new Map();
 
@@ -232,7 +235,7 @@
               oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
               const oneYearAgoStr = oneYearAgo.toISOString().split('T')[0];
 
-              // 浣跨敤 slug 鍘婚噸锛岄槻姝㈠悓涓€绡囨枃绔犺澶氭缁熻
+              // 使用 slug 去重，防止同一篇文章被多次统计
               const seenSlugs = new Set();
 
               container.querySelectorAll('span[data-date]').forEach(span => {
@@ -240,9 +243,11 @@
                 const title = span.getAttribute('data-title') || '';
                 const slug = span.getAttribute('data-slug') || '';
 
-                // 璺宠繃涓€骞村墠鐨勬枃绔?                if (!date || date < oneYearAgoStr) return;
+                // 跳过一年前的文章
+                if (!date || date < oneYearAgoStr) return;
 
-                // 璺宠繃宸茬粡缁熻杩囩殑鏂囩珷锛堟寜 slug 鍘婚噸锛?                if (seenSlugs.has(slug)) return;
+                // 跳过已经统计过的文章（按 slug 去重）
+                if (seenSlugs.has(slug)) return;
                 seenSlugs.add(slug);
 
                 this.data.set(date, (this.data.get(date) || 0) + 1);
@@ -286,7 +291,8 @@
                 const colors = this.getColors();
                 const containerWidth = container.clientWidth;
 
-                // 鍝嶅簲寮忚绠楀昂瀵?                const weeks = 53;
+                // 响应式计算尺寸
+                const weeks = 53;
                 const days = 7;
                 const labelWidth = 28;
                 const monthLabelHeight = 16;
@@ -303,7 +309,7 @@
                 const startDate = new Date(today);
                 startDate.setDate(startDate.getDate() - (weeks * days - 1));
 
-                // 鐢熸垚鏈堜唤鏍囩
+                // 生成月份标签
                 const monthLabels = [];
                 let lastMonth = -1;
                 for (let w = 0; w < weeks; w++) {
@@ -317,13 +323,13 @@
                   }
                 }
 
-                // 鐢熸垚鏄熸湡鏍囩
+                // 生成星期标签
                 const weekLabels = [1, 3, 5].map(d => {
                   const y = monthLabelHeight + d * (cellSize + cellGap) + cellSize * 0.75;
                   return `<text x="0" y="${y}" class="heatmap-label">${this.weekdays[d]}</text>`;
                 });
 
-                // 鐢熸垚鏍煎瓙
+                // 生成格子
                 const cells = [];
                 for (let i = 0; i < weeks * days; i++) {
                   const date = new Date(startDate);
@@ -361,7 +367,7 @@
                       <g>${cells.join('')}</g>
                     </svg>`;
 
-                // 缁戝畾浜嬩欢
+                // 绑定事件
                 this.bindEvents();
               });
             },
@@ -389,10 +395,10 @@
               const posts = this.postsByDate.get(dateStr) || [];
 
               const date = new Date(dateStr);
-              const formattedDate = `${date.getFullYear()}骞?{date.getMonth() + 1}鏈?{date.getDate()}鏃;
+              const formattedDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
 
               let html = `<div class="heatmap-tooltip-date">${formattedDate}</div>`;
-              html += `<div class="heatmap-tooltip-count">${count} 绡囨枃绔?/div>`;
+              html += `<div class="heatmap-tooltip-count">${count} 篇文章</div>`;
 
               if (posts.length > 0) {
                 html += '<div class="heatmap-tooltip-posts">';
@@ -400,7 +406,7 @@
                   html += `<span class="heatmap-tooltip-post">${post.title}</span>`;
                 });
                 if (posts.length > 3) {
-                  html += `<span class="heatmap-tooltip-post">杩樻湁 ${posts.length - 3} 绡?..</span>`;
+                  html += `<span class="heatmap-tooltip-post">还有 ${posts.length - 3} 篇...</span>`;
                 }
                 html += '</div>';
               }
@@ -475,4 +481,3 @@
     </th:block>
   </th:block>
 </th:block>
-

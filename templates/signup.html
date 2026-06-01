@@ -1,9 +1,9 @@
-﻿<!doctype html>
+<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org"
-    th:replace="~{gateway_fragments/layout :: layout(title = |娉ㄥ唽 - ${site.title}|, head = ~{::head}, body = ~{::body})}">
+    th:replace="~{gateway_fragments/layout :: layout(title = |注册 - ${site.title}|, head = ~{::head}, body = ~{::body})}">
 <th:block th:fragment="head">
     <style>
-        /* 娉ㄥ唽椤甸潰绋嶅涓€浜?*/
+        /* 注册页面稍宽一些 */
         .auth-form-container {
             max-width: 480px;
         }
@@ -11,30 +11,30 @@
 </th:block>
 
 <th:block th:fragment="body">
-    <!-- 澶ф爣棰?-->
-    <h1 class="auth-title">鍒涘缓璐︽埛</h1>
-    <p class="auth-subtitle">鍔犲叆鎴戜滑锛屽紑鍚叏鏂颁綋楠?/p>
+    <!-- 大标题 -->
+    <h1 class="auth-title">创建账户</h1>
+    <p class="auth-subtitle">加入我们，开启全新体验</p>
 
-    <!-- 娉ㄥ唽琛ㄥ崟 -->
+    <!-- 注册表单 -->
     <div class="space-y-6">
         <form th:replace="~{gateway_fragments/signup::form}"></form>
 
-        <!-- 绀句氦鐧诲綍 -->
+        <!-- 社交登录 -->
         <div th:replace="~{gateway_fragments/common::socialAuthProviders}"></div>
     </div>
 
-    <!-- 鐧诲綍鎻愮ず -->
+    <!-- 登录提示 -->
     <div class="mt-8 text-center text-base-content/50">
-        <span>宸叉湁璐︽埛锛?/span>
-        <a th:href="@{/login}" class="text-primary font-semibold hover:underline ml-1">绔嬪嵆鐧诲綍</a>
+        <span>已有账户？</span>
+        <a th:href="@{/login}" class="text-primary font-semibold hover:underline ml-1">立即登录</a>
     </div>
 
-    <!-- 杩斿洖棣栭〉 -->
+    <!-- 返回首页 -->
     <div class="mt-4 text-center">
         <a th:href="@{/}"
             class="inline-flex items-center gap-2 text-sm text-base-content/40 hover:text-primary transition-colors">
             <span class="icon-[heroicons--arrow-left] w-4 h-4"></span>
-            <span>杩斿洖棣栭〉</span>
+            <span>返回首页</span>
         </a>
     </div>
 </th:block>

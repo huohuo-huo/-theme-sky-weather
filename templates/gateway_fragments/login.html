@@ -1,7 +1,7 @@
-﻿<!-- ========================================== -->
+<!-- ========================================== -->
 <!--    Gateway Fragments - Login              -->
-<!--    鐧诲綍琛ㄥ崟鐗囨 (Premium Style)             -->
-<!--    鍏煎 halo-plugin-auth-passkey锛氫繚鐣?.halo-form銆乺emember-me 鍜屽叕鍏?submit 鎸夐挳銆?-->
+<!--    登录表单片段 (Premium Style)             -->
+<!--    兼容 halo-plugin-auth-passkey：保留 .halo-form、remember-me 和公共 submit 按钮。 -->
 <!-- ========================================== -->
 
 <div th:fragment="form" class="space-y-5">
@@ -9,31 +9,31 @@
         role="alert" th:if="${param.error.size() > 0}" th:with="error = ${param.error[0]}">
         <span class="icon-[heroicons--exclamation-circle] w-5 h-5 shrink-0 mt-0.5"></span>
         <div>
-            <span th:if="${error == 'invalid-credential'}">鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒锛岃妫€鏌ュ悗閲嶈瘯</span>
-            <span th:if="${error == 'rate-limit-exceeded'}">鐧诲綍灏濊瘯娆℃暟杩囧锛岃绋嶅悗鍐嶈瘯</span>
-            <span th:if="${error == 'account-disabled'}">璇ヨ处鎴峰凡琚鐢?/span>
+            <span th:if="${error == 'invalid-credential'}">用户名或密码错误，请检查后重试</span>
+            <span th:if="${error == 'rate-limit-exceeded'}">登录尝试次数过多，请稍后再试</span>
+            <span th:if="${error == 'account-disabled'}">该账户已被禁用</span>
         </div>
     </div>
 
     <div class="p-4 rounded-xl bg-success/10 border border-success/20 text-success text-sm flex items-start gap-3"
         role="alert" th:if="${param.logout.size() > 0}">
         <span class="icon-[heroicons--check-circle] w-5 h-5 shrink-0 mt-0.5"></span>
-        <span>宸叉垚鍔熼€€鍑虹櫥褰?/span>
+        <span>已成功退出登录</span>
     </div>
     <div class="p-4 rounded-xl bg-success/10 border border-success/20 text-success text-sm flex items-start gap-3"
         role="alert" th:if="${param.signup.size() > 0}">
         <span class="icon-[heroicons--check-circle] w-5 h-5 shrink-0 mt-0.5"></span>
-        <span>娉ㄥ唽鎴愬姛锛佽鐧诲綍鎮ㄧ殑璐︽埛</span>
+        <span>注册成功！请登录您的账户</span>
     </div>
     <div class="p-4 rounded-xl bg-info/10 border border-info/20 text-info text-sm flex items-start gap-3" role="alert"
         th:if="${param.oauth2_bind.size() > 0}">
         <span class="icon-[heroicons--information-circle] w-5 h-5 shrink-0 mt-0.5"></span>
-        <span>璇风粦瀹氭偍鐨勮处鎴蜂互瀹屾垚鐧诲綍</span>
+        <span>请绑定您的账户以完成登录</span>
     </div>
     <div class="p-4 rounded-xl bg-success/10 border border-success/20 text-success text-sm flex items-start gap-3"
         role="alert" th:if="${param.password_reset.size() > 0}">
         <span class="icon-[heroicons--check-circle] w-5 h-5 shrink-0 mt-0.5"></span>
-        <span>瀵嗙爜宸查噸缃紝璇蜂娇鐢ㄦ柊瀵嗙爜鐧诲綍</span>
+        <span>密码已重置，请使用新密码登录</span>
     </div>
 
     <form class="halo-form space-y-5" name="login-form" id="login-form"
@@ -44,14 +44,14 @@
         <div th:if="${authProvider.spec.rememberMeSupport}" class="flex items-center gap-3">
             <input type="checkbox" id="remember-me" name="remember-me" value="true" th:checked="${rememberMe}"
                 class="w-5 h-5 rounded-md border-2 border-base-content/20 text-primary focus:ring-primary focus:ring-offset-0 cursor-pointer" />
-            <label for="remember-me" class="text-base-content/70 cursor-pointer select-none">淇濇寔鐧诲綍鐘舵€?/label>
+            <label for="remember-me" class="text-base-content/70 cursor-pointer select-none">保持登录状态</label>
         </div>
 
         <div halo:captcha class="w-full"></div>
 
         <div class="pt-2">
             <button type="submit" class="premium-btn">
-                鐧诲綍
+                登录
             </button>
         </div>
     </form>
@@ -60,4 +60,3 @@
 <div th:remove="tag" th:fragment="formAuthProviders">
     <th:block th:replace="~{gateway_fragments/common::formAuthProviders}"></th:block>
 </div>
-

@@ -1,16 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--   Steam Mini Profile 鍗＄墖缁勪欢              -->
-<!--   浣跨敤 REST API 寮傛鍔犺浇锛屼笉闃诲椤甸潰娓叉煋    -->
+<!--   Steam Mini Profile 卡片组件              -->
+<!--   使用 REST API 异步加载，不阻塞页面渲染    -->
 <!-- ========================================== -->
 
 <th:block th:fragment="card">
-  <!-- Steam 鍗＄墖瀹瑰櫒 - 浣跨敤 Alpine.js 寮傛鍔犺浇 -->
+  <!-- Steam 卡片容器 - 使用 Alpine.js 异步加载 -->
   <div x-data="steamCard()" x-init="init()" class="steam-card-wrapper">
 
-    <!-- 鍔犺浇鐘舵€?-->
+    <!-- 加载状态 -->
     <div x-show="loading"
       class="card bg-base-100/80 backdrop-blur-xl shadow-lg border border-base-content/5 rounded-[1.5rem] overflow-hidden p-5">
       <div class="flex items-center gap-4 animate-pulse">
@@ -36,12 +36,12 @@
       </div>
     </div>
 
-    <!-- 瀹為檯鍐呭 -->
+    <!-- 实际内容 -->
     <a x-show="!loading && profile" x-cloak href="/steam"
       class="card block bg-base-100/80 backdrop-blur-xl shadow-lg border border-base-content/5 rounded-[1.5rem] overflow-hidden group hover:shadow-xl transition-all duration-300 relative"
       :class="profile?.playing ? 'ring-2 ring-accent/50 hover:ring-accent/70' : 'hover:border-primary/20'">
 
-      <!-- 娓告垙涓儗鏅?-->
+      <!-- 游戏中背景 -->
       <div x-show="gameHeaderUrl" class="absolute inset-0 z-0">
         <img :src="gameHeaderUrl"
           class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -49,7 +49,7 @@
         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20"></div>
       </div>
 
-      <!-- Steam Logo 姘村嵃 -->
+      <!-- Steam Logo 水印 -->
       <div x-show="!profile?.playing"
         class="absolute -right-6 -bottom-6 text-base-content/5 rotate-[-15deg] pointer-events-none z-0 transition-all duration-500 group-hover:rotate-[-10deg] group-hover:scale-110 group-hover:text-base-content/8">
         <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="currentColor">
@@ -58,9 +58,9 @@
         </svg>
       </div>
 
-      <!-- 鍐呭灞?-->
+      <!-- 内容层 -->
       <div class="relative z-10 p-5 flex items-center gap-4">
-        <!-- 澶村儚 -->
+        <!-- 头像 -->
         <div class="relative shrink-0">
           <div class="w-14 h-14 rounded-xl overflow-hidden ring-2 shadow-md transition-all"
             :class="profile?.playing ? 'ring-accent' : ((profile?.summary?.personaState || profile?.summary?.personastate) == 1 ? 'ring-success' : 'ring-base-content/10')">
@@ -73,23 +73,23 @@
           </div>
         </div>
 
-        <!-- 鐢ㄦ埛淇℃伅 -->
+        <!-- 用户信息 -->
         <div class="flex-1 min-w-0">
           <h3 class="text-sm font-bold truncate" :class="profile?.playing ? 'text-white' : 'text-base-content'"
             x-text="profile?.summary?.personaname || profile?.summary?.personaName || 'Steam User'"></h3>
           <div class="mt-0.5 text-xs truncate">
             <span x-show="profile?.playing" class="inline-flex items-center gap-1 text-accent font-medium">
               <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0"></span>
-              <span class="truncate" x-text="profile?.statusText">姝ｅ湪娓哥帺</span>
+              <span class="truncate" x-text="profile?.statusText">正在游玩</span>
             </span>
-            <span x-show="!profile?.playing && profile?.summary?.personaState == 1" class="text-success">鍦ㄧ嚎</span>
+            <span x-show="!profile?.playing && profile?.summary?.personaState == 1" class="text-success">在线</span>
             <span x-show="!profile?.playing && profile?.summary?.personaState != 1" class="text-base-content/50"
-              x-text="profile?.statusText">绂荤嚎</span>
+              x-text="profile?.statusText">离线</span>
           </div>
         </div>
       </div>
 
-      <!-- 搴曢儴缁熻鏍?-->
+      <!-- 底部统计栏 -->
       <div class="relative z-10 px-4 pb-3">
         <div class="flex items-center pt-2 border-t"
           :class="profile?.playing ? 'border-white/20' : 'border-base-content/5'">
@@ -101,14 +101,14 @@
           </div>
           <div class="w-px h-4" :class="profile?.playing ? 'bg-white/20' : 'bg-base-content/10'"></div>
           <div class="flex-1 text-center">
-            <div class="text-[10px] font-medium" :class="profile?.playing ? 'text-white/60' : 'text-base-content/40'">娓告垙
+            <div class="text-[10px] font-medium" :class="profile?.playing ? 'text-white/60' : 'text-base-content/40'">游戏
             </div>
             <div class="text-xs font-bold" :class="profile?.playing ? 'text-white' : 'text-base-content'"
               x-text="stats?.totalGames || '-'"></div>
           </div>
           <div class="w-px h-4" :class="profile?.playing ? 'bg-white/20' : 'bg-base-content/10'"></div>
           <div class="flex-1 text-center">
-            <div class="text-[10px] font-medium" :class="profile?.playing ? 'text-white/60' : 'text-base-content/40'">鏃堕暱
+            <div class="text-[10px] font-medium" :class="profile?.playing ? 'text-white/60' : 'text-base-content/40'">时长
             </div>
             <div class="text-xs font-bold" :class="profile?.playing ? 'text-white' : 'text-base-content'"
               x-text="stats ? Math.floor(stats.totalPlaytimeMinutes / 60) + 'h' : '-'"></div>
@@ -117,14 +117,14 @@
       </div>
     </a>
 
-    <!-- 閿欒/鏃犳暟鎹姸鎬?- 涓嶆樉绀轰换浣曞唴瀹?-->
+    <!-- 错误/无数据状态 - 不显示任何内容 -->
   </div>
 
   <script data-swup-reload-script>
-    // Steam 鍗＄墖鑴氭湰 (IIFE 闃叉閲嶅澹版槑)
+    // Steam 卡片脚本 (IIFE 防止重复声明)
     (function () {
       const STEAM_CARD_CACHE_KEY = 'steam_card_cache';
-      const STEAM_CARD_CACHE_TTL = 3 * 60 * 1000; // 3鍒嗛挓
+      const STEAM_CARD_CACHE_TTL = 3 * 60 * 1000; // 3分钟
 
       const steamCardCache = {
         get(key) {
@@ -148,14 +148,14 @@
               expiry: Date.now() + STEAM_CARD_CACHE_TTL
             }));
           } catch {
-            // 蹇界暐缂撳瓨鍐欏叆澶辫触
+            // 忽略缓存写入失败
           }
         }
       };
 
       const registerSteamCard = () => {
         if (!window.Alpine) return;
-        // 闃叉閲嶅娉ㄥ唽
+        // 防止重复注册
         if (Alpine.data && Alpine._steamCardRegistered) return;
         Alpine._steamCardRegistered = true;
 
@@ -168,20 +168,23 @@
           _initialized: false,
 
           async init() {
-            // 闃叉閲嶅鍒濆鍖?            if (this._initialized) return;
+            // 防止重复初始化
+            if (this._initialized) return;
             this._initialized = true;
 
             try {
-              // 灏濊瘯浠庣紦瀛樿鍙?              const cachedProfile = steamCardCache.get('profile');
+              // 尝试从缓存读取
+              const cachedProfile = steamCardCache.get('profile');
               const cachedStats = steamCardCache.get('stats');
               const cachedBadges = steamCardCache.get('badges');
 
-              // 濡傛灉鍏ㄩ儴鍛戒腑缂撳瓨锛岀洿鎺ヤ娇鐢?              if (cachedProfile && cachedStats && cachedBadges) {
+              // 如果全部命中缓存，直接使用
+              if (cachedProfile && cachedStats && cachedBadges) {
                 this.profile = cachedProfile;
                 this.stats = cachedStats;
                 this.badges = cachedBadges;
               } else {
-                // 鍚﹀垯璇锋眰 API
+                // 否则请求 API
                 const [profileRes, statsRes, badgesRes] = await Promise.all([
                   cachedProfile ? Promise.resolve(cachedProfile) :
                     fetch('/apis/api.steam.timxs.com/v1alpha1/profile')
@@ -201,13 +204,14 @@
                 this.stats = statsRes;
                 this.badges = badgesRes;
 
-                // 鍐欏叆缂撳瓨
+                // 写入缓存
                 if (profileRes) steamCardCache.set('profile', profileRes);
                 if (statsRes) steamCardCache.set('stats', statsRes);
                 if (badgesRes) steamCardCache.set('badges', badgesRes);
               }
 
-              // 璁剧疆娓告垙鑳屾櫙鍥?              const gameId = this.profile?.summary?.gameId || this.profile?.summary?.gameid;
+              // 设置游戏背景图
+              const gameId = this.profile?.summary?.gameId || this.profile?.summary?.gameid;
               if (this.profile?.playing && gameId) {
                 this.gameHeaderUrl = `https://cdn.cloudflare.steamstatic.com/steam/apps/${gameId}/header.jpg`;
               }
@@ -231,4 +235,3 @@
 </th:block>
 
 </html>
-

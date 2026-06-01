@@ -1,8 +1,7 @@
-﻿<!doctype html>
+<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
-  <!-- 椤甸潰锛氳眴鐡ｈ褰曪紙/douban锛?->
-  <!-- 鍏煎鍩虹嚎锛歱lugin-douban v1.2.5锛涢〉闈㈠３娑堣垂 title/templateId锛屽垪琛ㄩ€氳繃鍏紑 API 娓叉煋娴锋姤缃戞牸銆?-->
+  <!-- 页面：豆瓣记录（/douban）-->
+  <!-- 兼容基线：plugin-douban v1.2.5；页面壳消费 title/templateId，列表通过公开 API 渲染海报网格。 -->
 
   <th:block th:replace="~{modules/douban/layout :: html (~{modules/douban/content :: douban-content})}" />
 </html>
-

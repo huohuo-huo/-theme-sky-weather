@@ -1,30 +1,29 @@
-﻿<!-- 鍗曢〉闈㈠唴瀹?-->
+<!-- 单页面内容 -->
 <th:block th:fragment="content">
 
 <article id="page-container" class="page-reading-card">
   
-  <!-- 椤甸潰鏍囬 -->
+  <!-- 页面标题 -->
   <header id="page-header">
-    <h1 id="page-title" th:text="${singlePage.spec.title}">椤甸潰鏍囬</h1>
+    <h1 id="page-title" th:text="${singlePage.spec.title}">页面标题</h1>
   </header>
 
-  <!-- 鍒嗗壊绾?-->
+  <!-- 分割线 -->
   <div class="divider"></div>
 
-  <!-- 鏂囩珷鍐呭 -->
+  <!-- 文章内容 -->
   <div id="article-content" th:utext="${singlePage.content.content}">
-    <p>椤甸潰鍐呭...</p>
+    <p>页面内容...</p>
   </div>
 
-  <!-- 搴曢儴鍒嗗壊绾?-->
+  <!-- 底部分割线 -->
   <div class="divider"></div>
 
-  <!-- 搴曢儴鎻愮ず -->
+  <!-- 底部提示 -->
   <footer id="page-footer">
-    <p>濡傛湁鐤戦棶锛岃閫氳繃绔欑偣鎻愪緵鐨勮仈绯绘柟寮忎笌鎴戜滑鍙栧緱鑱旂郴銆?/p>
+    <p>如有疑问，请通过站点提供的联系方式与我们取得联系。</p>
   </footer>
 
 </article>
 
 </th:block>
-

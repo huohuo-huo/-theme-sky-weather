@@ -1,28 +1,27 @@
-﻿<!-- Docsme 鏂囨。鐩綍椤甸潰 - 瀹屽叏鑷畾涔?-->
-<!-- 鍏煎鍩虹嚎锛歱lugin-docsme 鍏嶈垂鐗?1.5.0 / 涓撲笟鐗?1.6.0锛涚洰褰曢〉棰濆娑堣垂 sonNodes銆?-->
+<!-- Docsme 文档目录页面 - 完全自定义 -->
+<!-- 兼容基线：plugin-docsme 免费版 1.5.0 / 专业版 1.6.0；目录页额外消费 sonNodes。 -->
 <!doctype html>
 <html
   xmlns:th="https://www.thymeleaf.org"
   th:replace="~{modules/doc-layout :: html(head = ~{::head}, content = ~{::content}, scripts = ~{::scripts}, dock = ~{::dock})}"
 >
   <th:block th:fragment="head">
-    <!-- 鏃犻渶寮曞叆鎻掍欢鏍峰紡 -->
+    <!-- 无需引入插件样式 -->
   </th:block>
   <th:block th:fragment="content">
     <th:block th:replace="~{modules/doc-catalog-content :: content}" />
   </th:block>
-  <!-- 鏂囨。鐩綍椤?Dock -->
+  <!-- 文档目录页 Dock -->
   <th:block th:fragment="dock">
     <th:block th:replace="~{modules/doc/floating-dock :: catalog-dock}" />
   </th:block>
   <th:block th:fragment="scripts">
-    <!-- 绂佺敤鎻掍欢鐨勪富棰樺垏鎹㈠姛鑳斤紝浣跨敤涓婚鑷甫鐨?-->
+    <!-- 禁用插件的主题切换功能，使用主题自带的 -->
     <script>
       var docsme = { disableThemeFunction: true };
     </script>
-    <!-- 鍏朵粬鎻掍欢鑴氭湰锛堟悳绱€佺粯鍥俱€並aTeX锛?-->
+    <!-- 其他插件脚本（搜索、绘图、KaTeX） -->
     <th:block th:replace="~{plugin:plugin-docsme:modules/plugin-scripts}" />
-    <!-- 缁勪欢宸插湪 alpine-modules.js 涓敞鍐?-->
+    <!-- 组件已在 alpine-modules.js 中注册 -->
   </th:block>
 </html>
-

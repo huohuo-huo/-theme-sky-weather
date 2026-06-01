@@ -1,6 +1,6 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN" th:fragment="html (head, content, scripts, dock)">
-  <!-- Docsme 鏂囨。涓撶敤甯冨眬 - 鍙栨秷鍔犺浇灞忓箷鎻愬崌浣撻獙 -->
+  <!-- Docsme 鏂囨。涓撶敤甯冨眬 - 鍙栨秷鍔犺浇鐣岄潰鎻愬崌浣撻獙 -->
 
   <head>
     <meta charset="UTF-8" />
@@ -21,21 +21,21 @@
     <!-- 瀛椾綋 -->
     <th:block th:replace="~{modules/font-loader :: fonts}" />
     <!-- 涓婚鏍峰紡 -->
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.24')}" />
-    <!-- 鏂囩珷鏍峰紡锛堝寘鍚枃绔犲唴瀹瑰拰鐩綍鏍峰紡锛?-->
-    <link rel="stylesheet" th:href="@{/assets/css/post.css?v={version}(version='1.0.24')}" />
-    <!-- 鏂囨。椤典笓鐢ㄦ牱寮?-->
-    <link rel="stylesheet" th:href="@{/assets/css/doc.css?v={version}(version='1.0.24')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/doc-refinements.css?v={version}(version='1.0.24')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.21')}" />
+    <!-- 鏂囩珷鏍峰紡锛堝寘鍚枃绔犲唴瀹瑰拰鐩綍鏍峰紡锟?-->
+    <link rel="stylesheet" th:href="@{/assets/css/post.css?v={version}(version='1.0.21')}" />
+    <!-- 鏂囨。椤典笓鐢ㄦ牱锟?-->
+    <link rel="stylesheet" th:href="@{/assets/css/doc.css?v={version}(version='1.0.21')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/doc-refinements.css?v={version}(version='1.0.21')}" />
 
-    <!-- 棰濆 head 鍐呭锛堜粎 CSS锛?-->
+    <!-- 棰濆锟?head 鍐呭锛堜粎 CSS锟?-->
     <th:block th:if="${head != null}">
       <th:block th:replace="${head}" />
     </th:block>
 
-    <!-- 鏂囨。椤圭洰鑷畾涔?head 鍐呭锛圕SS/JS锛? 闇€瑕?Docsme 鎻掍欢鏀寔 -->
+    <!-- 鏂囨。椤圭洰鑷畾锟?head 鍐呭锛圕SS/JS锟? 闇€锟?Docsme 鎻掍欢鏀寔 -->
     <th:block th:if="${project?.spec != null and project.spec['head'] != null}" th:utext="${project.spec['head']}" />
-    <!-- 闊充箰鎾斁鍣?CSS -->
+    <!-- 闊充箰鎾斁锟?CSS -->
     <th:block th:replace="~{modules/music-player :: head}" />
   </head>
 
@@ -55,7 +55,7 @@
     <div class="relative z-10">
       <!-- 鏂囨。涓績涓嶄娇鐢ㄥ姞杞藉睆骞曪紝鎻愬崌鍗虫椂璁块棶浣撻獙 -->
 
-      <!-- 涓婚瀵艰埅鏍?-->
+      <!-- 涓婚瀵艰埅锟?-->
       <th:block th:replace="~{modules/nav :: navbar}" />
 
       <!-- 涓昏鍐呭 -->
@@ -68,11 +68,11 @@
     </div>
 
     <div id="swup-page-extras">
-      <!-- 鎮诞 Dock锛堢敱鍚勯〉闈紶鍏ヨ嚜瀹氫箟 dock锛?-->
+      <!-- 鎮诞 Dock锛堢敱鍚勯〉闈紶鍏ヨ嚜瀹氫箟 dock锟?-->
       <th:block th:if="${dock != null}">
         <th:block th:insert="${dock}" />
       </th:block>
-      <!-- 濡傛灉娌℃湁浼犲叆鑷畾涔?dock锛屼娇鐢ㄩ粯璁?dock -->
+      <!-- 濡傛灉娌℃湁浼犲叆鑷畾锟?dock锛屼娇鐢ㄩ粯锟?dock -->
       <th:block th:if="${dock == null}">
         <th:block th:replace="~{modules/floating-dock :: dock}" />
       </th:block>
@@ -80,23 +80,22 @@
 
     <!-- JavaScript -->
     <div id="swup-scripts" hidden>
-      <!-- 鏂囨。椤典笓鐢ㄨ剼鏈?- 浣跨敤 ES Module -->
+      <!-- 鏂囨。椤典笓鐢ㄨ剼锟?- 浣跨敤 ES Module -->
       <script
         type="module"
-        th:src="@{/assets/js/doc.js?v={version}(version='1.0.24')}"
+        th:src="@{/assets/js/doc.js?v={version}(version='1.0.21')}"
         data-swup-reload-script
       ></script>
       <!-- 鎻掍欢鑴氭湰锛堥渶瑕佸湪 body 鍚庡姞杞斤級 -->
       <th:block th:if="${scripts != null}">
         <th:block th:replace="${scripts}" />
       </th:block>
-      <!-- 鏂囨。椤圭洰鑷畾涔?body 鑴氭湰 - 闇€瑕?Docsme 鎻掍欢鏀寔 -->
+      <!-- 鏂囨。椤圭洰鑷畾锟?body 鑴氭湰 - 闇€锟?Docsme 鎻掍欢鏀寔 -->
       <th:block th:if="${project?.spec != null and project.spec['body'] != null}" th:utext="${project.spec['body']}" />
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.24')}"></script>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.21')}"></script>
 
-    <!-- 鎮诞闊充箰鎾斁鍣?-->
+    <!-- 鎮诞闊充箰鎾斁锟?-->
     <th:block th:replace="~{modules/music-player :: player}" />
   </body>
 </html>
-

@@ -1,10 +1,10 @@
-﻿<!doctype html>
+<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
   <!-- ========================================== -->
-  <!--  鎮诞闊充箰鎾斁鍣?                             -->
-  <!--  APlayer 闊抽寮曟搸 路 鑷畾涔?UI                -->
-  <!--  鏀惰捣 = 鏃嬭浆榛戣兌鍞辩墖 路 灞曞紑 = 鑳跺泭鎺у埗鏉?     -->
-  <!--  褰㈠彉鍔ㄧ敾锛氬悓涓€瀹瑰櫒 CSS transition 鍙樺舰        -->
+  <!--  悬浮音乐播放器                              -->
+  <!--  APlayer 音频引擎 · 自定义 UI                -->
+  <!--  收起 = 旋转黑胶唱片 · 展开 = 胶囊控制条      -->
+  <!--  形变动画：同一容器 CSS transition 变形        -->
   <!-- ========================================== -->
 
   <th:block th:fragment="head" th:if="${theme.config.music?.music_settings?.enable == true}"> </th:block>
@@ -33,7 +33,7 @@
       "
     ></div>
 
-    <!-- 鍒濆鍖栧紩鎿?-->
+    <!-- 初始化引擎 -->
     <script th:inline="javascript">
       (function () {
         const FALLBACK_THEME_COLOR = "#fa233b";
@@ -83,7 +83,7 @@
       })();
     </script>
 
-    <!-- 缁挱 + 鐘舵€佷繚瀛橈紙鏆撮湶 window.__skyMusicSave 渚?swup 璋冪敤锛?-->
+    <!-- 续播 + 状态保存（暴露 window.__skyMusicSave 供 swup 调用） -->
     <script>
       (function () {
         "use strict";
@@ -108,7 +108,7 @@
           } catch (e) {}
         }
 
-        // Fix #3: 鏆撮湶缁?swup visit:start 璋冪敤
+        // Fix #3: 暴露给 swup visit:start 调用
         window.__skyMusicSave = save;
 
         function restore() {
@@ -145,7 +145,8 @@
           if (document.visibilityState === "hidden") save();
         });
 
-        // Fix #4: 鍏ㄩ〉鍒锋柊鏃舵竻鐞嗘棫瀹氭椂鍣?        if (window.__skyMusicSaveTimer) clearInterval(window.__skyMusicSaveTimer);
+        // Fix #4: 全页刷新时清理旧定时器
+        if (window.__skyMusicSaveTimer) clearInterval(window.__skyMusicSaveTimer);
         window.__skyMusicSaveTimer = setInterval(save, 2000);
 
         if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", restore);
@@ -166,11 +167,11 @@
       th:attr="data-position=${poscfg?.default_position ?: 'bottom-left'},data-offset-x=${poscfg?.default_offset_x ?: 0},data-offset-y=${poscfg?.default_offset_y ?: 0}"
       style="display: none"
     >
-      <!-- 鍗曚竴褰㈠彉瀹瑰櫒锛氬渾褰?鈫?鑳跺泭 -->
+      <!-- 单一形变容器：圆形 ↔ 胶囊 -->
       <div class="sky-mp-shell">
-        <!-- 宸︿晶锛氬敱鐗?/ 灏侀潰鍖?-->
+        <!-- 左侧：唱片 / 封面区 -->
         <div class="sky-mp-left" @click="togglePlay()">
-          <!-- 榛戣兌鐩樹綋锛堟敹璧锋€佸彲瑙侊級 -->
+          <!-- 黑胶盘体（收起态可见） -->
           <div class="sky-mp-disc" :class="{ 'is-spinning': playing && !expanded }">
             <div class="sky-mp-disc-groove"></div>
             <div class="sky-mp-disc-sheen"></div>
@@ -179,7 +180,7 @@
             </div>
             <div class="sky-mp-disc-spindle"></div>
           </div>
-          <!-- 灏侀潰锛堝睍寮€鎬佸彲瑙侊級 -->
+          <!-- 封面（展开态可见） -->
           <div class="sky-mp-cover-wrap">
             <img :src="cover" alt="" referrerpolicy="no-referrer" class="sky-mp-cover-img" />
             <div class="sky-mp-cover-overlay" :class="{ 'show': playing }">
@@ -192,8 +193,8 @@
           </div>
         </div>
 
-        <!-- 灞曞紑鎸夐挳锛堟敹璧锋€?hover 鏄剧ず锛?-->
-        <button class="sky-mp-expand-btn" @click.stop="expanded = true" aria-label="灞曞紑鎾斁鍣?>
+        <!-- 展开按钮（收起态 hover 显示） -->
+        <button class="sky-mp-expand-btn" @click.stop="expanded = true" aria-label="展开播放器">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -206,7 +207,7 @@
           </svg>
         </button>
 
-        <!-- 鍙充晶鍐呭鍖猴紙灞曞紑鎬佹粦鍏ワ級 -->
+        <!-- 右侧内容区（展开态滑入） -->
         <div class="sky-mp-content">
           <div class="sky-mp-info">
             <div class="sky-mp-meta">
@@ -220,17 +221,17 @@
             </div>
           </div>
           <div class="sky-mp-btns">
-            <button class="sky-mp-btn" @click.stop="prev()" aria-label="涓婁竴棣?>
+            <button class="sky-mp-btn" @click.stop="prev()" aria-label="上一首">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" /></svg>
             </button>
-            <button class="sky-mp-btn" @click.stop="next()" aria-label="涓嬩竴棣?>
+            <button class="sky-mp-btn" @click.stop="next()" aria-label="下一首">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" /></svg>
             </button>
             <button
               class="sky-mp-btn"
               @click.stop="showList=!showList"
               :class="{'is-active':showList}"
-              aria-label="鍒楄〃"
+              aria-label="列表"
             >
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
@@ -239,7 +240,7 @@
             <button
               class="sky-mp-btn sky-mp-btn-collapse"
               @click.stop="expanded=false;showList=false"
-              aria-label="鏀惰捣"
+              aria-label="收起"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -256,7 +257,7 @@
         </div>
       </div>
 
-      <!-- 鎾斁鍒楄〃 -->
+      <!-- 播放列表 -->
       <div class="sky-mp-list" x-show="showList && expanded" x-transition.opacity.duration.200ms>
         <div class="sky-mp-list-inner">
           <template x-for="(track,idx) in tracks" :key="idx">
@@ -268,20 +269,20 @@
         </div>
       </div>
 
-      <!-- 鎾斁鐘舵€佸皬鍏夌偣锛堟敹璧锋€侊級 -->
+      <!-- 播放状态小光点（收起态） -->
       <div class="sky-mp-dot" :class="{ 'is-playing': playing && !expanded }"></div>
     </div>
 
-    <!-- Alpine 缁勪欢 skyMusicPlayer 宸茬Щ鑷?alpine-modules.js锛岄殢 Alpine.start() 鍚屾娉ㄥ唽 -->
+    <!-- Alpine 组件 skyMusicPlayer 已移至 alpine-modules.js，随 Alpine.start() 同步注册 -->
 
-    <!-- ===== 鏍峰紡 ===== -->
+    <!-- ===== 样式 ===== -->
     <style>
-      /* ========== 鍙橀噺 ========== */
+      /* ========== 变量 ========== */
       :root {
-        --mp-size: 54px; /* 榛戣兌灏哄 */
-        --mp-expanded-w: 360px; /* 灞曞紑瀹藉害 */
-        --mp-expanded-h: 64px; /* 灞曞紑楂樺害 */
-        --mp-cover-exp: 42px; /* 灞曞紑鎬佸皝闈㈠昂瀵?*/
+        --mp-size: 54px; /* 黑胶尺寸 */
+        --mp-expanded-w: 360px; /* 展开宽度 */
+        --mp-expanded-h: 64px; /* 展开高度 */
+        --mp-cover-exp: 42px; /* 展开态封面尺寸 */
         --mp-ease: cubic-bezier(0.4, 0, 0.2, 1);
         --mp-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
         --mp-dur: 0.45s;
@@ -306,7 +307,7 @@
         --mp-bar-bg: color-mix(in srgb, var(--color-base-content) 14%, transparent);
       }
 
-      /* APlayer 闅愯棌 */
+      /* APlayer 隐藏 */
       #sky-ap-engine,
       #sky-ap-engine * {
         position: fixed !important;
@@ -319,18 +320,18 @@
         opacity: 0 !important;
       }
 
-      /* ========== 瀹瑰櫒 ========== */
+      /* ========== 容器 ========== */
       .sky-mp {
         position: fixed;
-        /* 浠ヤ笅 left/bottom 浠呬綔 CSS 鍒濆鍗犱綅锛沖applyPosition() 鍦ㄥ厓绱犲彲瑙佸墠宸茶鐩栧疄闄呭€?*/
+        /* 以下 left/bottom 仅作 CSS 初始占位；_applyPosition() 在元素可见前已覆盖实际值 */
         left: 16px;
         bottom: 24px;
-        z-index: 41; /* 楂樹簬鎮诞 Dock (z-40)锛岀‘淇濆彲浠ヤ氦浜?*/
+        z-index: 41; /* 高于悬浮 Dock (z-40)，确保可以交互 */
         font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
       }
 
-      /* 灞呬腑瀹氫綅锛氱敤 calc() 鑰岄潪 transform锛岄伩鍏嶄笌 x-transition 鍐茬獊 */
+      /* 居中定位：用 calc() 而非 transform，避免与 x-transition 冲突 */
       .sky-mp.sky-mp-h-center {
         left: calc(50% - var(--mp-size) / 2 + var(--mp-h-nudge, 0px)) !important;
       }
@@ -345,7 +346,7 @@
         top: calc(50% - var(--mp-expanded-h) / 2 + var(--mp-v-nudge, 0px)) !important;
       }
 
-      /* ========== 褰㈠彉澶栧３ ========== */
+      /* ========== 形变外壳 ========== */
       .sky-mp-shell {
         position: relative;
         display: flex;
@@ -361,7 +362,7 @@
           background var(--mp-dur) var(--mp-ease),
           box-shadow var(--mp-dur) var(--mp-ease),
           backdrop-filter var(--mp-dur) var(--mp-ease);
-        /* 鏀惰捣鎬侊細閫忔槑鑳屾櫙锛岄槾褰遍潬 disc 鑷甫 */
+        /* 收起态：透明背景，阴影靠 disc 自带 */
         background: transparent;
         box-shadow: none;
       }
@@ -394,7 +395,7 @@
         }
       }
 
-      /* ========== 宸︿晶锛氬敱鐗?/ 灏侀潰 ========== */
+      /* ========== 左侧：唱片 / 封面 ========== */
       .sky-mp-left {
         position: relative;
         flex-shrink: 0;
@@ -415,7 +416,7 @@
         border-radius: 10px;
       }
 
-      /* --- 榛戣兌鐩樹綋 --- */
+      /* --- 黑胶盘体 --- */
       .sky-mp-disc {
         position: absolute;
         inset: 0;
@@ -461,7 +462,7 @@
         }
       }
 
-      /* 娌熸Ы绾圭悊 */
+      /* 沟槽纹理 */
       .sky-mp-disc-groove {
         position: absolute;
         inset: 0;
@@ -475,7 +476,7 @@
         );
       }
 
-      /* 鍙嶅厜寮?*/
+      /* 反光弧 */
       .sky-mp-disc-sheen {
         position: absolute;
         inset: 0;
@@ -492,7 +493,7 @@
         );
       }
 
-      /* 涓績灏侀潰鏍囩 */
+      /* 中心封面标签 */
       .sky-mp-disc-label {
         position: absolute;
         top: 50%;
@@ -513,7 +514,7 @@
         display: block;
       }
 
-      /* 涓績杞村瓟 */
+      /* 中心轴孔 */
       .sky-mp-disc-spindle {
         position: absolute;
         top: 50%;
@@ -528,7 +529,7 @@
         z-index: 2;
       }
 
-      /* --- 灞曞紑鎬佸皝闈?--- */
+      /* --- 展开态封面 --- */
       .sky-mp-cover-wrap {
         position: absolute;
         inset: 0;
@@ -575,7 +576,7 @@
         filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
       }
 
-      /* ========== 灞曞紑鎸夐挳锛堟敹璧锋€侊級 ========== */
+      /* ========== 展开按钮（收起态） ========== */
       .sky-mp-expand-btn {
         position: absolute;
         right: -6px;
@@ -627,7 +628,7 @@
         display: none;
       }
 
-      /* ========== 鍙充晶鍐呭 ========== */
+      /* ========== 右侧内容 ========== */
       .sky-mp-content {
         flex: 1;
         min-width: 0;
@@ -710,7 +711,7 @@
         position: relative;
       }
 
-      /* 杩涘害鏉℃湯绔彂鍏夌偣 */
+      /* 进度条末端发光点 */
       .sky-mp-bar-fill::after {
         content: "";
         position: absolute;
@@ -730,7 +731,7 @@
         opacity: 1;
       }
 
-      /* 鎸夐挳缁?*/
+      /* 按钮组 */
       .sky-mp-btns {
         display: flex;
         align-items: center;
@@ -784,7 +785,7 @@
         border-radius: 0 8px 8px 0;
       }
 
-      /* ========== 鎾斁鍒楄〃 ========== */
+      /* ========== 播放列表 ========== */
       .sky-mp-list {
         position: absolute;
         left: 0;
@@ -800,7 +801,7 @@
         overflow: hidden;
       }
 
-      /* 椤堕儴浣嶇疆鏃跺垪琛ㄦ樉绀哄湪鎾斁鍣ㄤ笅鏂癸紝閬垮厤婧㈠嚭灞忓箷 */
+      /* 顶部位置时列表显示在播放器下方，避免溢出屏幕 */
       .sky-mp.sky-mp-pos-top .sky-mp-list {
         bottom: auto;
         top: calc(var(--mp-expanded-h) + 8px);
@@ -870,7 +871,7 @@
         text-overflow: ellipsis;
       }
 
-      /* ========== 鐘舵€佸厜鐐癸紙鏀惰捣鎬侊級 ========== */
+      /* ========== 状态光点（收起态） ========== */
       .sky-mp-dot {
         position: absolute;
         right: -2px;
@@ -909,7 +910,7 @@
         }
       }
 
-      /* ========== 绉诲姩绔?========== */
+      /* ========== 移动端 ========== */
       @media (max-width: 767px) {
         :root {
           --mp-size: 48px;
@@ -947,4 +948,3 @@
     </style>
   </th:block>
 </html>
-

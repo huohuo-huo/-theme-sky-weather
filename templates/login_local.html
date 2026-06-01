@@ -1,30 +1,30 @@
-﻿<!-- ========================================== -->
-<!--    Login Local - 鏈湴鐧诲綍琛ㄥ崟              -->
+<!-- ========================================== -->
+<!--    Login Local - 本地登录表单              -->
 <!--    Premium Style                          -->
 <!-- ========================================== -->
 
 <div th:remove="tag" th:fragment="form">
-    <!-- 闅愯棌鐨勫姞瀵嗗瘑鐮佸瓧娈?(鍔犲瘑閫昏緫鍦?common.html 鐨?basicScriptResources 涓? -->
+    <!-- 隐藏的加密密码字段 (加密逻辑在 common.html 的 basicScriptResources 中) -->
     <input type="hidden" name="password" id="password" />
 
-    <!-- 鐢ㄦ埛鍚?-->
+    <!-- 用户名 -->
     <div class="space-y-2">
-        <label for="username" class="block text-sm font-medium text-base-content/70">鐢ㄦ埛鍚?/label>
-        <input id="username" name="username" type="text" placeholder="璇疯緭鍏ョ敤鎴峰悕鎴栭偖绠? autocomplete="off" spellcheck="false"
+        <label for="username" class="block text-sm font-medium text-base-content/70">用户名</label>
+        <input id="username" name="username" type="text" placeholder="请输入用户名或邮箱" autocomplete="off" spellcheck="false"
             autocorrect="off" autocapitalize="off" required autofocus class="premium-input" />
     </div>
 
-    <!-- 瀵嗙爜 -->
+    <!-- 密码 -->
     <div class="space-y-2">
         <div class="flex items-center justify-between">
-            <label for="plainPassword" class="block text-sm font-medium text-base-content/70">瀵嗙爜</label>
+            <label for="plainPassword" class="block text-sm font-medium text-base-content/70">密码</label>
             <a class="text-sm text-primary/80 hover:text-primary transition-colors" tabindex="-1"
-                th:href="@{/password-reset/email}">蹇樿瀵嗙爜?</a>
+                th:href="@{/password-reset/email}">忘记密码?</a>
         </div>
         <div class="relative toggle-password-display-flag">
-            <input id="plainPassword" type="password" placeholder="璇疯緭鍏ュ瘑鐮? autocomplete="off" spellcheck="false"
+            <input id="plainPassword" type="password" placeholder="请输入密码" autocomplete="off" spellcheck="false"
                 autocorrect="off" autocapitalize="off" required maxlength="257" class="premium-input pr-12" />
-            <!-- 瀵嗙爜鏄剧ず/闅愯棌鍒囨崲 -->
+            <!-- 密码显示/隐藏切换 -->
             <div
                 class="absolute right-4 top-1/2 -translate-y-1/2 toggle-password-button cursor-pointer text-base-content/40 hover:text-base-content transition-colors">
                 <svg class="password-hidden-icon w-5 h-5" style="display: none" viewBox="0 0 24 24">

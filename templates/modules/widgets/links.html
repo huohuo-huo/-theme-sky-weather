@@ -1,5 +1,5 @@
-﻿<th:block th:fragment="links(context)">
-  <!-- 鍏煎鍩虹嚎锛歅luginLinks v1.7.2锛汧inder 浠呮彁渚?listBy(groupName) 涓?groupBy()锛岄椤垫ā鍧椾繚鐣?groupBy()銆?-->
+<th:block th:fragment="links(context)">
+  <!-- 兼容基线：PluginLinks v1.7.2；Finder 仅提供 listBy(groupName) 与 groupBy()，首页模块保留 groupBy()。 -->
   <th:block th:with="linksSettings = ${theme.config.index.links_settings}">
     <section th:if="${linksSettings != null and linksSettings.enable_links == true}"
       class="card bg-base-100/80 backdrop-blur-xl shadow-lg border border-base-content/5 rounded-[1.5rem] p-6 sm:p-8 mb-8 lg:mb-0">
@@ -11,7 +11,7 @@
           </div>
           <div>
             <h2 class="text-xl font-bold text-base-content tracking-tight"
-              th:text="${linksSettings?.links_title} ?: '鍙嬫儏閾炬帴'">鍙嬫儏閾炬帴</h2>
+              th:text="${linksSettings?.links_title} ?: '友情链接'">友情链接</h2>
             <p class="text-xs text-base-content/40 font-medium mt-0.5"
               th:text="${linksSettings?.links_subtitle} ?: 'Friends & Partners'">Friends & Partners</p>
           </div>
@@ -24,24 +24,24 @@
         </a>
       </div>
 
-      <!-- 鏈畨瑁呮彃浠舵椂鐨勬彁閱?-->
+      <!-- 未安装插件时的提醒 -->
       <th:block th:unless="${pluginFinder.available('PluginLinks')}">
         <div class="text-center py-12 bg-base-100/50 rounded-3xl border border-base-content/5 border-dashed">
           <span class="icon-[heroicons--link] w-12 h-12 mx-auto text-base-content/20 mb-4 block"></span>
-          <p class="text-base-content/60 mb-4">闇€瑕佸畨瑁呭弸閾炬彃浠舵潵灞曠ず閾炬帴</p>
+          <p class="text-base-content/60 mb-4">需要安装友链插件来展示链接</p>
           <a href="https://www.halo.run/store/apps/app-hfbQg" target="_blank"
             class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-lg text-primary hover:bg-primary/20 transition-colors duration-300">
             <span class="icon-[material-symbols--download] w-4 h-4"></span>
-            <span>涓嬭浇鍙嬮摼鎻掍欢</span>
+            <span>下载友链插件</span>
           </a>
         </div>
       </th:block>
 
-      <!-- 宸插畨瑁呮彃浠舵椂鏄剧ず鍐呭 -->
+      <!-- 已安装插件时显示内容 -->
       <th:block th:if="${pluginFinder.available('PluginLinks')}">
-        <!-- 閫氳繃 groupBy() 鑾峰彇鎵€鏈夊垎缁勶紝鎸変富棰樿缃瓫閫夊睍绀猴紝涓嶄吉閫犱笉瀛樺湪鐨?listBy(groupNames, limit) API銆?-->
+        <!-- 通过 groupBy() 获取所有分组，按主题设置筛选展示，不伪造不存在的 listBy(groupNames, limit) API。 -->
         <th:block th:with="groups = ${linkFinder.groupBy()}">
-          <!-- JS 鏁伴噺鎴柇锛堜粎鍓嶇灞曠ず鏁堟灉锛屽悗绔疄闄呭姞杞藉叏閮ㄦ暟鎹級-->
+          <!-- JS 数量截断（仅前端展示效果，后端实际加载全部数据）-->
           <script th:inline="javascript" data-swup-reload-script>
             document.addEventListener('DOMContentLoaded', function () {
               var max = /*[[${linksSettings.links_count}]]*/ 0;
@@ -63,13 +63,13 @@
                 th:title="${link.spec.description}"
                 class="group flex flex-col items-center text-center gap-3 p-2 rounded-xl transition-opacity hover:opacity-80">
 
-                <!-- 澶村儚瀹瑰櫒 -->
+                <!-- 头像容器 -->
                 <div class="relative transition-transform duration-300 group-hover:scale-105">
-                  <!-- 闃村奖 -->
+                  <!-- 阴影 -->
                   <div
                     class="absolute inset-2 bg-black/20 rounded-full blur-md translate-y-2 opacity-0 group-hover:opacity-40 transition-opacity duration-300">
                   </div>
-                  <!-- 澶村儚涓讳綋 -->
+                  <!-- 头像主体 -->
                   <div
                     class="relative w-16 h-16 rounded-[1.25rem] bg-base-100 shadow-sm overflow-hidden ring-1 ring-base-content/5">
                     <img th:if="${link.spec.logo != null && !link.spec.logo.isEmpty()}" th:src="${link.spec.logo}"
@@ -84,23 +84,22 @@
 
                 <div class="flex flex-col gap-0.5 w-full px-1">
                   <span class="text-xs font-semibold text-base-content/90 truncate w-full"
-                    th:text="${link.spec.displayName}">閾炬帴鍚?/span>
+                    th:text="${link.spec.displayName}">链接名</span>
                   <span class="text-[10px] text-base-content/40 truncate w-full"
-                    th:text="${link.spec.description ?: 'No description'}">鎻忚堪</span>
+                    th:text="${link.spec.description ?: 'No description'}">描述</span>
                 </div>
               </a>
             </th:block>
           </div>
-          <!-- 绌虹姸鎬?-->
+          <!-- 空状态 -->
           <div th:if="${groups == null || groups.isEmpty()}" class="text-center py-12">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-base-200/50 mb-4">
               <span class="icon-[heroicons--link] w-8 h-8 text-base-content/30"></span>
             </div>
-            <p class="text-base-content/40 font-medium">鏆傛棤鍙嬫儏閾炬帴</p>
+            <p class="text-base-content/40 font-medium">暂无友情链接</p>
           </div>
         </th:block>
       </th:block>
     </section>
   </th:block>
 </th:block>
-

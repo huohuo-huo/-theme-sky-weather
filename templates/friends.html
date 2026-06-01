@@ -1,10 +1,9 @@
-﻿<!doctype html>
+<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
 
-<!-- 椤甸潰锛氭湅鍙嬪湀锛?friends锛?->
-<!-- 鍏煎鍩虹嚎锛歱lugin-friends v1.4.5锛涗緷璧?PluginLinks >=1.5.0锛屾秷璐?friends/title/templateId銆?-->
+<!-- 页面：朋友圈（/friends）-->
+<!-- 兼容基线：plugin-friends v1.4.5；依赖 PluginLinks >=1.5.0，消费 friends/title/templateId。 -->
 
 <th:block th:replace="~{modules/friends/layout :: html (~{modules/friends/content :: friends-content})}" />
 
 </html>
-

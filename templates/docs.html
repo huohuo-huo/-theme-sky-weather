@@ -1,22 +1,21 @@
-﻿<!-- Docsme 鏂囨。椤圭洰鍒楄〃椤甸潰 - 瀹屽叏鑷畾涔?-->
-<!-- 鍏煎鍩虹嚎锛歱lugin-docsme 鍏嶈垂鐗?1.5.0 / 涓撲笟鐗?1.6.0锛涢椤?妯″潡 Finder 闇€ >=1.4.0銆?-->
+<!-- Docsme 文档项目列表页面 - 完全自定义 -->
+<!-- 兼容基线：plugin-docsme 免费版 1.5.0 / 专业版 1.6.0；首页/模块 Finder 需 >=1.4.0。 -->
 <!doctype html>
 <html
   xmlns:th="https://www.thymeleaf.org"
   th:replace="~{modules/doc-layout :: html(head = ~{::head}, content = ~{::content}, scripts = ~{::scripts}, dock = ~{::dock})}"
 >
   <th:block th:fragment="head">
-    <!-- 鏃犻渶寮曞叆鎻掍欢鏍峰紡 -->
+    <!-- 无需引入插件样式 -->
   </th:block>
   <th:block th:fragment="content">
     <th:block th:replace="~{modules/docs-content :: content}" />
   </th:block>
-  <!-- 鏂囨。鍒楄〃椤?Dock -->
+  <!-- 文档列表页 Dock -->
   <th:block th:fragment="dock">
     <th:block th:replace="~{modules/doc/floating-dock :: docs-dock}" />
   </th:block>
   <th:block th:fragment="scripts">
-    <!-- 缁勪欢宸插湪 alpine-modules.js 涓敞鍐?-->
+    <!-- 组件已在 alpine-modules.js 中注册 -->
   </th:block>
 </html>
-

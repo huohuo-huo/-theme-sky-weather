@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--   瑁呭椤甸潰 - 涓诲叆鍙?                         -->
-<!--   鏍规嵁settings涓殑mode寮曠敤涓嶅悓椋庢牸妯℃澘        -->
-<!-- 鍏煎鍩虹嚎锛歱lugin-equipment v1.1.1锛涜矾鐢辨敞鍏?groups/equipments锛屽叕寮€ API 浠呬綔 headless 澶囩敤銆?-->
+<!--   装备页面 - 主入口                          -->
+<!--   根据settings中的mode引用不同风格模板        -->
+<!-- 兼容基线：plugin-equipment v1.1.1；路由注入 groups/equipments，公开 API 仅作 headless 备用。 -->
 <!-- ========================================== -->
 
 <th:block th:replace="~{plugin:equipment:modules/style}"></th:block>
@@ -18,62 +18,63 @@
              sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')}">
     <div class="max-w-7xl mx-auto px-4 py-8">
 
-        <!-- 椤甸潰鏍囬鍖?(浠呴潪绉戞妧椋庝笖闈炰紭闆呭崱鐗囨ā寮忔椂鏄剧ず锛屼紭闆呭崱鐗囦娇鐢?Hero 鍖哄煙) -->
+        <!-- 页面标题区 (仅非科技风且非优雅卡片模式时显示，优雅卡片使用 Hero 区域) -->
         <header class="mb-10" th:if="${cfg?.style_settings?.mode != 'tech' and cfg?.style_settings?.mode != 'simple'}">
             <h1 class="text-2xl md:text-3xl font-bold text-base-content tracking-tight"
-                th:text="${cfg?.basic_info?.page_title ?: '鎴戠殑瑁呭'}">鎴戠殑瑁呭</h1>
-            <p class="text-base-content/50 mt-1" th:text="${cfg?.basic_info?.page_description ?: '鍒嗕韩鎴戞棩甯镐娇鐢ㄧ殑纭欢涓庤蒋浠?}">
-                鍒嗕韩鎴戞棩甯镐娇鐢ㄧ殑纭欢涓庤蒋浠?            </p>
+                th:text="${cfg?.basic_info?.page_title ?: '我的装备'}">我的装备</h1>
+            <p class="text-base-content/50 mt-1" th:text="${cfg?.basic_info?.page_description ?: '分享我日常使用的硬件与软件'}">
+                分享我日常使用的硬件与软件
+            </p>
         </header>
 
-        <!-- 涓讳綋鍐呭鍖哄煙锛堟敮鎸佷袱鍒楀竷灞€锛?-->
+        <!-- 主体内容区域（支持两列布局） -->
         <div class="flex gap-8" th:classappend="${showSidebar and sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
 
-            <!-- 涓诲唴瀹瑰尯 -->
+            <!-- 主内容区 -->
             <section class="flex-1" th:classappend="${not showSidebar ? 'max-w-full' : ''}">
 
                 <th:block th:if="${not #lists.isEmpty(groups)}">
-                    <!-- 浣跨敤 th:switch 纭繚鍙姞杞戒竴涓鏍兼ā鏉?-->
+                    <!-- 使用 th:switch 确保只加载一个风格模板 -->
                     <th:block th:switch="${cfg?.style_settings?.mode}">
-                        <!-- 绉戞妧椋?(Tech) - 3D鍗＄墖 -->
+                        <!-- 科技风 (Tech) - 3D卡片 -->
                         <th:block th:case="'tech'">
                             <th:block th:replace="~{modules/equipments/style-tech :: style-tech}"></th:block>
                         </th:block>
 
-                        <!-- 绠€绾﹂ (Simple) -->
+                        <!-- 简约风 (Simple) -->
                         <th:block th:case="'simple'">
                             <th:block th:replace="~{modules/equipments/style-simple :: style-simple}"></th:block>
                         </th:block>
 
-                        <!-- 榛樿锛氫娇鐢ㄧ鎶€椋?-->
+                        <!-- 默认：使用科技风 -->
                         <th:block th:case="*">
                             <th:block th:replace="~{modules/equipments/style-tech :: style-tech}"></th:block>
                         </th:block>
                     </th:block>
                 </th:block>
 
-                <!-- 绌虹姸鎬?-->
+                <!-- 空状态 -->
                 <div th:if="${#lists.isEmpty(groups) && groups != null}"
                     class="py-20 flex flex-col items-center justify-center text-base-content/40">
                     <span class="icon-[heroicons--inbox-stack] w-16 h-16 mb-4 opacity-40"></span>
-                    <p class="text-lg font-medium">鏆傛棤瑁呭鍒嗙粍</p>
+                    <p class="text-lg font-medium">暂无装备分组</p>
                 </div>
 
-                <!-- 鎻掍欢閿欒 -->
+                <!-- 插件错误 -->
                 <div th:if="${groups == null}"
                     class="py-20 flex flex-col items-center justify-center text-base-content/40">
                     <span class="icon-[heroicons--exclamation-triangle] w-16 h-16 mb-4 text-warning/60"></span>
-                    <p class="text-lg font-medium">瑁呭鏁版嵁鍔犺浇澶辫触</p>
+                    <p class="text-lg font-medium">装备数据加载失败</p>
                 </div>
 
-                <!-- 璇勮鍖?-->
+                <!-- 评论区 -->
                 <th:block th:if="${cfg?.feature_settings?.enable_comment != false}">
                     <div class="flex items-center gap-3 mb-5 mt-16">
                         <div
                             class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center ">
                             <span class="icon-[heroicons--chat-bubble-left-right] w-4 h-4 text-primary"></span>
                         </div>
-                        <h2 class="text-lg font-semibold text-base-content">璇勮鐣欒█</h2>
+                        <h2 class="text-lg font-semibold text-base-content">评论留言</h2>
                     </div>
                     <div class="bg-base-100/80 backdrop-blur-xl rounded-2xl border border-base-content/[0.06] p-6 card">
                         <halo:comment th:if="${equipmentName != null}" group="equipment.kunkunyu.com"
@@ -85,7 +86,7 @@
                 </th:block>
             </section>
 
-            <!-- 渚ц竟鏍?-->
+            <!-- 侧边栏 -->
             <aside th:if="${showSidebar}" class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
                 <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}"></th:block>
             </aside>
@@ -94,4 +95,3 @@
 </main>
 
 </html>
-

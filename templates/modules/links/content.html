@@ -1,12 +1,12 @@
-﻿<!doctype html>
+<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
   <!-- ========================================== -->
-  <!--        鍙嬫儏閾炬帴椤典富浣撳唴瀹?- Apple Style     -->
-  <!-- 鏀寔鍒嗙粍灞曠ず锛屾瘺鐜荤拑鍗＄墖甯冨眬                -->
-  <!-- 鍏煎鍩虹嚎锛歅luginLinks v1.7.2锛涢〉闈㈣矾鐢辩洿鎺ユ秷璐?groups锛屼笉鎵嬪姩鎷?LinkGroup/Link锛沴ink-submit 涓嶅彲鐢ㄦ椂鍒囨崲璇勮鐣欒█鍏滃簳銆?-->
+  <!--        友情链接页主体内容 - Apple Style     -->
+  <!-- 支持分组展示，毛玻璃卡片布局                -->
+  <!-- 兼容基线：PluginLinks v1.7.2；页面路由直接消费 groups，不手动拼 LinkGroup/Link；link-submit 不可用时切换评论留言兜底。 -->
   <!-- ========================================== -->
 
-  <!-- 鍙嬮摼鍐呭鐗囨 -->
+  <!-- 友链内容片段 -->
   <main
     class="relative"
     th:fragment="links-content"
@@ -19,45 +19,45 @@
   >
     <div class="mx-auto max-w-7xl px-4 py-8">
       <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
-        <!-- 涓诲唴瀹瑰尯 -->
+        <!-- 主内容区 -->
         <section class="min-w-0 flex-1" th:classappend="${sidebarCfg?.show_sidebar != true ? 'max-w-5xl mx-auto' : ''}">
-          <!-- 椤甸潰鏍囬鍖?- Apple椋庢牸宸﹀榻?-->
+          <!-- 页面标题区 - Apple风格左对齐 -->
           <header class="mb-10">
             <div class="flex items-center justify-between">
               <div>
                 <h1
                   class="text-base-content text-2xl font-bold tracking-tight md:text-3xl"
-                  th:text="${cfg?.page_title ?: '鍙嬫儏閾炬帴'}"
+                  th:text="${cfg?.page_title ?: '友情链接'}"
                 >
-                  鍙嬫儏閾炬帴
+                  友情链接
                 </h1>
-                <p class="text-base-content/50 mt-1" th:text="${cfg?.page_description ?: '鎰熻阿杩欎簺浼樼鐨勭綉绔欎笌鍗氬'}">
-                  鎰熻阿杩欎簺浼樼鐨勭綉绔欎笌鍗氬
+                <p class="text-base-content/50 mt-1" th:text="${cfg?.page_description ?: '感谢这些优秀的网站与博客'}">
+                  感谢这些优秀的网站与博客
                 </p>
               </div>
             </div>
           </header>
 
-          <!-- 鍒嗙粍灞曠ず -->
+          <!-- 分组展示 -->
           <div class="space-y-10" th:if="${groups != null and !#lists.isEmpty(groups)}">
             <th:block th:each="group, groupStat : ${groups}">
-              <!-- 鍒嗙粍鍖哄潡 -->
+              <!-- 分组区块 -->
               <section class="link-group">
-                <!-- 鍒嗙粍鏍囬 -->
+                <!-- 分组标题 -->
                 <div class="mb-5 flex items-center gap-3">
                   <div
                     class="from-primary/20 to-primary/10 flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br"
                   >
                     <span class="icon-[heroicons--folder] text-primary h-4 w-4"></span>
                   </div>
-                  <h2 class="text-base-content text-lg font-semibold" th:text="${group.spec.displayName}">鍒嗙粍鍚嶇О</h2>
+                  <h2 class="text-base-content text-lg font-semibold" th:text="${group.spec.displayName}">分组名称</h2>
                   <span
                     class="text-base-content/40 bg-base-200/60 rounded-full px-2 py-0.5 text-xs"
                     th:text="${#lists.size(group.links)}"
                   ></span>
                 </div>
 
-                <!-- 閾炬帴鍗＄墖缃戞牸 - Apple Bento椋庢牸 -->
+                <!-- 链接卡片网格 - Apple Bento风格 -->
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   <a
                     th:each="link : ${group.links}"
@@ -87,23 +87,23 @@
                       ></span>
                     </div>
 
-                    <!-- 淇℃伅 -->
+                    <!-- 信息 -->
                     <div class="min-w-0 flex-1">
                       <h3
                         class="text-base-content group-hover:text-primary mb-0.5 line-clamp-1 text-sm font-medium transition-colors"
                         th:text="${link.spec.displayName}"
                       >
-                        缃戠珯鍚嶇О
+                        网站名称
                       </h3>
                       <p
                         class="text-base-content/50 line-clamp-1 text-xs"
-                        th:text="${link.spec.description ?: '鏆傛棤鎻忚堪'}"
+                        th:text="${link.spec.description ?: '暂无描述'}"
                       >
-                        缃戠珯鎻忚堪
+                        网站描述
                       </p>
                     </div>
 
-                    <!-- 澶栭摼鍥炬爣 -->
+                    <!-- 外链图标 -->
                     <div class="shrink-0">
                       <span
                         class="icon-[heroicons--arrow-right] text-base-content/20 group-hover:text-primary h-4 w-4 transition-all duration-300 group-hover:translate-x-1"
@@ -115,7 +115,7 @@
             </th:block>
           </div>
 
-          <!-- 鏃犲弸閾炬彁绀?-->
+          <!-- 无友链提示 -->
           <div
             th:if="${groups == null or #lists.isEmpty(groups)}"
             class="bg-base-100/60 border-base-content/5 rounded-2xl border backdrop-blur-xl"
@@ -124,7 +124,7 @@
               <div class="bg-base-200/60 mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                 <span class="icon-[heroicons--link-slash] text-base-content/30 h-8 w-8"></span>
               </div>
-              <p class="text-base-content/50">鏆傛棤鍙嬫儏閾炬帴</p>
+              <p class="text-base-content/50">暂无友情链接</p>
             </div>
           </div>
 
@@ -143,16 +143,17 @@
                   </div>
                   <h3
                     class="text-base-content text-lg font-bold"
-                    th:text="${!#strings.isEmpty(rootCfg.apply_settings.apply_title) ? rootCfg.apply_settings.apply_title : '鍔犲叆鍙嬮摼鏄熺悆'}"
+                    th:text="${!#strings.isEmpty(rootCfg.apply_settings.apply_title) ? rootCfg.apply_settings.apply_title : '加入友链星球'}"
                   >
-                    鍔犲叆鍙嬮摼鏄熺悆
+                    加入友链星球
                   </h3>
                 </div>
                 <p
                   class="text-base-content/60 pl-0 text-sm md:pl-11"
-                  th:text="${!#strings.isEmpty(rootCfg.apply_settings.apply_description) ? rootCfg.apply_settings.apply_description : '涓庢垜浜ゆ崲鍙嬮摼锛屼竴璧锋帰绱㈡洿骞块様鐨勫垱浣滀笘鐣?}"
+                  th:text="${!#strings.isEmpty(rootCfg.apply_settings.apply_description) ? rootCfg.apply_settings.apply_description : '与我交换友链，一起探索更广阔的创作世界'}"
                 >
-                  涓庢垜浜ゆ崲鍙嬮摼锛屼竴璧锋帰绱㈡洿骞块様鐨勫垱浣滀笘鐣?                </p>
+                  与我交换友链，一起探索更广阔的创作世界
+                </p>
               </div>
 
               <!-- Right: Actions -->
@@ -163,8 +164,8 @@
                   class="btn btn-ghost btn-sm md:btn-md bg-base-200/50 hover:bg-base-200 text-base-content rounded-xl font-bold transition-all"
                 >
                   <span class="icon-[heroicons--information-circle] h-4 w-4"></span>
-                  <span class="hidden sm:inline">鏈珯淇℃伅</span>
-                  <span class="sm:hidden">淇℃伅</span>
+                  <span class="hidden sm:inline">本站信息</span>
+                  <span class="sm:hidden">信息</span>
                 </button>
 
                 <!-- Apply Button (Second/Right - Primary) -->
@@ -174,8 +175,8 @@
                   class="btn btn-primary btn-sm md:btn-md shadow-primary/20 hover:shadow-primary/30 rounded-xl font-bold shadow-lg transition-all"
                 >
                   <span class="icon-[heroicons--plus] h-4 w-4"></span>
-                  <span class="hidden sm:inline">绔嬪嵆鐢宠</span>
-                  <span class="sm:hidden">鐢宠</span>
+                  <span class="hidden sm:inline">立即申请</span>
+                  <span class="sm:hidden">申请</span>
                 </button>
                 <!-- Fallback -->
                 <a
@@ -185,7 +186,7 @@
                   class="btn btn-warning btn-sm md:btn-md rounded-xl shadow-lg"
                 >
                   <span class="icon-[heroicons--arrow-down-tray] h-4 w-4"></span>
-                  瀹夎鎻掍欢
+                  安装插件
                 </a>
               </div>
             </div>
@@ -206,18 +207,18 @@
             >
               <div class="modal-box bg-base-100/95 border-base-content/10 max-w-lg border backdrop-blur-2xl">
                 <form method="dialog">
-                  <button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">鉁?/button>
+                  <button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">✕</button>
                 </form>
 
                 <h3 class="text-primary mb-6 flex items-center gap-2 text-lg font-bold">
                   <span class="icon-[heroicons--information-circle] h-6 w-6"></span>
-                  <span>鏈珯淇℃伅</span>
+                  <span>本站信息</span>
                 </h3>
 
                 <div class="space-y-4">
                   <!-- Name -->
                   <div class="border-base-content/5 flex items-center justify-between border-b pb-3">
-                    <span class="text-base-content/70 text-sm font-medium">绔欑偣鍚嶇О</span>
+                    <span class="text-base-content/70 text-sm font-medium">站点名称</span>
                     <div class="flex max-w-[70%] items-center gap-2">
                       <span
                         class="text-base-content truncate text-sm font-bold select-all"
@@ -228,7 +229,7 @@
                         class="btn btn-xs btn-ghost btn-square text-primary"
                         th:data-text="${#strings.isEmpty(rootCfg.apply_settings.blogger_title) ? site.title : rootCfg.apply_settings.blogger_title}"
                         @click="copy($el.dataset.text, $el)"
-                        title="澶嶅埗"
+                        title="复制"
                       >
                         <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
                       </button>
@@ -237,7 +238,7 @@
 
                   <!-- URL -->
                   <div class="border-base-content/5 flex items-center justify-between border-b pb-3">
-                    <span class="text-base-content/70 text-sm font-medium">缃戠珯鍦板潃</span>
+                    <span class="text-base-content/70 text-sm font-medium">网站地址</span>
                     <div class="flex max-w-[70%] items-center gap-2">
                       <span class="text-base-content truncate font-mono text-sm select-all" th:text="${site.url}"
                         >https://example.com</span
@@ -246,7 +247,7 @@
                         class="btn btn-xs btn-ghost btn-square text-primary"
                         th:data-text="${site.url}"
                         @click="copy($el.dataset.text, $el)"
-                        title="澶嶅埗"
+                        title="复制"
                       >
                         <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
                       </button>
@@ -258,7 +259,7 @@
                     class="border-base-content/5 flex items-center justify-between border-b pb-3"
                     th:if="${!#strings.isEmpty(rootCfg.apply_settings.blogger_email)}"
                   >
-                    <span class="text-base-content/70 text-sm font-medium">鑱旂郴閭</span>
+                    <span class="text-base-content/70 text-sm font-medium">联系邮箱</span>
                     <div class="flex max-w-[70%] items-center gap-2">
                       <span
                         class="text-base-content truncate font-mono text-sm select-all"
@@ -269,7 +270,7 @@
                         class="btn btn-xs btn-ghost btn-square text-primary"
                         th:data-text="${rootCfg.apply_settings.blogger_email}"
                         @click="copy($el.dataset.text, $el)"
-                        title="澶嶅埗"
+                        title="复制"
                       >
                         <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
                       </button>
@@ -278,7 +279,7 @@
 
                   <!-- Description -->
                   <div class="border-base-content/5 flex items-center justify-between border-b pb-3">
-                    <span class="text-base-content/70 shrink-0 text-sm font-medium">绔欑偣鎻忚堪</span>
+                    <span class="text-base-content/70 shrink-0 text-sm font-medium">站点描述</span>
                     <div class="flex max-w-[70%] items-center gap-2">
                       <span
                         class="text-base-content truncate text-sm select-all"
@@ -291,7 +292,7 @@
                         th:with="desc=${!#strings.isEmpty(rootCfg.apply_settings.blogger_description) ? rootCfg.apply_settings.blogger_description : ((site.seo != null and !#strings.isEmpty(site.seo.description)) ? site.seo.description : site.subtitle)}"
                         th:data-text="${desc}"
                         @click="copy($el.dataset.text, $el)"
-                        title="澶嶅埗"
+                        title="复制"
                       >
                         <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
                       </button>
@@ -300,7 +301,7 @@
 
                   <!-- Logo -->
                   <div class="border-base-content/5 flex items-center justify-between border-b pb-3">
-                    <span class="text-base-content/70 text-sm font-medium">Logo 鍦板潃</span>
+                    <span class="text-base-content/70 text-sm font-medium">Logo 地址</span>
                     <div class="flex max-w-[70%] items-center gap-2">
                       <span
                         class="text-base-content/80 truncate font-mono text-xs select-all"
@@ -311,7 +312,7 @@
                         class="btn btn-xs btn-ghost btn-square text-primary"
                         th:data-text="${#strings.isEmpty(rootCfg.apply_settings.blogger_logo) ? site.logo : rootCfg.apply_settings.blogger_logo}"
                         @click="copy($el.dataset.text, $el)"
-                        title="澶嶅埗"
+                        title="复制"
                       >
                         <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
                       </button>
@@ -320,7 +321,7 @@
 
                   <!-- RSS -->
                   <div class="flex items-center justify-between">
-                    <span class="text-base-content/70 text-sm font-medium">RSS 鍦板潃</span>
+                    <span class="text-base-content/70 text-sm font-medium">RSS 地址</span>
                     <div class="flex max-w-[70%] items-center gap-2">
                       <span
                         class="text-base-content/80 truncate font-mono text-xs select-all"
@@ -339,7 +340,7 @@
                                          fullRssUrl=${rssPath.startsWith('http') ? rssPath : baseUrl + rssPath}"
                         th:data-text="${fullRssUrl}"
                         @click="copy($el.dataset.text, $el)"
-                        title="澶嶅埗"
+                        title="复制"
                       >
                         <span class="icon-[heroicons--document-duplicate] h-4 w-4"></span>
                       </button>
@@ -361,8 +362,8 @@
                 x-data="linkSubmitForm()"
               >
                 <div class="mb-6 flex items-center justify-between">
-                  <h3 class="text-base-content text-lg font-bold">鎻愪氦鍙嬮摼鐢宠</h3>
-                  <form method="dialog"><button class="btn btn-sm btn-circle btn-ghost">鉁?/button></form>
+                  <h3 class="text-base-content text-lg font-bold">提交友链申请</h3>
+                  <form method="dialog"><button class="btn btn-sm btn-circle btn-ghost">✕</button></form>
                 </div>
 
                 <form @submit.prevent="submitLink" class="space-y-5">
@@ -370,7 +371,7 @@
                   <div class="form-control">
                     <label class="label"
                       ><span class="label-text text-base-content/80 font-medium"
-                        >缃戠珯鍚嶇О <span class="text-error">*</span></span
+                        >网站名称 <span class="text-error">*</span></span
                       ></label
                     >
                     <input
@@ -378,14 +379,14 @@
                       x-model="form.displayName"
                       required
                       class="input input-bordered bg-base-100 focus:border-primary focus:ring-primary w-full transition-all focus:ring-1"
-                      placeholder="渚嬪锛氭垜鐨勫崥瀹?
+                      placeholder="例如：我的博客"
                     />
                   </div>
 
                   <div class="form-control">
                     <label class="label"
                       ><span class="label-text text-base-content/80 font-medium"
-                        >缃戠珯鍦板潃 <span class="text-error">*</span></span
+                        >网站地址 <span class="text-error">*</span></span
                       ></label
                     >
                     <input
@@ -400,7 +401,7 @@
                   <div class="form-control">
                     <label class="label"
                       ><span class="label-text text-base-content/80 font-medium"
-                        >鑱旂郴閭 <span class="text-error">*</span></span
+                        >联系邮箱 <span class="text-error">*</span></span
                       ></label
                     >
                     <input
@@ -408,19 +409,19 @@
                       x-model="form.email"
                       required
                       class="input input-bordered bg-base-100 focus:border-primary focus:ring-primary w-full transition-all focus:ring-1"
-                      placeholder="鐢ㄤ簬鎺ユ敹瀹℃牳閫氱煡"
+                      placeholder="用于接收审核通知"
                     />
                   </div>
 
                   <div class="form-control">
                     <label class="label"
-                      ><span class="label-text text-base-content/80 font-medium">缃戠珯鎻忚堪</span></label
+                      ><span class="label-text text-base-content/80 font-medium">网站描述</span></label
                     >
                     <textarea
                       x-model="form.description"
                       rows="3"
                       class="textarea textarea-bordered bg-base-100 focus:border-primary focus:ring-primary w-full resize-none leading-relaxed transition-all focus:ring-1"
-                      placeholder="涓€鍙ヨ瘽浠嬬粛浣犵殑缃戠珯..."
+                      placeholder="一句话介绍你的网站..."
                     ></textarea>
                   </div>
 
@@ -428,7 +429,7 @@
                   <div class="grid grid-cols-2 gap-4">
                     <div class="form-control">
                       <label class="label"
-                        ><span class="label-text text-base-content/80 font-medium">Logo 鍦板潃</span></label
+                        ><span class="label-text text-base-content/80 font-medium">Logo 地址</span></label
                       >
                       <input
                         type="url"
@@ -439,7 +440,7 @@
                     </div>
                     <div class="form-control">
                       <label class="label"
-                        ><span class="label-text text-base-content/80 font-medium">RSS 鍦板潃</span></label
+                        ><span class="label-text text-base-content/80 font-medium">RSS 地址</span></label
                       >
                       <input
                         type="url"
@@ -453,13 +454,13 @@
                   <!-- Bottom: Group -->
                   <div class="form-control" x-show="groups.length > 0">
                     <label class="label"
-                      ><span class="label-text text-base-content/80 font-medium">鐢宠鍒嗙粍</span></label
+                      ><span class="label-text text-base-content/80 font-medium">申请分组</span></label
                     >
                     <select
                       x-model="form.groupName"
                       class="select select-bordered bg-base-100 focus:border-primary focus:ring-primary w-full font-normal transition-all focus:ring-1"
                     >
-                      <option value="">閫夋嫨涓€涓悎閫傜殑鍒嗙粍...</option>
+                      <option value="">选择一个合适的分组...</option>
                       <template x-for="group in groups" :key="group.groupName">
                         <option :value="group.groupName" x-text="group.displayName"></option>
                       </template>
@@ -480,7 +481,7 @@
                       rows="6"
                       class="textarea textarea-bordered bg-base-100 w-full font-mono text-xs leading-relaxed"
                     ></textarea>
-                    <p class="text-base-content/50 text-xs">澶嶅埗鍚庡彲绮樿创鍒颁笅鏂硅瘎璁哄尯鐣欒█鐢宠銆?/p>
+                    <p class="text-base-content/50 text-xs">复制后可粘贴到下方评论区留言申请。</p>
                   </div>
 
                   <div class="pt-2">
@@ -491,7 +492,7 @@
                     >
                       <span x-show="submitting" class="loading loading-spinner loading-xs"></span>
                       <span
-                        x-text="messageFallback ? (copied ? '宸插鍒讹紝鍘荤暀瑷€' : '澶嶅埗鐢宠鍐呭') : (submitting ? '姝ｅ湪鎻愪氦...' : '鎻愪氦鐢宠')"
+                        x-text="messageFallback ? (copied ? '已复制，去留言' : '复制申请内容') : (submitting ? '正在提交...' : '提交申请')"
                       ></span>
                     </button>
                   </div>
@@ -501,7 +502,7 @@
             </dialog>
           </div>
 
-          <!-- 璇勮鍖?-->
+          <!-- 评论区 -->
           <section id="links-comments" class="mt-12" th:if="${cfg?.enable_comment != false}">
             <div class="mb-5 flex items-center gap-3">
               <div
@@ -509,14 +510,14 @@
               >
                 <span class="icon-[mdi--comment-text-outline] text-primary h-4 w-4"></span>
               </div>
-              <h2 class="text-base-content text-lg font-semibold">璇勮鐣欒█</h2>
+              <h2 class="text-base-content text-lg font-semibold">评论留言</h2>
             </div>
             <div class="glow-card bg-base-100/80 border-base-content/[0.06] rounded-2xl border p-6 backdrop-blur-xl">
               <halo:comment
                 group="plugin.halo.run"
                 kind="Plugin"
                 th:name="${pluginName != null ? pluginName : 'links'}"
-                th:attr="displayName=${cfg?.page_title ?: '鍙嬫儏閾炬帴'}, subject-title=${cfg?.page_title ?: '鍙嬫儏閾炬帴'}"
+                th:attr="displayName=${cfg?.page_title ?: '友情链接'}, subject-title=${cfg?.page_title ?: '友情链接'}"
                 colorScheme="system"
               >
               </halo:comment>
@@ -524,7 +525,7 @@
           </section>
         </section>
 
-        <!-- 鍙充晶杈规爮 -->
+        <!-- 右侧边栏 -->
         <aside
           th:if="${sidebarCfg?.show_sidebar == true}"
           class="sticky top-20 hidden w-80 shrink-0 space-y-6 self-start lg:block"
@@ -535,4 +536,3 @@
     </div>
   </main>
 </html>
-

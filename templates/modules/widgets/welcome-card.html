@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--   娆㈣繋鍗＄墖缁勪欢 - 澶╂皵 + 闂€?+ 鍔ㄦ€佽儗鏅?    -->
+<!--   欢迎卡片组件 - 天气 + 问候 + 动态背景     -->
 <!-- ========================================== -->
 
 <div th:fragment="card"
@@ -17,15 +17,15 @@
     'bg-gradient-to-br from-sky-200/20 via-blue-100/10 to-white/20 hover:border-sky-400/20': weatherBg === 'snowy',
     'bg-gradient-to-br from-purple-600/15 via-slate-700/10 to-indigo-600/15 hover:border-purple-500/20': weatherBg === 'stormy',
   }" x-data="welcomeWeatherCard()"
-  th:with="fallbackRegion = ${theme.config.general.sidebar_settings?.welcome_card_config?.fallback_region ?: '鍖椾含'}"
+  th:with="fallbackRegion = ${theme.config.general.sidebar_settings?.welcome_card_config?.fallback_region ?: '北京'}"
   th:attr="
     data-weather-provider='auto',
     data-fallback-region=${fallbackRegion}
   ">
 
-  <!-- 鍔ㄦ€佽儗鏅楗?-->
+  <!-- 动态背景装饰 -->
   <div class="absolute inset-0 pointer-events-none overflow-hidden">
-    <!-- 鏅村ぉ - 闃冲厜鍏夋檿 -->
+    <!-- 晴天 - 阳光光晕 -->
     <template x-if="weatherBg === 'sunny'">
       <div>
         <div
@@ -35,7 +35,7 @@
       </div>
     </template>
 
-    <!-- 澶氫簯 -->
+    <!-- 多云 -->
     <template x-if="weatherBg === 'cloudy'">
       <div>
         <div
@@ -45,7 +45,7 @@
       </div>
     </template>
 
-    <!-- 鏅存湕澶滄櫄 - 鏄熺┖鏁堟灉 -->
+    <!-- 晴朗夜晚 - 星空效果 -->
     <template x-if="weatherBg === 'night-clear'">
       <div>
         <div
@@ -59,7 +59,7 @@
       </div>
     </template>
 
-    <!-- 澶氫簯澶滄櫄 -->
+    <!-- 多云夜晚 -->
     <template x-if="weatherBg === 'night-cloudy'">
       <div>
         <div
@@ -68,7 +68,7 @@
       </div>
     </template>
 
-    <!-- 闆惧ぉ -->
+    <!-- 雾天 -->
     <template x-if="weatherBg === 'foggy'">
       <div>
         <div class="absolute inset-0 bg-gradient-to-b from-gray-300/10 to-transparent"></div>
@@ -76,7 +76,7 @@
       </div>
     </template>
 
-    <!-- 闆ㄥぉ - 闆ㄦ淮鏁堟灉 -->
+    <!-- 雨天 - 雨滴效果 -->
     <template x-if="weatherBg === 'rainy'">
       <div>
         <div
@@ -94,7 +94,7 @@
       </div>
     </template>
 
-    <!-- 闆ぉ - 闆姳鏁堟灉 -->
+    <!-- 雪天 - 雪花效果 -->
     <template x-if="weatherBg === 'snowy'">
       <div>
         <div
@@ -109,7 +109,7 @@
       </div>
     </template>
 
-    <!-- 闆锋毚 - 闂數鏁堟灉 -->
+    <!-- 雷暴 - 闪电效果 -->
     <template x-if="weatherBg === 'stormy'">
       <div>
         <div
@@ -121,7 +121,7 @@
       </div>
     </template>
 
-    <!-- 榛樿鑳屾櫙 -->
+    <!-- 默认背景 -->
     <template x-if="!weatherBg">
       <div
         class="absolute -top-8 -right-8 w-28 h-28 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-2xl">
@@ -129,35 +129,35 @@
     </template>
   </div>
 
-  <!-- 鍔犺浇鐘舵€?-->
+  <!-- 加载状态 -->
   <div x-show="loading" class="relative flex items-center justify-center py-4">
     <span class="loading loading-spinner loading-sm text-primary"></span>
   </div>
 
-  <!-- 鍐呭鍖哄煙 -->
+  <!-- 内容区域 -->
   <div x-show="!loading" x-cloak class="relative space-y-3">
-    <!-- 闂€欒 -->
+    <!-- 问候语 -->
     <div class="flex items-center justify-between">
       <div>
         <p class="text-xs text-base-content/50" x-text="currentDate"></p>
         <h3 class="text-lg font-semibold text-base-content" x-text="greeting"></h3>
       </div>
-      <!-- 澶╂皵鍥炬爣锛圡eteocons 鍔ㄦ€?SVG 鍐呰仈锛?-->
+      <!-- 天气图标（Meteocons 动态 SVG 内联） -->
       <div x-show="weather && weatherIconSvg" class="flex-shrink-0 w-12 h-12" x-html="weatherIconSvg"></div>
     </div>
 
-    <!-- 澶╂皵淇℃伅 -->
+    <!-- 天气信息 -->
     <div x-show="weather" class="flex items-center gap-4">
-      <!-- 娓╁害 -->
+      <!-- 温度 -->
       <div class="flex items-baseline gap-1">
         <span class="text-3xl font-bold text-base-content" x-text="Math.round(weather?.temp || 0)"></span>
-        <span class="text-base-content/50">掳C</span>
+        <span class="text-base-content/50">°C</span>
       </div>
 
-      <!-- 璇︽儏 -->
+      <!-- 详情 -->
       <div class="flex-1 text-xs text-base-content/60 space-y-0.5">
         <p class="flex items-center gap-1">
-          <!-- 浣嶇疆鍥炬爣锛堝姩鐢伙級 -->
+          <!-- 位置图标（动画） -->
           <svg class="w-4 h-4 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M12 20.5c0 0 -6 -7 -6 -11.5c0 -3.31 2.69 -6 6 -6c3.31 0 6 2.69 6 6c0 4.5 -6 11.5 -6 11.5Z">
@@ -177,11 +177,11 @@
       </div>
     </div>
 
-    <!-- 棰濆淇℃伅 -->
+    <!-- 额外信息 -->
     <div x-show="weather"
       class="flex items-center justify-between pt-2 border-t border-base-content/5 text-xs text-base-content/60 !mb-0">
       <span class="flex items-center gap-1">
-        <!-- 娓╁害璁″浘鏍囷紙鍔ㄧ敾锛?-->
+        <!-- 温度计图标（动画） -->
         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <defs>
             <symbol id="thermo-bulb" viewBox="0 0 72 168">
@@ -204,10 +204,10 @@
           </defs>
           <use width="118" height="278" href="#thermo-full" transform="translate(197 117)" />
         </svg>
-        <span x-text="Math.round(weather?.feels_like || 0)"></span>掳
+        <span x-text="Math.round(weather?.feels_like || 0)"></span>°
       </span>
       <span class="flex items-center gap-1">
-        <!-- 婀垮害鍥炬爣锛堟按婊村姩鐢伙級 -->
+        <!-- 湿度图标（水滴动画） -->
         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <defs>
             <symbol id="drop-inner" viewBox="0 0 175 260">
@@ -224,7 +224,7 @@
         <span x-text="weather?.humidity || 0"></span>%
       </span>
       <span class="flex items-center gap-1">
-        <!-- 椋庨€熷浘鏍囷紙鍔ㄧ敾锛?-->
+        <!-- 风速图标（动画） -->
         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <defs>
             <symbol id="wind-lines" viewBox="0 0 342 234">
@@ -244,9 +244,9 @@
       </span>
     </div>
 
-    <!-- 鏃犲ぉ姘旀暟鎹椂鐨勭畝鍖栨樉绀?-->
+    <!-- 无天气数据时的简化显示 -->
     <div x-show="!weather && !loading" class="text-center py-2 !mb-0">
-      <p class="text-sm text-base-content/60" x-text="errorMsg || '娆㈣繋璁块棶'"></p>
+      <p class="text-sm text-base-content/60" x-text="errorMsg || '欢迎访问'"></p>
     </div>
   </div>
 </div>

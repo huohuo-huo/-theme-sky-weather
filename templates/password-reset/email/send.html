@@ -1,31 +1,31 @@
-﻿<!doctype html>
+<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org"
-    th:replace="~{gateway_fragments/layout:: layout(title = |鎵惧洖瀵嗙爜 - ${site.title}|, head = null, body = ~{::body})}">
+    th:replace="~{gateway_fragments/layout:: layout(title = |找回密码 - ${site.title}|, head = null, body = ~{::body})}">
 <th:block th:fragment="body">
-    <!-- 澶ф爣棰?-->
+    <!-- 大标题 -->
     <th:block th:if="${sent}">
-        <h1 class="auth-title">閭欢宸插彂閫?/h1>
-        <p class="auth-subtitle">璇锋鏌ユ偍鐨勯偖绠卞苟鐐瑰嚮閲嶇疆閾炬帴</p>
+        <h1 class="auth-title">邮件已发送</h1>
+        <p class="auth-subtitle">请检查您的邮箱并点击重置链接</p>
     </th:block>
     <th:block th:unless="${sent}">
-        <h1 class="auth-title">鎵惧洖瀵嗙爜</h1>
-        <p class="auth-subtitle">杈撳叆鎮ㄧ殑閭鍦板潃锛屾垜浠皢鍙戦€侀噸缃摼鎺?/p>
+        <h1 class="auth-title">找回密码</h1>
+        <p class="auth-subtitle">输入您的邮箱地址，我们将发送重置链接</p>
     </th:block>
 
-    <!-- 琛ㄥ崟 -->
+    <!-- 表单 -->
     <div class="space-y-6">
         <form th:replace="~{gateway_fragments/password_reset_email_send::form}"></form>
 
-        <!-- 鍏朵粬閲嶇疆鏂瑰紡 -->
+        <!-- 其他重置方式 -->
         <div th:replace="~{gateway_fragments/common::passwordResetMethods}"></div>
     </div>
 
-    <!-- 杩斿洖鐧诲綍 -->
+    <!-- 返回登录 -->
     <div class="mt-8 text-center">
         <a th:href="@{/login}"
             class="inline-flex items-center gap-2 text-sm text-base-content/50 hover:text-primary transition-colors">
             <span class="icon-[heroicons--arrow-left] w-4 h-4"></span>
-            <span>杩斿洖鐧诲綍</span>
+            <span>返回登录</span>
         </a>
     </div>
 </th:block>

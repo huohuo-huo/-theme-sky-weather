@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--           浣滆€呭綊妗ｉ〉涓讳綋鍐呭               -->
-<!-- 璺敱锛?authors/:name                       -->
-<!-- 鍙橀噺锛歛uthor (UserVo), posts (鍒嗛〉鍒楄〃)    -->
+<!--           作者归档页主体内容               -->
+<!-- 路由：/authors/:name                       -->
+<!-- 变量：author (UserVo), posts (分页列表)    -->
 <!-- ========================================== -->
 
 <main class="relative" th:fragment="author-content" th:with="cfg = ${theme.config.author_settings},
@@ -15,17 +15,17 @@
                sidebarPosition = ${useCustomSidebar ? (sidebarCfg?.sidebar_position ?: 'right') : (globalSidebarCfg?.position ?: 'right')},
                pageSize = ${contentCfg?.page_size ?: 10}">
 
-  <!-- 涓讳綋鍐呭鍖哄煙 -->
+  <!-- 主体内容区域 -->
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="flex gap-8" th:classappend="${sidebarPosition == 'left'} ? 'flex-row-reverse' : ''">
 
-      <!-- 宸︿晶锛氫綔鑰呬俊鎭?+ 鍐呭鍖?-->
+      <!-- 左侧：作者信息 + 内容区 -->
       <section class="flex-1 min-w-0" th:classappend="${sidebarCfg.show_sidebar != true ? 'max-w-4xl mx-auto' : ''}">
 
-        <!-- ========== 浣滆€呬俊鎭崱鐗?========== -->
+        <!-- ========== 作者信息卡片 ========== -->
         <div
           class="author-hero card bg-base-100/80 backdrop-blur-xl shadow-lg border border-base-content/5 rounded-2xl p-6 md:p-8 mb-8 relative overflow-hidden group hover:shadow-xl transition-all duration-300">
-          <!-- 鑳屾櫙瑁呴グ -->
+          <!-- 背景装饰 -->
           <div
             class="absolute -top-20 -right-20 w-48 h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-500">
           </div>
@@ -34,7 +34,7 @@
           </div>
 
           <div class="relative flex flex-col md:flex-row items-center md:items-start gap-6">
-            <!-- 澶村儚 -->
+            <!-- 头像 -->
             <div class="flex-shrink-0">
               <div
                 class="relative w-24 h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden ring-2 ring-base-content/10 group-hover:ring-primary/30 transition-all shadow-lg">
@@ -48,37 +48,38 @@
               </div>
             </div>
 
-            <!-- 浣滆€呬俊鎭?-->
+            <!-- 作者信息 -->
             <div class="flex-1 text-center md:text-left min-w-0">
-              <!-- 鏄剧ず鍚嶇О -->
-              <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-1" th:text="${author.spec.displayName}">鐢ㄦ埛鍚?              </h1>
+              <!-- 显示名称 -->
+              <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-1" th:text="${author.spec.displayName}">用户名
+              </h1>
 
-              <!-- @鐢ㄦ埛鍚?-->
+              <!-- @用户名 -->
               <p class="text-sm text-base-content/50 mb-3 flex items-center justify-center md:justify-start gap-1">
                 <span class="icon-[heroicons--at-symbol] w-4 h-4"></span>
                 <span th:text="${author.metadata.name}">username</span>
               </p>
 
-              <!-- 涓汉绠€浠?-->
+              <!-- 个人简介 -->
               <p th:if="${author.spec.bio != null and !#strings.isEmpty(author.spec.bio)}"
-                class="text-base-content/70 leading-relaxed mb-4 line-clamp-2" th:text="${author.spec.bio}">杩欐槸涓汉绠€浠?..
+                class="text-base-content/70 leading-relaxed mb-4 line-clamp-2" th:text="${author.spec.bio}">这是个人简介...
               </p>
 
-              <!-- 缁熻淇℃伅 -->
+              <!-- 统计信息 -->
               <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 text-sm">
-                <!-- 鏂囩珷鏁?-->
+                <!-- 文章数 -->
                 <div
                   class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20">
                   <span class="icon-[heroicons--document-text] w-4 h-4"></span>
                   <span class="font-medium" th:text="${posts.total}">0</span>
-                  <span class="text-primary/70">绡囨枃绔?/span>
+                  <span class="text-primary/70">篇文章</span>
                 </div>
 
-                <!-- 娉ㄥ唽鏃堕棿 -->
+                <!-- 注册时间 -->
                 <div th:if="${author.spec.registeredAt != null}"
                   class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-base-200/50 text-base-content/60 border border-base-content/5">
                   <span class="icon-[heroicons--calendar] w-4 h-4"></span>
-                  <span>鍔犲叆浜?/span>
+                  <span>加入于</span>
                   <span th:text="${#temporals.format(author.spec.registeredAt, 'yyyy-MM-dd')}">2024-01-01</span>
                 </div>
               </div>
@@ -86,7 +87,7 @@
           </div>
         </div>
 
-        <!-- ========== Tab 鍒囨崲 (DaisyUI Radio Tabs, 鏃?JS) ========== -->
+        <!-- ========== Tab 切换 (DaisyUI Radio Tabs, 无 JS) ========== -->
         <th:block th:with="authorMoments = ${momentFinder.list({
           page: 1,
           size: 5,
@@ -96,17 +97,17 @@
 
           <div role="tablist" class="tabs tabs-bordered mb-8">
 
-            <!-- === 鏂囩珷 Tab (榛樿閫変腑) === -->
+            <!-- === 文章 Tab (默认选中) === -->
             <input type="radio" name="author_tab" role="tab"
               class="tab text-base font-medium transition-all duration-300 hover:text-primary checked:text-primary checked:font-bold checked:border-primary"
-              th:attr="aria-label='鏂囩珷 (' + ${posts.total} + ')'" checked="checked" />
+              th:attr="aria-label='文章 (' + ${posts.total} + ')'" checked="checked" />
             <div role="tabpanel" class="tab-content pt-6">
-              <!-- 鏂囩珷鍒楄〃 -->
+              <!-- 文章列表 -->
               <div th:if="${posts.total > 0}" class="author-posts-list space-y-4">
                 <th:block th:each="post, stat : ${posts.items}">
                   <article
                     class="group card bg-base-100/80 backdrop-blur-xl border border-base-content/5 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row md:items-stretch gap-4 md:gap-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300">
-                    <!-- 灏侀潰 -->
+                    <!-- 封面 -->
                     <figure th:if="${post.spec.cover != null and !#strings.isEmpty(post.spec.cover)}"
                       class="relative w-full md:w-40 md:h-28 shrink-0 overflow-hidden rounded-xl">
                       <a th:href="${post.status.permalink}" class="block w-full aspect-video md:aspect-auto md:h-full">
@@ -114,16 +115,16 @@
                           class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                       </a>
                     </figure>
-                    <!-- 鍐呭 -->
+                    <!-- 内容 -->
                     <div class="flex-1 flex flex-col min-w-0">
                       <h3 class="text-base md:text-lg font-bold leading-snug">
                         <a th:href="${post.status.permalink}" class="hover:text-primary transition-colors"
-                          th:text="${post.spec.title}">鏂囩珷鏍囬</a>
+                          th:text="${post.spec.title}">文章标题</a>
                       </h3>
                       <p th:if="${post.status.excerpt != null and !#strings.isEmpty(post.status.excerpt)}"
                         class="mt-2 text-sm text-base-content/70 line-clamp-2 leading-relaxed">
                         <a th:href="${post.status.permalink}" class="hover:text-base-content"
-                          th:text="${post.status.excerpt}">鏂囩珷鎽樿...</a>
+                          th:text="${post.status.excerpt}">文章摘要...</a>
                       </p>
                       <div class="mt-auto pt-3 flex flex-wrap items-center justify-between gap-y-2">
                         <div class="flex items-center gap-2 overflow-hidden">
@@ -131,13 +132,13 @@
                             class="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/5 text-primary text-[10px] font-medium shrink-0">
                             <a th:href="${post.categories[0].status.permalink}"
                               class="hover:underline max-w-[100px] truncate"
-                              th:text="${post.categories[0].spec.displayName}">鍒嗙被</a>
+                              th:text="${post.categories[0].spec.displayName}">分类</a>
                           </span>
                           <div th:if="${post.tags != null and !post.tags.isEmpty()}"
                             class="flex items-center gap-2 text-xs text-base-content/50 truncate">
                             <th:block th:each="tag, tagStat : ${post.tags}" th:if="${tagStat.index < 3}">
                               <a th:href="${tag.status.permalink}" class="hover:text-primary transition-colors"
-                                th:text="'#' + ${tag.spec.displayName}">#鏍囩</a>
+                                th:text="'#' + ${tag.spec.displayName}">#标签</a>
                             </th:block>
                           </div>
                         </div>
@@ -160,14 +161,14 @@
                   </article>
                 </th:block>
               </div>
-              <!-- 绌虹姸鎬?-->
+              <!-- 空状态 -->
               <div th:if="${posts.total == 0}"
                 class="card bg-base-100/80 backdrop-blur-sm border border-base-content/5 rounded-xl p-12 text-center">
                 <span
                   class="icon-[heroicons--document-magnifying-glass] w-16 h-16 text-base-content/20 mx-auto mb-4"></span>
-                <p class="text-base-content/60">璇ヤ綔鑰呮殏鏈彂甯冧换浣曟枃绔?/p>
+                <p class="text-base-content/60">该作者暂未发布任何文章</p>
               </div>
-              <!-- 鍒嗛〉 -->
+              <!-- 分页 -->
               <div th:if="${posts.totalPages > 1}" class="mt-8 flex items-center justify-center">
                 <div class="inline-flex items-center p-1 rounded-full bg-base-200/60 backdrop-blur-md">
                   <a th:href="${posts.prevUrl}"
@@ -186,23 +187,23 @@
               </div>
             </div>
 
-            <!-- === 鐬棿 Tab (浠呭綋浣滆€呮湁鐬棿鏃舵覆鏌? === -->
+            <!-- === 瞬间 Tab (仅当作者有瞬间时渲染) === -->
             <th:block th:if="${hasMoments}">
               <input type="radio" name="author_tab" role="tab"
                 class="tab text-base font-medium transition-all duration-300 hover:text-primary checked:text-primary checked:font-bold checked:border-primary"
-                th:attr="aria-label='鐬棿 (' + ${authorMoments.total} + ')'" />
+                th:attr="aria-label='瞬间 (' + ${authorMoments.total} + ')'" />
               <div role="tabpanel" class="tab-content pt-6">
                 <div class="space-y-4">
                   <article th:each="moment : ${authorMoments.items}" th:with="content=${moment.spec.content}"
                     class="card bg-base-100/80 backdrop-blur-xl border border-base-content/5 rounded-2xl p-4 md:p-5 flex flex-col min-w-0 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300">
-                    <!-- 鏂囨湰 -->
+                    <!-- 文本 -->
                     <div th:if="${not #strings.isEmpty(content.html)}"
                       class="prose prose-sm max-w-none text-base-content/80 mb-4 prose-a:text-primary hover:prose-a:text-primary-focus leading-relaxed [&_a.tag]:hidden"
                       th:utext="${content.html}"></div>
-                    <!-- 澶氬獟浣?-->
+                    <!-- 多媒体 -->
                     <div th:if="${not #lists.isEmpty(content.medium)}" class="mb-4 mt-1">
 
-                      <!-- 鍗曞浘 -->
+                      <!-- 单图 -->
                       <th:block th:if="${#lists.size(content.medium) == 1}">
                         <th:block th:each="momentItem : ${content.medium}">
                           <div th:if="${momentItem.type.name() == 'PHOTO'}" class="moment-single-img-wrap">
@@ -224,7 +225,7 @@
                         </th:block>
                       </th:block>
 
-                      <!-- 澶氬獟浣撶綉鏍硷細POST 鍗曠嫭鏀惧湪缃戞牸鍚庯紝閬垮厤褰卞搷鍥剧墖鎺掔増 -->
+                      <!-- 多媒体网格：POST 单独放在网格后，避免影响图片排版 -->
                       <th:block th:if="${#lists.size(content.medium) > 1}" th:with="
                         nonPostMedia = ${content.medium.?[type.name() != 'POST']},
                         postMedia = ${content.medium.?[type.name() == 'POST']}
@@ -260,13 +261,13 @@
                                 th:text="'+' + (${#lists.size(nonPostMedia)} - 9)">+3</span>
                             </div>
                           </div>
-                          <!-- 瑙嗛 -->
+                          <!-- 视频 -->
                           <div th:if="${momentItem.type.name() == 'VIDEO' && mStat.index == 0}"
                             class="col-span-full rounded-xl overflow-hidden bg-base-200 border border-base-content/5">
                             <video th:src="${momentItem.url}" controls="controls"
                               class="w-full max-h-[400px] object-contain bg-black/5"></video>
                           </div>
-                          <!-- 闊抽 -->
+                          <!-- 音频 -->
                           <div th:if="${momentItem.type.name() == 'AUDIO'}"
                             class="col-span-full bg-base-200/50 rounded-xl p-3 border border-base-content/5">
                             <audio th:src="${momentItem.url}" controls="controls"
@@ -283,14 +284,14 @@
 
                     </div>
 
-                    <!-- 搴曢儴鍏冧俊鎭?-->
+                    <!-- 底部元信息 -->
                     <div class="mt-auto pt-3 flex flex-wrap items-center justify-between gap-y-2">
                       <div class="flex items-center gap-2 overflow-hidden">
                         <div th:if="${moment.spec.tags != null and !moment.spec.tags.isEmpty()}"
                           class="flex items-center gap-2 text-xs text-base-content/50 truncate">
                           <th:block th:each="tag, tagStat : ${moment.spec.tags}" th:if="${tagStat.index < 3}">
                             <a th:href="@{/moments(tag=${tag})}" class="hover:text-primary transition-colors"
-                              th:text="'#' + ${tag}">#鏍囩</a>
+                              th:text="'#' + ${tag}">#标签</a>
                           </th:block>
                         </div>
                       </div>
@@ -299,11 +300,11 @@
                           <span
                             th:text="${#temporals.format(moment.spec.releaseTime, 'yyyy-MM-dd HH:mm')}">2024-01-01</span>
                           <span th:if="${moment.spec.visible != null and moment.spec.visible.name() == 'PRIVATE'}"
-                            class="text-warning/80" title="绉佸瘑">
+                            class="text-warning/80" title="私密">
                             <span class="icon-[heroicons--lock-closed] w-3 h-3"></span>
                           </span>
                           <span th:if="${moment.spec.visible != null and moment.spec.visible.name() == 'INTERNAL'}"
-                            class="text-info/80" title="浠呯櫥褰曞彲瑙?>
+                            class="text-info/80" title="仅登录可见">
                             <span class="icon-[heroicons--users] w-3 h-3"></span>
                           </span>
                         </div>
@@ -321,11 +322,11 @@
                     </div>
                   </article>
                 </div>
-                <!-- 鏌ョ湅鍏ㄩ儴 -->
+                <!-- 查看全部 -->
                 <div th:if="${authorMoments.total > 5}" class="mt-4 text-center">
                   <a th:href="@{/moments(owner=${author.metadata.name})}"
                     class="inline-flex items-center gap-2 text-sm text-primary hover:text-primary-focus transition-colors">
-                    <span>鏌ョ湅鎵€鏈夌灛闂?/span>
+                    <span>查看所有瞬间</span>
                     <span class="icon-[heroicons--arrow-right] w-4 h-4"></span>
                   </a>
                 </div>
@@ -337,7 +338,7 @@
 
       </section>
 
-      <!-- 鍙充晶锛氫晶杈规爮 -->
+      <!-- 右侧：侧边栏 -->
       <aside th:if="${sidebarCfg.show_sidebar == true}"
         class="right-sidebar w-80 space-y-6 hidden lg:block sticky top-20 self-start">
         <th:block th:replace="~{modules/widgets/sidebar :: dynamic(${sidebarCfg})}" />
@@ -348,4 +349,3 @@
 </main>
 
 </html>
-

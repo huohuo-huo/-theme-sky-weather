@@ -1,32 +1,32 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ========================================== -->
-<!--        Steam 娓告垙搴撲富浣撳唴瀹?(寮傛鍔犺浇)      -->
-<!-- 鍏煎鍩虹嚎锛歨alo-plugin-steam v0.3.0锛涘鎴风娑堣垂 /apis/api.steam.timxs.com/v1alpha1/*銆?-->
+<!--        Steam 游戏库主体内容 (异步加载)      -->
+<!-- 兼容基线：halo-plugin-steam v0.3.0；客户端消费 /apis/api.steam.timxs.com/v1alpha1/*。 -->
 <!-- ========================================== -->
 
 <main class="steam-page relative" th:fragment="steam-content" x-data="steamPage()" x-init="init()">
 
   <div class="max-w-6xl mx-auto px-4 py-8">
 
-    <!-- 閿欒鎻愮ず -->
+    <!-- 错误提示 -->
     <div x-show="error" x-cloak class="alert alert-warning mb-6 rounded-2xl steam-animate-in">
       <span class="icon-[heroicons--exclamation-triangle] w-5 h-5"></span>
-      <span x-text="error">閮ㄥ垎 Steam 鏁版嵁鍔犺浇澶辫触锛岃绋嶅悗鍒锋柊閲嶈瘯鎴栨鏌ユ彃浠堕厤缃€?/span>
+      <span x-text="error">部分 Steam 数据加载失败，请稍后刷新重试或检查插件配置。</span>
     </div>
 
     <!-- ========================================== -->
-    <!--     涓ゆ爮甯冨眬 - Steam 瀹樻柟椋庢牸              -->
+    <!--     两栏布局 - Steam 官方风格              -->
     <!-- ========================================== -->
     <div class="steam-layout steam-animate-in">
 
       <!-- ================================ -->
-      <!-- 宸︿晶涓绘爮                          -->
+      <!-- 左侧主栏                          -->
       <!-- ================================ -->
       <div class="steam-main">
 
-        <!-- Profile Header - 楠ㄦ灦灞?-->
+        <!-- Profile Header - 骨架屏 -->
         <div x-show="loading.profile" class="steam-profile-header">
           <div class="steam-profile-avatar">
             <div class="skeleton w-20 h-20 rounded-full"></div>
@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <!-- Profile Header - 瀹為檯鍐呭 -->
+        <!-- Profile Header - 实际内容 -->
         <div x-show="!loading.profile && profile" x-cloak class="steam-profile-header">
           <div class="steam-profile-avatar" :class="profile?.playing ? 'playing' : ''">
             <img :src="profile?.summary?.avatarfull" :alt="profile?.summary?.personaname" loading="eager"
@@ -59,12 +59,12 @@
             <div class="steam-status-subtitle flex items-center gap-2 text-sm mt-1">
               <span class="w-2 h-2 rounded-full"
                 :class="profile?.playing ? 'bg-success' : (profile?.summary?.personastate == 1 ? 'bg-info' : 'bg-base-content/30')"></span>
-              <span x-text="profile?.statusText" class="opacity-70">鍦ㄧ嚎</span>
+              <span x-text="profile?.statusText" class="opacity-70">在线</span>
             </div>
           </div>
         </div>
 
-        <!-- 鏈€鏂板姩鎬?(鐑姏鍥? -->
+        <!-- 最新动态 (热力图) -->
         <div th:if="${showHeatmap}" class="steam-activity-section">
           <div class="steam-heatmap-inline relative">
             <div class="heatmap-container relative min-h-[120px]">
@@ -76,10 +76,10 @@
                 <span class="loading loading-spinner loading-md opacity-50"></span>
               </div>
               <div id="steam-heatmap-empty" class="steam-heatmap-status" style="display: none;">
-                <span class="text-xs opacity-50">鏆傛棤鏁版嵁</span>
+                <span class="text-xs opacity-50">暂无数据</span>
               </div>
               <div id="steam-heatmap-error" class="steam-heatmap-status" style="display: none;">
-                <span class="text-xs text-error opacity-50">鍔犺浇澶辫触</span>
+                <span class="text-xs text-error opacity-50">加载失败</span>
               </div>
             </div>
             <div class="steam-heatmap-legend">
@@ -96,13 +96,13 @@
       </div>
 
       <!-- ================================ -->
-      <!-- 鍙充晶杈规爮                          -->
+      <!-- 右侧边栏                          -->
       <!-- ================================ -->
       <div class="steam-sidebar">
 
-        <!-- 寰界珷灞曠ず - 楠ㄦ灦灞?-->
+        <!-- 徽章展示 - 骨架屏 -->
         <div x-show="loading.badges" class="steam-sidebar-card">
-          <div class="steam-sidebar-title">寰界珷</div>
+          <div class="steam-sidebar-title">徽章</div>
           <div class="steam-badges-grid">
             <template x-for="i in 8" :key="i">
               <div class="skeleton w-10 h-10 rounded"></div>
@@ -110,10 +110,10 @@
           </div>
         </div>
 
-        <!-- 寰界珷灞曠ず - 瀹為檯鍐呭 -->
+        <!-- 徽章展示 - 实际内容 -->
         <div x-show="!loading.badges && badges?.badges?.length > 0" x-cloak class="steam-sidebar-card">
           <div class="steam-sidebar-title">
-            寰界珷 <span x-text="badges?.totalBadges || 0">0</span>
+            徽章 <span x-text="badges?.totalBadges || 0">0</span>
           </div>
           <div class="steam-badges-grid">
             <template x-for="(badge, index) in (badges?.badges || []).slice(0, 8)" :key="index">
@@ -125,34 +125,34 @@
           </div>
         </div>
 
-        <!-- 缁熻淇℃伅 - 楠ㄦ灦灞?-->
+        <!-- 统计信息 - 骨架屏 -->
         <div x-show="loading.stats" class="steam-sidebar-card steam-stats-list">
           <div class="steam-stat-item">
-            <span class="steam-stat-label">娓告垙</span>
+            <span class="steam-stat-label">游戏</span>
             <span class="skeleton h-5 w-12"></span>
           </div>
           <div class="steam-stat-item">
-            <span class="steam-stat-label">鎬绘椂闀?/span>
+            <span class="steam-stat-label">总时长</span>
             <span class="skeleton h-5 w-16"></span>
           </div>
           <div class="steam-stat-item">
-            <span class="steam-stat-label">鏈€杩?鍛?/span>
+            <span class="steam-stat-label">最近2周</span>
             <span class="skeleton h-5 w-14"></span>
           </div>
         </div>
 
-        <!-- 缁熻淇℃伅 - 瀹為檯鍐呭 -->
+        <!-- 统计信息 - 实际内容 -->
         <div x-show="!loading.stats && stats" x-cloak class="steam-sidebar-card steam-stats-list">
           <div class="steam-stat-item">
-            <span class="steam-stat-label">娓告垙</span>
+            <span class="steam-stat-label">游戏</span>
             <span class="steam-stat-value" x-text="stats?.totalGames || 0">0</span>
           </div>
           <div class="steam-stat-item">
-            <span class="steam-stat-label">鎬绘椂闀?/span>
+            <span class="steam-stat-label">总时长</span>
             <span class="steam-stat-value" x-text="((stats?.totalPlaytimeMinutes || 0) / 60).toFixed(1) + 'h'">0h</span>
           </div>
           <div class="steam-stat-item">
-            <span class="steam-stat-label">鏈€杩?鍛?/span>
+            <span class="steam-stat-label">最近2周</span>
             <span class="steam-stat-value text-primary"
               x-text="((stats?.recentPlaytimeMinutes || 0) / 60).toFixed(1) + 'h'">0h</span>
           </div>
@@ -163,17 +163,17 @@
 
   <div class="max-w-6xl mx-auto px-4 pb-8">
     <!-- ========================================== -->
-    <!--     鏈€杩戞父鐜?- 缃戞牸鍗＄墖甯冨眬               -->
+    <!--     最近游玩 - 网格卡片布局               -->
     <!-- ========================================== -->
     <section class="steam-section steam-animate-in steam-stagger-1">
       <div class="steam-section-header">
         <div class="steam-section-icon recent">
           <span class="icon-[heroicons--clock] w-5 h-5"></span>
         </div>
-        <h2 class="steam-section-title">鏈€杩戞父鐜?/h2>
+        <h2 class="steam-section-title">最近游玩</h2>
       </div>
 
-      <!-- 楠ㄦ灦灞?-->
+      <!-- 骨架屏 -->
       <div x-show="loading.recent" class="steam-library-grid">
         <template x-for="i in 6" :key="i">
           <div class="steam-game-card">
@@ -188,7 +188,7 @@
         </template>
       </div>
 
-      <!-- 瀹為檯鍐呭 -->
+      <!-- 实际内容 -->
       <div x-show="!loading.recent && recentGames.length > 0" x-cloak class="steam-library-grid">
         <template x-for="(game, idx) in recentGames.filter(g => g.appid).slice(0, 10)" :key="game.appid + '-' + idx">
           <a :href="'https://store.steampowered.com/app/' + game.appid" target="_blank" class="steam-game-card">
@@ -212,25 +212,25 @@
         </template>
       </div>
 
-      <!-- 绌虹姸鎬?-->
+      <!-- 空状态 -->
       <div x-show="!loading.recent && recentGames.length === 0" x-cloak class="steam-empty-state">
-        <div class="steam-empty-icon">馃幃</div>
-        <div class="steam-empty-title">鏆傛棤鏈€杩戞父鐜?/div>
+        <div class="steam-empty-icon">🎮</div>
+        <div class="steam-empty-title">暂无最近游玩</div>
       </div>
     </section>
 
     <!-- ========================================== -->
-    <!--     娓告垙搴?- 缃戞牸鍗＄墖甯冨眬                 -->
+    <!--     游戏库 - 网格卡片布局                 -->
     <!-- ========================================== -->
     <section class="steam-section steam-animate-in steam-stagger-2">
       <div class="steam-section-header">
         <div class="steam-section-icon library">
           <span class="icon-[heroicons--squares-2x2] w-5 h-5"></span>
         </div>
-        <h2 class="steam-section-title">娓告垙搴?/h2>
+        <h2 class="steam-section-title">游戏库</h2>
       </div>
 
-      <!-- 楠ㄦ灦灞?-->
+      <!-- 骨架屏 -->
       <div x-show="loading.games" class="steam-library-grid">
         <template x-for="i in 12" :key="i">
           <div class="steam-game-card">
@@ -245,7 +245,7 @@
         </template>
       </div>
 
-      <!-- 瀹為檯鍐呭 -->
+      <!-- 实际内容 -->
       <div x-show="!loading.games && games.items.length > 0" x-cloak class="steam-library-grid">
         <template x-for="(game, idx) in games.items.filter(g => (g.appid || g.appId) && g.headerImageUrl)"
           :key="(game.appid || game.appId) + '-games-' + idx">
@@ -266,14 +266,14 @@
         </template>
       </div>
 
-      <!-- 绌虹姸鎬?-->
+      <!-- 空状态 -->
       <div x-show="!loading.games && games.items.length === 0" x-cloak class="steam-empty-state">
-        <div class="steam-empty-icon">馃幃</div>
-        <div class="steam-empty-title">鏆傛棤娓告垙鏁版嵁</div>
-        <div class="steam-empty-desc">娓告垙搴撲负绌猴紝璇锋鏌?Steam 璐﹀彿璁剧疆</div>
+        <div class="steam-empty-icon">🎮</div>
+        <div class="steam-empty-title">暂无游戏数据</div>
+        <div class="steam-empty-desc">游戏库为空，请检查 Steam 账号设置</div>
       </div>
 
-      <!-- 鍒嗛〉 -->
+      <!-- 分页 -->
       <div x-show="games?.totalPages > 1" x-cloak class="steam-pagination">
         <div class="steam-pagination-inner">
           <button @click="loadGames(games.page - 1)" :disabled="games?.page <= 1" class="steam-pagination-btn"
@@ -293,7 +293,7 @@
     </section>
   </div>
 
-  <!-- 閰嶇疆鏁版嵁 -->
+  <!-- 配置数据 -->
   <script th:inline="javascript" data-swup-reload-script>
     window.steamPageConfig = {
       recentGamesLimit: /*[[${recentGamesLimit ?: 10}]]*/ 10,
@@ -304,4 +304,3 @@
 </main>
 
 </html>
-

@@ -1,6 +1,6 @@
-﻿<!-- ========================================== -->
-<!--        鐬棿璇︽儏椤碉紙璺宠浆浣跨敤锛?                -->
-<!-- 鍏煎鍩虹嚎锛歅luginMoments v1.16.0锛涙彃浠跺彉閲忥細moment锛岃瘎璁?subject 涓?moment.halo.run/Moment銆?-->
+<!-- ========================================== -->
+<!--        瞬间详情页（跳转使用）                 -->
+<!-- 兼容基线：PluginMoments v1.16.0；插件变量：moment，评论 subject 为 moment.halo.run/Moment。 -->
 <!-- ========================================== -->
 <th:block th:fragment="content">
 
@@ -16,18 +16,18 @@
 
     <div class="max-w-2xl mx-auto px-4 py-8">
 
-      <!-- 杩斿洖鎸夐挳 -->
+      <!-- 返回按钮 -->
       <div class="mb-6">
         <a href="/moments" class="btn btn-sm btn-ghost gap-1">
           <span class="icon-[heroicons--arrow-left] size-4"></span>
-          杩斿洖鐬棿
+          返回瞬间
         </a>
       </div>
 
-      <!-- 鐬棿鍗＄墖 - 涓庡垪琛ㄩ〉鏍峰紡涓€鑷?-->
+      <!-- 瞬间卡片 - 与列表页样式一致 -->
       <article class="card bg-base-100 shadow-sm rounded-2xl overflow-hidden">
         <div class="p-4">
-          <!-- 澶撮儴锛氬ご鍍?+ 鐢ㄦ埛鍚?+ 鏃堕棿 -->
+          <!-- 头部：头像 + 用户名 + 时间 -->
           <div class="flex items-center gap-3 mb-3">
             <div class="avatar">
               <a th:href="@{/authors/{name}(name=${moment.owner.name})}"
@@ -43,25 +43,25 @@
             <div class="flex-1 min-w-0">
               <a th:href="@{/authors/{name}(name=${moment.owner.name})}"
                 class="font-semibold text-primary text-sm truncate hover:underline"
-                th:text="${moment.owner?.displayName ?: '鍖垮悕鐢ㄦ埛'}">鐢ㄦ埛鍚?/a>
+                th:text="${moment.owner?.displayName ?: '匿名用户'}">用户名</a>
               <div class="text-xs text-base-content/40"
                 th:text="${#temporals.format(moment.spec.releaseTime, 'MM-dd HH:mm')}">11-27 14:00</div>
             </div>
           </div>
 
-          <!-- 鏂囧瓧鍐呭 -->
+          <!-- 文字内容 -->
           <div th:if="${not #strings.isEmpty(content.html)}" class="text-sm text-base-content leading-relaxed mb-3"
             th:utext="${content.html}">
-            浠婂ぉ鐨勫ぉ姘旂湡濂?..
+            今天的天气真好...
           </div>
 
-          <!-- 濯掍綋鍖哄煙 -->
+          <!-- 媒体区域 -->
           <div th:if="${content.medium != null && !content.medium.isEmpty()}" class="moment-media mb-3">
-            <!-- 鍗曞浘 -->
+            <!-- 单图 -->
             <th:block th:if="${#lists.size(content.medium) == 1}">
               <th:block th:each="medium : ${content.medium}">
                 <div th:if="${medium.type.name == 'PHOTO'}" class="moment-single-img-wrap">
-                  <img th:src="${medium.url}" alt="鐬棿鍥剧墖" class="max-h-72 object-cover" loading="lazy" />
+                  <img th:src="${medium.url}" alt="瞬间图片" class="max-h-72 object-cover" loading="lazy" />
                 </div>
                 <video th:if="${medium.type.name == 'VIDEO'}" th:src="${medium.url}" controls preload="metadata"
                   class="rounded-xl max-h-72 w-full">
@@ -75,7 +75,7 @@
               </th:block>
             </th:block>
 
-            <!-- 澶氬獟浣撶綉鏍硷細POST 鍗曠嫭鏀惧湪缃戞牸鍚庯紝閬垮厤褰卞搷鍥剧墖鎺掔増 -->
+            <!-- 多媒体网格：POST 单独放在网格后，避免影响图片排版 -->
             <th:block th:if="${#lists.size(content.medium) > 1}" th:with="
               nonPostMedia = ${content.medium.?[type.name() != 'POST']},
               postMedia = ${content.medium.?[type.name() == 'POST']}
@@ -103,7 +103,7 @@
                     #lists.size(nonPostMedia) == 8 && stat.index < 2 ? 'col-span-3 aspect-[4/3]' :
                     #lists.size(nonPostMedia) == 8 && stat.index >= 2 ? 'col-span-2 aspect-square' : 'aspect-square'
                   }">
-                  <img th:src="${medium.url}" alt="鐬棿鍥剧墖" loading="lazy" />
+                  <img th:src="${medium.url}" alt="瞬间图片" loading="lazy" />
                   <div th:if="${stat.index == 8 && #lists.size(nonPostMedia) > 9}"
                     class="absolute inset-0 bg-black/50 flex items-center justify-center" style="z-index:2">
                     <span class="text-white text-xl font-semibold"
@@ -126,34 +126,34 @@
             </th:block>
           </div>
 
-          <!-- 鏍囩 -->
+          <!-- 标签 -->
           <div th:if="${moment.spec.tags != null && !moment.spec.tags.isEmpty()}" class="mb-3 flex flex-wrap gap-1.5">
             <a th:each="tag : ${moment.spec.tags}" th:href="@{/moments(tag=${tag})}"
-              class="badge badge-sm badge-ghost text-primary" th:text="'#' + ${tag}">#鏍囩</a>
+              class="badge badge-sm badge-ghost text-primary" th:text="'#' + ${tag}">#标签</a>
           </div>
 
-          <!-- 浜掑姩鎿嶄綔 -->
+          <!-- 互动操作 -->
           <div class="flex items-center gap-4 pt-2 border-t border-base-200 text-sm text-base-content/50">
-            <!-- 鐐硅禐鎸夐挳 -->
+            <!-- 点赞按钮 -->
             <button th:if="${enableUpvote}" class="inline-flex items-center gap-1.5 hover:text-error transition-colors"
               th:data-moment-name="${moment.metadata.name}" th:data-upvote-count="${moment.stats?.upvote ?: 0}"
               onclick="handleMomentUpvote(this)">
               <span class="icon-[heroicons--heart] size-5"></span>
               <span class="upvote-count" th:text="${moment.stats?.upvote ?: 0}">0</span>
             </button>
-            <!-- 璇勮鏁?-->
+            <!-- 评论数 -->
             <div th:if="${enableComment}" class="inline-flex items-center gap-1.5">
               <span class="icon-[heroicons--chat-bubble-left] size-5"></span>
               <span th:text="${moment.stats?.totalComment ?: 0}">0</span>
             </div>
-            <!-- 鍒嗕韩 -->
+            <!-- 分享 -->
             <button th:if="${enableShare}" x-data @click="$dispatch('open-share-modal')"
               class="inline-flex items-center gap-1.5 hover:text-primary transition-colors">
               <span class="icon-[heroicons--share] size-5"></span>
             </button>
           </div>
 
-          <!-- 璇勮鍖?- 鐩存帴鏄剧ず -->
+          <!-- 评论区 - 直接显示 -->
           <div th:if="${enableComment}" class="mt-3 pt-3 border-t border-base-200">
             <halo:comment group="moment.halo.run" kind="Moment" th:attr="name=${moment.metadata.name}"
               colorScheme="system">
@@ -164,12 +164,12 @@
 
     </div>
 
-    <!-- 鍒嗕韩寮圭獥 - 浣跨敤閫氱敤缁勪欢 -->
+    <!-- 分享弹窗 - 使用通用组件 -->
     <th:block th:if="${enableShare}">
       <th:block th:replace="~{modules/share-modal :: shareModal(
-        title='鍒嗕韩鐬棿',
+        title='分享瞬间',
         shareUrl=${'/moments/' + moment.metadata.name},
-        shareTitle=${(moment.owner?.displayName ?: '鍖垮悕鐢ㄦ埛') + ' 鐨勭灛闂?},
+        shareTitle=${(moment.owner?.displayName ?: '匿名用户') + ' 的瞬间'},
         shareItemIds=${shareItemIds}
       )}" />
     </th:block>
@@ -177,4 +177,3 @@
   </th:block>
 
 </th:block>
-

@@ -1,37 +1,37 @@
-﻿<!-- ========================================== -->
-<!--           棣栭〉鑳屾櫙灞傛ā鍧?                   -->
+<!-- ========================================== -->
+<!--           首页背景层模块                    -->
 <!-- ========================================== -->
 
-<!-- 浠呭湪 show_background 涓?true 鏃舵樉绀鸿儗鏅?-->
+<!-- 仅在 show_background 为 true 时显示背景 -->
 <th:block th:if="${theme.config.index.background_settings?.enable_header != false}">
 
-    <!-- 鑳屾櫙灞傦細澶╂皵鑱斿姩鐗规晥 -->
+    <!-- 背景层：天气联动特效 -->
     <div class="absolute inset-0 z-0 overflow-hidden weather-effect-container"
         th:if="${theme.config.index.background_settings.background_type == 'weather'}" id="weather-effect-root">
 
-        <!-- 澶╂皵鏁堟灉瀹瑰櫒 - JS 浼氬姩鎬佹洿鏂?class -->
+        <!-- 天气效果容器 - JS 会动态更新 class -->
         <div class="weather-effect">
-            <!-- 鏁堟灉灞?- JS 鍔ㄦ€佺敓鎴愬唴瀹?-->
+            <!-- 效果层 - JS 动态生成内容 -->
             <div class="weather-effect-layer"></div>
         </div>
 
-        <!-- 婊氬姩钂欑増 -->
+        <!-- 滚动蒙版 -->
         <div class="scroll-mask absolute inset-0 bg-black/5 transition-opacity duration-700" style="opacity: 0;"></div>
     </div>
 
-    <!-- 鑳屾櫙灞傦細鍥剧墖/瑙嗛鑳屾櫙 -->
+    <!-- 背景层：图片/视频背景 -->
     <div class="absolute inset-0 z-0" th:if="${theme.config.index.background_settings.background_type == 'image'}"
         th:with="bgSrc=${theme.config.index.background_settings.background_image},
               isVideo=${#strings.endsWith(bgSrc, '.mp4') or #strings.endsWith(bgSrc, '.webm') or #strings.endsWith(bgSrc, '.ogg')}">
-        <!-- 鍘熷濯掍綋鑳屾櫙锛堣棰戜紭鍏堬紝鍏舵鍥剧墖锛?-->
+        <!-- 原始媒体背景（视频优先，其次图片） -->
         <video th:if="${isVideo}"
             class="absolute inset-0 w-full h-full object-cover object-center transition-all duration-1000 filter blur-[0.5px] will-change-transform"
             th:src="${bgSrc}" autoplay loop muted playsinline></video>
         <img th:unless="${isVideo}"
             class="absolute inset-0 w-full h-full object-cover object-center transition-all duration-1000 filter blur-[0.5px] will-change-transform"
-            th:src="${bgSrc}" alt="鑳屾櫙濯掍綋">
+            th:src="${bgSrc}" alt="背景媒体">
 
-        <!-- 缁勫悎钂欑増瀹瑰櫒 - 鏀寔鏄庢殫涓婚鐙珛閰嶇疆 -->
+        <!-- 组合蒙版容器 - 支持明暗主题独立配置 -->
         <th:block th:with="
         overlayCfg = ${theme.config.index.background_settings},
         lightScheme = ${overlayCfg?.light_scheme ?: 'black'},
@@ -40,50 +40,50 @@
         darkCustom = ${overlayCfg?.dark_custom_color ?: '#000000'}
     ">
             <div class="absolute inset-0">
-                <!-- 娴呰壊涓婚钂欑増 (data-color-scheme=light 鏃舵樉绀? -->
+                <!-- 浅色主题蒙版 (data-color-scheme=light 时显示) -->
                 <div class="overlay-light absolute inset-0 bg-gradient-to-b" th:classappend="${lightScheme == 'black'} ? 'from-black/10 via-black/50 to-black/80' : 
                                (${lightScheme == 'white'} ? 'from-white/10 via-white/50 to-white/80' : 
                                (${lightScheme == 'theme'} ? 'from-base-300/10 via-base-300/50 to-base-300/80' : ''))"
                     th:style="${lightScheme == 'custom'} ? 'background: linear-gradient(to bottom, ' + ${lightCustom} + '1a, ' + ${lightCustom} + '80, ' + ${lightCustom} + 'cc)' : ''">
                 </div>
-                <!-- 娣辫壊涓婚钂欑増 (data-color-scheme=dark 鏃舵樉绀? -->
+                <!-- 深色主题蒙版 (data-color-scheme=dark 时显示) -->
                 <div class="overlay-dark absolute inset-0 bg-gradient-to-b" th:classappend="${darkScheme == 'black'} ? 'from-black/10 via-black/50 to-black/80' : 
                                (${darkScheme == 'white'} ? 'from-white/10 via-white/50 to-white/80' : 
                                (${darkScheme == 'theme'} ? 'from-base-300/10 via-base-300/50 to-base-300/80' : ''))"
                     th:style="${darkScheme == 'custom'} ? 'background: linear-gradient(to bottom, ' + ${darkCustom} + '1a, ' + ${darkCustom} + '80, ' + ${darkCustom} + 'cc)' : ''">
                 </div>
-                <!-- 婊氬姩娣遍們鏁堟灉钂欑増 -->
+                <!-- 滚动深邃效果蒙版 -->
                 <div class="scroll-mask absolute inset-0 transition-opacity duration-500 bg-black"
                     style="opacity: 0.1;"></div>
             </div>
         </th:block>
     </div>
 
-    <!-- 鑳屾櫙灞傦細CSS 鐗规晥锛?绉嶄紭鍖栫壒鏁堬級 -->
+    <!-- 背景层：CSS 特效（4种优化特效） -->
     <div class="absolute inset-0 z-0 overflow-hidden"
         th:if="${theme.config.index.background_settings.background_type == 'effect'}">
 
-        <!-- 鐗规晥 1锛氭祦浣撴笎鍙?- 浼樺寲鍔犲己鐗?-->
+        <!-- 特效 1：流体渐变 - 优化加强版 -->
         <div class="effect-fluid-gradient"
             th:if="${theme.config.index.background_settings.effect_style == 'fluid-gradient'}">
-            <!-- 鏆楄壊鍩哄簳 -->
+            <!-- 暗色基底 -->
             <div class="effect-bg-base"></div>
-            <!-- 娴佷綋灞?- 6涓猙lob -->
+            <!-- 流体层 - 6个blob -->
             <div class="fluid-blob fluid-blob-1"></div>
             <div class="fluid-blob fluid-blob-2"></div>
             <div class="fluid-blob fluid-blob-3"></div>
             <div class="fluid-blob fluid-blob-4"></div>
             <div class="fluid-blob fluid-blob-5"></div>
             <div class="fluid-blob fluid-blob-6"></div>
-            <!-- 鏌斿拰钂欑増 -->
+            <!-- 柔和蒙版 -->
             <div class="effect-overlay"></div>
         </div>
 
-        <!-- 鐗规晥 2锛氶湏铏圭嚎鏉?-->
+        <!-- 特效 2：霓虹线条 -->
         <div class="effect-neon-lines" th:if="${theme.config.index.background_settings.effect_style == 'neon-lines'}">
-            <!-- 鏆楄壊鍩哄簳 -->
+            <!-- 暗色基底 -->
             <div class="effect-bg-base"></div>
-            <!-- 闇撹櫣绾挎潯 - 8鏉?-->
+            <!-- 霓虹线条 - 8条 -->
             <div class="neon-line neon-1"></div>
             <div class="neon-line neon-2"></div>
             <div class="neon-line neon-3"></div>
@@ -92,36 +92,36 @@
             <div class="neon-line neon-6"></div>
             <div class="neon-line neon-7"></div>
             <div class="neon-line neon-8"></div>
-            <!-- 鏌斿拰钂欑増 -->
+            <!-- 柔和蒙版 -->
             <div class="effect-overlay"></div>
         </div>
 
-        <!-- 鐗规晥 4锛氭繁閭冩槦绌?-->
+        <!-- 特效 4：深邃星空 -->
         <div class="effect-starry-sky" th:if="${theme.config.index.background_settings.effect_style == 'starry-sky'}">
-            <!-- 鏆楄壊鍩哄簳 -->
+            <!-- 暗色基底 -->
             <div class="effect-bg-base"></div>
-            <!-- 鏄熺┖灞?-->
+            <!-- 星空层 -->
             <div class="star-field">
-                <!-- 杩滄櫙鏄熺┖灞?-->
+                <!-- 远景星空层 -->
                 <div class="star-layer-far"></div>
-                <!-- 涓櫙鏄熺┖灞?-->
+                <!-- 中景星空层 -->
                 <div class="star-layer-mid"></div>
-                <!-- 杩戞櫙鏄熺┖灞?-->
+                <!-- 近景星空层 -->
                 <div class="star-layer-near"></div>
             </div>
-            <!-- 涓婚鑹茬壒鍒槦鏄?-->
+            <!-- 主题色特别星星 -->
             <div class="star-accent-1"></div>
             <div class="star-accent-2"></div>
             <div class="star-accent-3"></div>
             <div class="star-accent-4"></div>
             <div class="star-accent-5"></div>
-            <!-- 閾舵渤甯?-->
+            <!-- 银河带 -->
             <div class="milky-way"></div>
-            <!-- 鏌斿拰钂欑増 -->
+            <!-- 柔和蒙版 -->
             <div class="effect-overlay"></div>
         </div>
 
-        <!-- 婊氬姩浜や簰钂欑増锛堟墍鏈夌壒鏁堝叡鐢級 -->
+        <!-- 滚动交互蒙版（所有特效共用） -->
         <div class="scroll-mask absolute inset-0 bg-black transition-opacity duration-700 ease-out"
             style="opacity: 0.05;"></div>
 
@@ -130,4 +130,3 @@
 
 
 </th:block>
-

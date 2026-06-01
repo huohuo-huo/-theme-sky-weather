@@ -1,22 +1,22 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- ============================================= -->
-<!--   鍒嗙被椤典笓鐢細宸﹀浘鍙虫枃闈炲崱鐗囧竷灞€锛坢edia_text锛?  -->
-<!--   璺緞鎺у埗锛氫粎鍦?/categories 涓?/categories/:slug 浣跨敤 -->
-<!--   涓嶄娇鐢ㄥ崱鐗囪儗鏅紱鍥剧墖宸︿晶鍥哄畾姣斾緥锛屽彸渚ф枃瀛楄嚜閫傚簲 -->
+<!--   分类页专用：左图右文非卡片布局（media_text）   -->
+<!--   路径控制：仅在 /categories 与 /categories/:slug 使用 -->
+<!--   不使用卡片背景；图片左侧固定比例，右侧文字自适应 -->
 <!-- ============================================= -->
 
-<!-- 鐗囨锛歮edia_text(posts) -->
+<!-- 片段：media_text(posts) -->
 <section th:fragment="media_text(posts, settings)" class="article-media-list space-y-8">
-  <!-- 寰幆鏂囩珷鍒楄〃锛氫娇鐢ㄩ潪鍗＄墖銆佸乏鍥惧彸鏂囧竷灞€ -->
+  <!-- 循环文章列表：使用非卡片、左图右文布局 -->
   <article th:each="post : ${posts.items}"
     th:with="isPinned = ${post.spec.pinned == true},
                     isPrivate = ${post.spec.visible != null and post.spec.visible.name() == 'PRIVATE' and currentUser != null and currentUser.metadata.name == post.spec.owner},
                     isLocked = ${post.metadata.annotations != null and post.metadata.annotations['content.halo.run/content-restriction'] != null and post.metadata.annotations['content.halo.run/content-restriction'] != ''}"
     class="group card relative cursor-pointer bg-base-100/80 backdrop-blur-xl border border-base-content/5 rounded-[1.5rem] p-4 md:p-5 flex flex-col md:flex-row md:items-stretch gap-4 md:gap-6 shadow-lg hover:shadow-xl hover:border-primary/20 transition-all duration-300">
 
-    <!-- 灏侀潰璁＄畻锛氭敮鎸佷富棰樼殑灏侀潰鍥為€€璁剧疆 (Context-Aware Fix) -->
+    <!-- 封面计算：支持主题的封面回退设置 (Context-Aware Fix) -->
     <th:block th:with="
         nested = ${settings?.cover_fallback},
         flatEnable = ${settings?.cover_fallback_enable},
@@ -29,65 +29,65 @@
         actualOk=${actual != null and not #strings.isEmpty(actual) ? actual : null},
         coverUrl=${(enable == true) ? ((mode == 'always' and defaultImg != null) ? defaultImg : (actualOk != null ? actualOk : defaultImg)) : actualOk}
     ">
-      <!-- 宸︿晶鍥剧墖鍖哄煙锛?:3 姣斾緥 -->
+      <!-- 左侧图片区域：4:3 比例 -->
       <figure class="relative w-full md:basis-[25%] md:max-w-[25%] shrink-0 overflow-hidden rounded-xl">
         <a th:href="@{${post.status.permalink}}" class="block w-full aspect-4/3">
-          <img th:if="${coverUrl != null}" th:src="${coverUrl}" th:alt="|${post.spec.title} 鐨勫皝闈" loading="lazy"
+          <img th:if="${coverUrl != null}" th:src="${coverUrl}" th:alt="|${post.spec.title} 的封面|" loading="lazy"
             class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" />
-          <!-- 鏃犲皝闈㈠崰浣嶏細涓庢湁鍥剧墖鏃跺昂瀵稿畬鍏ㄤ竴鑷?-->
+          <!-- 无封面占位：与有图片时尺寸完全一致 -->
           <div th:if="${coverUrl == null}"
             class="w-full h-full bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/15 transition-all duration-200 flex items-center justify-center group-hover:from-primary/20 group-hover:to-accent/20">
             <span
               class="icon-[heroicons--photo] w-16 h-16 text-primary/30 group-hover:text-primary/50 transition-colors"></span>
           </div>
         </a>
-        <!-- 缃《/鎺ㄨ崘瑙掓爣 -->
+        <!-- 置顶/推荐角标 -->
         <span th:if="${isPinned}"
-          class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">缃《</span>
+          class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">置顶</span>
       </figure>
     </th:block>
 
-    <!-- 鍙充晶鏂囧瓧鍖哄煙锛氳嚜閫傚簲楂樺害涓庡搴︼紝鏀寔澶氭钀芥帓鐗?-->
+    <!-- 右侧文字区域：自适应高度与宽度，支持多段落排版 -->
     <div class="flex-1 flex flex-col">
-      <!-- 鏍囬锛氬彲鐐瑰嚮锛屽己璋冨彲璇绘€?-->
+      <!-- 标题：可点击，强调可读性 -->
       <h3 class="text-base md:text-lg font-bold leading-6 md:leading-7 tracking-tight">
         <a th:href="@{${post.status.permalink}}" class="hover:text-primary transition-colors"
-          th:text="${post.spec.title}">鏂囩珷鏍囬</a>
+          th:text="${post.spec.title}">文章标题</a>
       </h3>
 
-      <!-- 鎽樿锛氬搷搴斿紡鍗犳弧瀹藉害锛屽弻琛岀渷鐣ワ紝绉婚櫎鍥哄畾瀹藉害涓庨珮搴︿互閫傞厤绐勫睆 -->
+      <!-- 摘要：响应式占满宽度，双行省略，移除固定宽度与高度以适配窄屏 -->
       <p class="mt-2 text-sm text-base-content/70 line-clamp-2 w-full leading-relaxed">
         <a th:href="@{${post.status.permalink}}" class="hover:text-base-content"
           th:text="${(post.spec.excerpt != null and post.spec.excerpt.raw != null and !post.spec.excerpt.raw.isEmpty()) ? post.spec.excerpt.raw : (post.status.excerpt ?: '')}"></a>
       </p>
 
-      <!-- 鍏冧俊鎭锛氬浐瀹氬湪鍙充晶鍐呭搴曢儴锛涙寜瑕佹眰鍒嗕袱琛岋細
-           琛?锛堝乏锛夛細鍒嗙被 + 鏍囩锛涜2锛堝彸锛夛細鏃堕棿 + 娴忚閲?+ 鐐硅禐 + 璇勮 -->
+      <!-- 元信息行：固定在右侧内容底部；按要求分两行：
+           行1（左）：分类 + 标签；行2（右）：时间 + 浏览量 + 点赞 + 评论 -->
       <div class="mt-auto pt-4 flex flex-wrap items-center justify-between gap-y-2">
-        <!-- 琛?锛堝乏锛夛細鍒嗙被 + 鏍囩 -->
+        <!-- 行1（左）：分类 + 标签 -->
         <div class="flex items-center gap-2 overflow-hidden"
           th:with="firstCat=${!#lists.isEmpty(post.categories) ? post.categories[0] : null}, end=${post.tags.size() >= 4 ? 4 : post.tags.size()}, limited=${post.tags.subList(0, end)}">
 
-          <!-- 鍒嗙被鑳跺泭 -->
+          <!-- 分类胶囊 -->
           <span
             class="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/5 text-primary text-[10px] font-medium shrink-0"
             th:if="${firstCat != null}">
             <a th:href="@{${firstCat.status.permalink}}" class="hover:underline max-w-[100px] truncate"
-              th:text="${firstCat.spec.displayName}">鍒嗙被</a>
+              th:text="${firstCat.spec.displayName}">分类</a>
           </span>
 
-          <!-- 鏍囩鏂囧瓧 -->
+          <!-- 标签文字 -->
           <div class="flex items-center gap-2 text-xs text-base-content/50 truncate">
             <th:block th:each="tag : ${limited}">
               <a th:href="@{${tag.status.permalink}}" class="hover:text-primary transition-colors">#<span
-                  th:text="${tag.spec.displayName}">鏍囩</span></a>
+                  th:text="${tag.spec.displayName}">标签</span></a>
             </th:block>
           </div>
         </div>
 
-        <!-- 琛?锛堝彸锛夛細鍏冧俊鎭兌鍥婄粍 -->
+        <!-- 行2（右）：元信息胶囊组 -->
         <div class="flex items-center gap-2">
-          <!-- 鏃堕棿 -->
+          <!-- 时间 -->
           <span class="text-xs text-base-content/40 mr-1"
             th:text="${#dates.format(post.spec.publishTime,'yyyy-MM-dd')}">2025-01-01</span>
 
@@ -111,8 +111,7 @@
     </div>
   </article>
 
-  <!-- 鍒嗛殧锛氬垪琛ㄩ」闂磋嚜鐒剁暀鐧界敱 space-y-8 鎺у埗锛屾棤闇€棰濆杈规 -->
+  <!-- 分隔：列表项间自然留白由 space-y-8 控制，无需额外边框 -->
 </section>
 
 </html>
-

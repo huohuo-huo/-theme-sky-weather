@@ -1,10 +1,10 @@
-﻿<!doctype html>
+<!doctype html>
 <html xmlns:th="https://www.thymeleaf.org"
-    th:replace="~{gateway_fragments/layout :: layout(title = |鐧诲綍 - ${site.title}|, head = null, body = ~{::body})}">
-<!-- 鍏煎鍩虹嚎锛歨alo-plugin-auth-passkey锛涚櫥褰曡〃鍗曠粨鏋勭敱 gateway_fragments/login.html 淇濇寔鍏煎銆?-->
+    th:replace="~{gateway_fragments/layout :: layout(title = |登录 - ${site.title}|, head = null, body = ~{::body})}">
+<!-- 兼容基线：halo-plugin-auth-passkey；登录表单结构由 gateway_fragments/login.html 保持兼容。 -->
 <th:block th:fragment="body">
-    <h1 class="auth-title">娆㈣繋鍥炴潵</h1>
-    <p class="auth-subtitle">鐧诲綍浠ョ户缁闂偍鐨勮处鎴?/p>
+    <h1 class="auth-title">欢迎回来</h1>
+    <p class="auth-subtitle">登录以继续访问您的账户</p>
 
     <div class="space-y-6">
         <div th:replace="~{gateway_fragments/login::form}"></div>
@@ -15,18 +15,17 @@
     </div>
 
     <div class="mt-8 text-center text-base-content/50">
-        <span>杩樻病鏈夎处鎴凤紵</span>
-        <a th:href="@{/signup}" class="text-primary font-semibold hover:underline ml-1">绔嬪嵆娉ㄥ唽</a>
+        <span>还没有账户？</span>
+        <a th:href="@{/signup}" class="text-primary font-semibold hover:underline ml-1">立即注册</a>
     </div>
 
     <div class="mt-4 text-center">
         <a th:href="@{/}"
             class="inline-flex items-center gap-2 text-sm text-base-content/40 hover:text-primary transition-colors">
             <span class="icon-[heroicons--arrow-left] w-4 h-4"></span>
-            <span>杩斿洖棣栭〉</span>
+            <span>返回首页</span>
         </a>
     </div>
 </th:block>
 
 </html>
-
