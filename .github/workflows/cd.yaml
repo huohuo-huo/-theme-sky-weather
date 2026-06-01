@@ -12,7 +12,7 @@ on:
       tag:
         description: Release tag to upload the theme package to
         required: true
-        default: v1.0.25
+        default: v1.0.26
 
 permissions:
   contents: write
@@ -35,7 +35,7 @@ jobs:
           elif [ "${{ github.event_name }}" = "push" ]; then
             echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
           else
-            echo "tag=v1.0.25" >> "$GITHUB_OUTPUT"
+            echo "tag=v1.0.26" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Package theme
@@ -59,6 +59,8 @@ jobs:
 
           ### 本次更新
 
+          - 修复布局模板资源版本号硬编码为 `1.0.21` 导致浏览器/CDN 缓存旧版脚本的问题。
+          - 确保 Docsme 超长文档懒加载后的新代码块可以重新触发 Shiki 高亮，避免代码块保持模糊状态。
           - 修复 v1.0.24 中部分模板文件编码损坏导致的 Thymeleaf 解析失败和页面传输中断问题。
           - 修复 Docsme 文档页代码块被全局 code 样式压成单行的问题。
           - 修复长文档渐进加载后 Shiki 未重新高亮新代码块的问题。
