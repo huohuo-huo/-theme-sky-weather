@@ -29,8 +29,8 @@
     <!-- 瀛椾綋 -->
     <th:block th:replace="~{modules/font-loader :: fonts}" />
     <!-- 涓婚鏍峰紡 -->
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.21')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/bangumi.css?v={version}(version='1.0.21')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version=${theme.spec.version})}" />
+    <link rel="stylesheet" th:href="@{/assets/css/bangumi.css?v={version}(version=${theme.spec.version})}" />
     <!-- 闊充箰鎾斁锟?CSS -->
     <th:block th:replace="~{modules/music-player :: head}" />
   </head>
@@ -88,11 +88,11 @@
     <div id="swup-scripts" hidden>
       <script
         type="module"
-        th:src="@{/assets/js/bangumi.js?v={version}(version='1.0.21')}"
+        th:src="@{/assets/js/bangumi.js?v={version}(version=${theme.spec.version})}"
         data-swup-reload-script
       ></script>
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.21')}"></script>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version=${theme.spec.version})}"></script>
     <!-- 鎮诞闊充箰鎾斁锟?-->
     <th:block th:replace="~{modules/music-player :: player}" />
   </body>

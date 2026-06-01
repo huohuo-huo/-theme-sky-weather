@@ -26,10 +26,10 @@
     <title th:text="${title}">Auth</title>
 
     <th:block th:replace="~{modules/theme-script :: inline-script}" />
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.21')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version=${theme.spec.version})}" />
 
     <!-- Auth 甯冨眬 CSS -->
-    <link rel="stylesheet" th:href="@{'/assets/css/auth-' + ${authLayout} + '.css?v=1.0.21'}" />
+    <link rel="stylesheet" th:href="@{'/assets/css/auth-' + ${authLayout} + '.css?v=' + ${theme.spec.version}}" />
 
     <th:block th:replace="~{gateway_fragments/common::basicStaticResources}"></th:block>
 
@@ -292,7 +292,7 @@
     </th:block>
 
     <!-- Auth 甯冨眬 JS -->
-    <script type="module" th:src="@{'/assets/js/auth-' + ${authLayout} + '.js?v=1.0.21'}"></script>
+    <script type="module" th:src="@{'/assets/js/auth-' + ${authLayout} + '.js?v=' + ${theme.spec.version}}"></script>
 </body>
 
 </html>

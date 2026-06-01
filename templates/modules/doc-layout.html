@@ -21,12 +21,12 @@
     <!-- 瀛椾綋 -->
     <th:block th:replace="~{modules/font-loader :: fonts}" />
     <!-- 涓婚鏍峰紡 -->
-    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version='1.0.21')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css?v={version}(version=${theme.spec.version})}" />
     <!-- 鏂囩珷鏍峰紡锛堝寘鍚枃绔犲唴瀹瑰拰鐩綍鏍峰紡锟?-->
-    <link rel="stylesheet" th:href="@{/assets/css/post.css?v={version}(version='1.0.21')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/post.css?v={version}(version=${theme.spec.version})}" />
     <!-- 鏂囨。椤典笓鐢ㄦ牱锟?-->
-    <link rel="stylesheet" th:href="@{/assets/css/doc.css?v={version}(version='1.0.21')}" />
-    <link rel="stylesheet" th:href="@{/assets/css/doc-refinements.css?v={version}(version='1.0.21')}" />
+    <link rel="stylesheet" th:href="@{/assets/css/doc.css?v={version}(version=${theme.spec.version})}" />
+    <link rel="stylesheet" th:href="@{/assets/css/doc-refinements.css?v={version}(version=${theme.spec.version})}" />
 
     <!-- 棰濆锟?head 鍐呭锛堜粎 CSS锟?-->
     <th:block th:if="${head != null}">
@@ -83,7 +83,7 @@
       <!-- 鏂囨。椤典笓鐢ㄨ剼锟?- 浣跨敤 ES Module -->
       <script
         type="module"
-        th:src="@{/assets/js/doc.js?v={version}(version='1.0.21')}"
+        th:src="@{/assets/js/doc.js?v={version}(version=${theme.spec.version})}"
         data-swup-reload-script
       ></script>
       <!-- 鎻掍欢鑴氭湰锛堥渶瑕佸湪 body 鍚庡姞杞斤級 -->
@@ -93,7 +93,7 @@
       <!-- 鏂囨。椤圭洰鑷畾锟?body 鑴氭湰 - 闇€锟?Docsme 鎻掍欢鏀寔 -->
       <th:block th:if="${project?.spec != null and project.spec['body'] != null}" th:utext="${project.spec['body']}" />
     </div>
-    <script type="module" th:src="@{/assets/js/main.js?v={version}(version='1.0.21')}"></script>
+    <script type="module" th:src="@{/assets/js/main.js?v={version}(version=${theme.spec.version})}"></script>
 
     <!-- 鎮诞闊充箰鎾斁锟?-->
     <th:block th:replace="~{modules/music-player :: player}" />
