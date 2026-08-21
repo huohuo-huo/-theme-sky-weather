@@ -12,7 +12,7 @@ on:
       tag:
         description: Release tag to upload the theme package to
         required: true
-        default: v1.0.26
+        default: v1.0.27
 
 permissions:
   contents: write
@@ -35,7 +35,7 @@ jobs:
           elif [ "${{ github.event_name }}" = "push" ]; then
             echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
           else
-            echo "tag=v1.0.26" >> "$GITHUB_OUTPUT"
+            echo "tag=v1.0.27" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Package theme
@@ -58,6 +58,10 @@ jobs:
           基于 Sky Blog Theme 二次开发的动态天气玻璃风 Halo 主题。
 
           ### 本次更新
+
+          - 文章标题默认可见，移除依赖 hover 才显示标题的交互。
+          - 移除第三方随机封面图库；无封面文章改为技术摘要卡片，保留作者明确设置的封面。
+          - 为失效封面增加中性渐变降级，避免对外页面出现破图。
 
           - 修复布局模板资源版本号硬编码为 `1.0.21` 导致浏览器/CDN 缓存旧版脚本的问题。
           - 确保 Docsme 超长文档懒加载后的新代码块可以重新触发 Shiki 高亮，避免代码块保持模糊状态。

@@ -12,44 +12,29 @@
   <!-- 循环文章列表：使用非卡片、左图右文布局 -->
   <article th:each="post : ${posts.items}"
     th:with="isPinned = ${post.spec.pinned == true},
+                    coverUrl = ${post.spec.cover != null and !#strings.isEmpty(post.spec.cover) and !#strings.contains(post.spec.cover, 'dmoe.cc') ? post.spec.cover : null},
                     isPrivate = ${post.spec.visible != null and post.spec.visible.name() == 'PRIVATE' and currentUser != null and currentUser.metadata.name == post.spec.owner},
                     isLocked = ${post.metadata.annotations != null and post.metadata.annotations['content.halo.run/content-restriction'] != null and post.metadata.annotations['content.halo.run/content-restriction'] != ''}"
     class="group card relative cursor-pointer bg-base-100/80 backdrop-blur-xl border border-base-content/5 rounded-[1.5rem] p-4 md:p-5 flex flex-col md:flex-row md:items-stretch gap-4 md:gap-6 shadow-lg hover:shadow-xl hover:border-primary/20 transition-all duration-300">
 
-    <!-- 封面计算：支持主题的封面回退设置 (Context-Aware Fix) -->
-    <th:block th:with="
-        nested = ${settings?.cover_fallback},
-        flatEnable = ${settings?.cover_fallback_enable},
-        flatMode = ${settings?.cover_fallback_mode},
-        flatUrl = ${settings?.cover_fallback_url},
-        enable = ${nested != null ? (nested.enable ?: false) : (flatEnable ?: false)},
-        mode = ${nested != null ? (nested.mode ?: 'missing_only') : (flatMode ?: 'missing_only')},
-        defaultImg = ${nested != null ? (nested.default_image + '?id=' + post.metadata.name) : (flatUrl + '?id=' + post.metadata.name)},
-        actual=${post.spec.cover},
-        actualOk=${actual != null and not #strings.isEmpty(actual) ? actual : null},
-        coverUrl=${(enable == true) ? ((mode == 'always' and defaultImg != null) ? defaultImg : (actualOk != null ? actualOk : defaultImg)) : actualOk}
-    ">
-      <!-- 左侧图片区域：4:3 比例 -->
-      <figure class="relative w-full md:basis-[25%] md:max-w-[25%] shrink-0 overflow-hidden rounded-xl">
+    <!-- 仅在作者设置了封面时显示图片；无封面时文字区域自然占满整行。 -->
+      <figure th:if="${coverUrl != null}" class="relative w-full md:basis-[25%] md:max-w-[25%] shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-primary/90 via-primary/70 to-secondary/90">
         <a th:href="@{${post.status.permalink}}" class="block w-full aspect-4/3">
-          <img th:if="${coverUrl != null}" th:src="${coverUrl}" th:alt="|${post.spec.title} 的封面|" loading="lazy"
+          <img th:src="${coverUrl}" th:alt="|${post.spec.title} 的封面|" loading="lazy"
+            onerror="this.style.display='none'"
             class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" />
-          <!-- 无封面占位：与有图片时尺寸完全一致 -->
-          <div th:if="${coverUrl == null}"
-            class="w-full h-full bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/15 transition-all duration-200 flex items-center justify-center group-hover:from-primary/20 group-hover:to-accent/20">
-            <span
-              class="icon-[heroicons--photo] w-16 h-16 text-primary/30 group-hover:text-primary/50 transition-colors"></span>
-          </div>
         </a>
         <!-- 置顶/推荐角标 -->
         <span th:if="${isPinned}"
           class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">置顶</span>
       </figure>
-    </th:block>
 
     <!-- 右侧文字区域：自适应高度与宽度，支持多段落排版 -->
     <div class="flex-1 flex flex-col">
       <!-- 标题：可点击，强调可读性 -->
+      <div th:if="${isPinned and coverUrl == null}" class="mb-2">
+        <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm">置顶</span>
+      </div>
       <h3 class="text-base md:text-lg font-bold leading-6 md:leading-7 tracking-tight">
         <a th:href="@{${post.status.permalink}}" class="hover:text-primary transition-colors"
           th:text="${post.spec.title}">文章标题</a>

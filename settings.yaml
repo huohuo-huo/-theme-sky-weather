@@ -963,7 +963,7 @@ spec:
           value:
             enable_header: true
             background_type: weather-glass
-            background_image: "https://www.dmoe.cc/random.php"
+            background_image: ""
             effect_style: starry-sky
             light_scheme: black
             light_custom_color: "#000000"
@@ -1118,7 +1118,7 @@ spec:
               key: background_image_field
               if: $get(index_enable_header).value && $get(index_background_type).value === 'image'
               label: 背景媒体（上传或输入地址）
-              help: 上传图片/视频或直接输入 URL；附件控件兼容外链路径 https://www.dmoe.cc/random.php
+              help: 上传图片/视频或直接输入 URL
               accepts:
                 - image/jpeg
                 - image/png
@@ -1559,9 +1559,6 @@ spec:
             show_posts: true
             list_style: magazine
             post_count: 8
-            cover_fallback_enable: true
-            cover_fallback_mode: missing_only
-            cover_fallback_url: "https://www.dmoe.cc/random.php"
           children:
             - $formkit: switch
               id: show_posts_tab
@@ -1595,38 +1592,6 @@ spec:
               value: 8
               min: 3
               max: 12
-            - $formkit: switch
-              id: index_cover_fallback_enable
-              name: cover_fallback_enable
-              if: $get(show_posts_tab).value
-              label: 启用封面替代
-              help: 启用后无封面的文章将使用指定图片替代
-              value: true
-            - $formkit: toggle
-              name: cover_fallback_mode
-              if: $get(show_posts_tab).value && $get(index_cover_fallback_enable).value
-              label: 替代模式
-              help: 选择替代策略
-              render-type: text
-              size: 80
-              gap: 10
-              value: missing_only
-              options:
-                - label: 无封面时替代
-                  value: missing_only
-                - label: 始终使用
-                  value: always
-            - $formkit: attachment
-              name: cover_fallback_url
-              if: $get(show_posts_tab).value && $get(index_cover_fallback_enable).value
-              label: 默认封面图片
-              help: 上传或选择作为替代封面的图片（支持 jpeg/png/webp/gif）
-              accepts:
-                - image/jpeg
-                - image/png
-                - image/webp
-                - image/gif
-              value: ""
         # 朋友动态设置
         - $formkit: group
           name: friends_settings
@@ -1853,9 +1818,9 @@ spec:
           label: 文章头部背景设置
           value:
             background_type: cover
-            enable_fallback: true
+            enable_fallback: false
             custom_image: ""
-            fallback_image: "https://www.dmoe.cc/random.php"
+            fallback_image: ""
           children:
             - $formkit: toggle
               id: post_background_type
@@ -1882,14 +1847,14 @@ spec:
               name: enable_fallback
               label: 启用回退图片
               help: 当选择的图片来源为空时，自动使用回退图片
-              value: true
+              value: false
             - $formkit: attachment
               name: fallback_image
               key: fallback_image_field
               if: $get(enable_fallback).value
               label: 回退图片
-              help: 当背景图片为空时显示的默认图片，支持随机图片 API
-              value: "https://www.dmoe.cc/random.php"
+              help: 当背景图片为空时显示的默认图片
+              value: ""
         - $formkit: group
           name: content_settings
           label: 内容显示设置
@@ -2211,51 +2176,6 @@ spec:
                   label: 小工具类型
                   options: *widget_options
 
-        # 封面回退设置
-        - $formkit: group
-          name: cover_fallback
-          label: 文章封面回退
-          help: 控制分类列表的封面替代策略（默认不启用）。
-          value:
-            enable: false
-            mode: missing_only
-            default_image: ""
-          children:
-            - $formkit: switch
-              id: cat_cover_fallback_enable
-              name: enable
-              key: cat_cover_fallback_enable_field
-              label: 启用封面替代
-              help: 启用后可在无封面或始终替代模式下使用指定图片。
-              value: false
-            - $formkit: toggle
-              id: cat_cover_fallback_mode
-              name: mode
-              key: cat_cover_fallback_mode_field
-              if: $get(cat_cover_fallback_enable).value
-              label: 替代模式
-              help: 选择替代策略（无封面时替代 或 始终使用指定图片）。
-              render-type: text
-              size: 80
-              gap: 10
-              value: missing_only
-              options:
-                - label: 无封面时替代
-                  value: missing_only
-                - label: 始终使用
-                  value: always
-            - $formkit: attachment
-              id: cat_cover_fallback_default_image
-              name: default_image
-              key: cat_cover_fallback_default_image_field
-              if: $get(cat_cover_fallback_enable).value
-              label: 默认封面图片
-              help: 上传或选择作为替代封面的图片（支持 jpeg/png/webp/gif）。
-              accepts:
-                - image/jpeg
-                - image/png
-                - image/webp
-                - image/gif
         # 悬浮控制栏设置
         - $formkit: group
           name: floating_dock
@@ -2390,51 +2310,6 @@ spec:
                   name: widget
                   label: 小工具类型
                   options: *widget_options
-        # 封面回退设置
-        - $formkit: group
-          name: cover_fallback
-          label: 文章封面回退
-          help: 控制标签列表的封面替代策略（默认不启用）。
-          value:
-            enable: false
-            mode: missing_only
-            default_image: ""
-          children:
-            - $formkit: switch
-              id: tag_cover_fallback_enable
-              name: enable
-              key: tag_cover_fallback_enable_field
-              label: 启用封面替代
-              help: 启用后可在无封面或始终替代模式下使用指定图片。
-              value: false
-            - $formkit: toggle
-              id: tag_cover_fallback_mode
-              name: mode
-              key: tag_cover_fallback_mode_field
-              if: $get(tag_cover_fallback_enable).value
-              label: 替代模式
-              help: 选择替代策略（无封面时替代 或 始终使用指定图片）。
-              render-type: text
-              size: 80
-              gap: 10
-              value: missing_only
-              options:
-                - label: 无封面时替代
-                  value: missing_only
-                - label: 始终使用
-                  value: always
-            - $formkit: attachment
-              id: tag_cover_fallback_default_image
-              name: default_image
-              key: tag_cover_fallback_default_image_field
-              if: $get(tag_cover_fallback_enable).value
-              label: 默认封面图片
-              help: 上传或选择作为替代封面的图片（支持 jpeg/png/webp/gif）。
-              accepts:
-                - image/jpeg
-                - image/png
-                - image/webp
-                - image/gif
         # 悬浮控制栏设置
         - $formkit: group
           name: floating_dock
@@ -4185,7 +4060,7 @@ spec:
           value:
             mode: "tech"
             tab_style: "pills"
-            hero_background: "https://www.dmoe.cc/random.php"
+            hero_background: ""
           children:
             - $formkit: toggle
               id: mode
@@ -4226,7 +4101,7 @@ spec:
               label: Hero 背景图
               help: 优雅卡片模式下的顶部大图（建议 16:9 比例）
               if: $get(mode).value === 'simple'
-              value: "https://www.dmoe.cc/random.php"
+              value: ""
               accepts:
                 - "image/*"
 

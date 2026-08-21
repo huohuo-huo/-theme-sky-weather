@@ -21,15 +21,18 @@
 
     <!-- 背景层：图片/视频背景 -->
     <div class="absolute inset-0 z-0" th:if="${theme.config.index.background_settings.background_type == 'image'}"
-        th:with="bgSrc=${theme.config.index.background_settings.background_image},
+        th:with="configuredBgSrc=${theme.config.index.background_settings.background_image},
+              bgSrc=${configuredBgSrc != null and !configuredBgSrc.isEmpty() and !#strings.contains(configuredBgSrc, 'dmoe.cc') ? configuredBgSrc : ''},
               isVideo=${#strings.endsWith(bgSrc, '.mp4') or #strings.endsWith(bgSrc, '.webm') or #strings.endsWith(bgSrc, '.ogg')}">
         <!-- 原始媒体背景（视频优先，其次图片） -->
-        <video th:if="${isVideo}"
+        <video th:if="${!bgSrc.isEmpty() and isVideo}"
             class="absolute inset-0 w-full h-full object-cover object-center transition-all duration-1000 filter blur-[0.5px] will-change-transform"
             th:src="${bgSrc}" autoplay loop muted playsinline></video>
-        <img th:unless="${isVideo}"
+        <img th:if="${!bgSrc.isEmpty() and !isVideo}"
             class="absolute inset-0 w-full h-full object-cover object-center transition-all duration-1000 filter blur-[0.5px] will-change-transform"
             th:src="${bgSrc}" alt="背景媒体">
+        <div th:if="${bgSrc.isEmpty()}"
+            class="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/70 to-secondary/90"></div>
 
         <!-- 组合蒙版容器 - 支持明暗主题独立配置 -->
         <th:block th:with="

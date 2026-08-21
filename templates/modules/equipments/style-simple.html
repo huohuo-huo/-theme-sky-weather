@@ -11,8 +11,9 @@
                                  styleCfg=${theme.config.equipment_settings?.style_settings}">
 
         <!-- ========== Hero 区域 ========== -->
-        <section class="eq-hero" th:with="heroBg=${styleCfg?.hero_background ?: 'https://www.dmoe.cc/random.php'}"
-            th:style="'--hero-bg: url(' + ${heroBg} + ')'">
+        <section class="eq-hero" th:with="configuredHeroBg=${styleCfg?.hero_background ?: ''},
+                                         heroBg=${!#strings.contains(configuredHeroBg, 'dmoe.cc') ? configuredHeroBg : ''}"
+            th:style="${heroBg != null and !heroBg.isEmpty()} ? ('--hero-bg: url(' + ${heroBg} + ')') : ''">
             <div class="eq-hero-overlay"></div>
             <div class="eq-hero-content">
                 <span class="eq-hero-subtitle" th:text="${cfg?.page_subtitle ?: '好物分享'}">好物</span>

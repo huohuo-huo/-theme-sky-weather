@@ -11,18 +11,11 @@
 
 <!-- modern：玻璃拟态卡片，精致现代布局 -->
 <div th:fragment="modern(posts, settings)" class="article-card-grid mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-  <!-- 中文注释：重构为 DaisyUI image-full 卡片。若有封面（或回退封面）使用覆盖式大图与底部文本；无有效封面使用常规卡片占位图。统一圆角、边框与悬停阴影。 -->
+  <!-- 仅使用文章显式封面；无封面时直接展示文字摘要，不加载随机图片或图片占位。 -->
   <th:block th:each="post : ${posts.items}" th:with="
-              nested = ${settings?.cover_fallback},
-              flatEnable = ${settings?.cover_fallback_enable},
-              flatMode = ${settings?.cover_fallback_mode},
-              flatUrl = ${settings?.cover_fallback_url},
-              enable = ${nested != null ? (nested.enable ?: false) : (flatEnable ?: false)},
-              mode = ${nested != null ? (nested.mode ?: 'missing_only') : (flatMode ?: 'missing_only')},
-              defaultImg = ${nested != null ? (nested.default_image + '?id=' + post.metadata.name) : (flatUrl + '?id=' + post.metadata.name)},
               actual=${post.spec.cover},
-              actualOk=${actual != null and not #strings.isEmpty(actual) ? actual : null},
-              coverUrl=${(enable == true) ? ((mode == 'always' and defaultImg != null) ? defaultImg : (actualOk != null ? actualOk : defaultImg)) : actualOk}
+              actualOk=${actual != null and not #strings.isEmpty(actual) and !#strings.contains(actual, 'dmoe.cc') ? actual : null},
+              coverUrl=${actualOk}
             ">
     <!-- 有（有效）封面：玻璃拟态卡片（图片在上、文字在下），精致现代 -->
     <article th:if="${coverUrl != null}"
@@ -31,10 +24,11 @@
                       isLocked = ${post.metadata.annotations != null and post.metadata.annotations['content.halo.run/content-restriction'] != null and post.metadata.annotations['content.halo.run/content-restriction'] != ''}"
       class="card group cursor-pointer rounded-[1.5rem] backdrop-blur-xl bg-base-100/80 border border-base-content/5 shadow-lg hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 overflow-hidden">
       <!-- 封面区域：16:10 比例 -->
-      <figure class="relative w-full aspect-video overflow-hidden">
+      <figure class="relative w-full aspect-video overflow-hidden bg-gradient-to-br from-primary/90 via-primary/70 to-secondary/90">
         <a th:href="@{${post.status.permalink}}"
           class="block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary">
           <img th:src="${coverUrl}" th:alt="|${post.spec.title} 的封面|" loading="lazy"
+            onerror="this.style.display='none'"
             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         </a>
 
@@ -113,36 +107,25 @@
       </div>
     </article>
 
-    <!-- 无（有效）封面：玻璃拟态卡片 + 占位图 -->
+    <!-- 无封面：文字摘要卡片 -->
     <article th:if="${coverUrl == null}"
       th:with="isPinned = ${post.spec.pinned == true},
                       isPrivate = ${post.spec.visible != null and post.spec.visible.name() == 'PRIVATE' and currentUser != null and currentUser.metadata.name == post.spec.owner},
                       isLocked = ${post.metadata.annotations != null and post.metadata.annotations['content.halo.run/content-restriction'] != null and post.metadata.annotations['content.halo.run/content-restriction'] != ''}"
       class="card group cursor-pointer rounded-[1.5rem] backdrop-blur-xl bg-base-100/80 border border-base-content/5 shadow-lg hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 overflow-hidden">
-      <!-- 占位图区域：16:10 比例 -->
-      <figure class="relative w-full aspect-video overflow-hidden">
-        <a th:href="@{${post.status.permalink}}"
-          class="block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary">
-          <div
-            class="w-full h-full bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 transition-all duration-200 grid place-items-center group-hover:from-primary/15 group-hover:to-accent/15">
-            <span
-              class="icon-[heroicons--photo] w-12 h-12 text-primary/30 group-hover:text-primary/50 transition-colors"></span>
-          </div>
-        </a>
-
-        <!-- 置顶/推荐角标 - 渐变风格 -->
-        <span th:if="${isPinned}"
-          class="absolute top-3 left-3 px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm backdrop-blur-md">置顶</span>
-
-        <!-- 发布时间 - 胶囊风格 -->
-        <div
-          class="absolute top-3 right-3 px-2 py-1 rounded-full bg-base-100/80 backdrop-blur-md shadow-sm border border-base-content/5 flex items-center gap-1">
-          <span class="icon-[heroicons--clock] w-3 h-3 text-base-content/60"></span>
-          <span class="text-[10px] font-medium text-base-content/80"
-            th:text="${#dates.format(post.spec.publishTime,'MM-dd')}">01-01</span>
+      <div class="card-body p-5 flex flex-col bg-gradient-to-br from-base-100 via-base-100/90 to-primary/10">
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <span th:if="${isPinned}"
+            class="px-2 py-0.5 rounded-md text-[10px] font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 shadow-sm">置顶</span>
+          <span th:unless="${isPinned}" class="inline-flex items-center gap-1 text-xs text-primary font-medium">
+            <span class="icon-[heroicons--document-text] w-4 h-4"></span>
+            技术文章
+          </span>
+          <span class="ml-auto inline-flex items-center gap-1 text-[10px] text-base-content/60">
+            <span class="icon-[heroicons--clock] w-3 h-3"></span>
+            <time th:text="${#dates.format(post.spec.publishTime,'yyyy-MM-dd')}">2025-01-01</time>
+          </span>
         </div>
-      </figure>
-      <div class="card-body p-4 flex flex-col">
         <!-- 上行：分类 + 标签（标题上方） -->
         <div class="flex items-center text-xs text-base-content/60 leading-5 gap-4 mb-2">
           <div class="flex items-center gap-2 min-w-0"
@@ -171,8 +154,7 @@
         <h3 class="text-base font-semibold mb-2 text-base-content line-clamp-2">
           <a th:href="@{${post.status.permalink}}" class="hover:text-primary" th:text="${post.spec.title}">文章标题</a>
         </h3>
-        <!-- 摘要：固定两行高度（无简介也占位），保证卡片内容区稳定不跳动 -->
-        <p class="text-sm text-base-content/70 line-clamp-2 w-full">
+        <p class="text-sm text-base-content/70 line-clamp-3 w-full leading-relaxed">
           <a th:href="@{${post.status.permalink}}" class="hover:text-base-content"
             th:text="${(post.spec.excerpt != null and post.spec.excerpt.raw != null and !post.spec.excerpt.raw.isEmpty()) ? post.spec.excerpt.raw : (post.status.excerpt ?: '')}"></a>
         </p>
